@@ -1,6 +1,20 @@
 package Command;
 
+import java.util.Map;
+
+import shop_managment_project.Product;
+
 public class AddProductCommand implements Command{
+	
+	Map<String,Product> allProducts;
+	
+
+
+	public AddProductCommand(Map<String, Product> allProducts, enum) {
+		this.allProducts = allProducts;
+	}
+
+
 
 	@Override
 	public void execute() {

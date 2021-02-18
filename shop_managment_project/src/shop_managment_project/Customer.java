@@ -1,6 +1,9 @@
 package shop_managment_project;
 
-public class Customer {
+import Observer.Receiver;
+import Observer.Sender;
+
+public class Customer implements Sender, Receiver {
 
 	String name;
 	String number;
@@ -8,10 +11,9 @@ public class Customer {
 	
 	
 	public Customer(String name, String number, boolean bNotification) {
-		super();
-		this.name = name;
-		this.number = number;
-		this.bNotification = bNotification;
+		setName(name);
+		setNumber(number);
+		setbNotification(bNotification);
 	}
 
 
@@ -42,6 +44,20 @@ public class Customer {
 
 	public void setbNotification(boolean bNotification) {
 		this.bNotification = bNotification;
+	}
+
+
+	@Override
+	public void receiveMSG(Sender s, String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void sendMSG(Receiver r, String msg) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -4,17 +4,17 @@ public class Product {
 	
 	String name;
 	int valuePrice; 
-	int costumerPrice;
+	int customerPrice;
 	int productNum; //catalog number
 	Customer customer;
 	
 	
-	public Product(String name, int valuePrice, int costumerPrice, int productNum, Customer customer) {
-		this.name = name;
-		this.valuePrice = valuePrice;
-		this.costumerPrice = costumerPrice;
-		this.productNum = productNum;
-		this.customer = customer;
+	public Product(String name, int valuePrice, int customerPrice, int productNum, Customer customer) {
+		setName(name);
+		setValuePrice(valuePrice);
+		setCustomerPrice(customerPrice);
+		setProductNum(productNum);
+		setCustomer(customer);;
 	}
 
 	public String getName() {
@@ -34,11 +34,11 @@ public class Product {
 	}
 
 	public int getCostumerPrice() {
-		return costumerPrice;
+		return customerPrice;
 	}
 
-	public void setCostumerPrice(int costumerPrice) {
-		this.costumerPrice = costumerPrice;
+	public void setCustomerPrice(int costumerPrice) {
+		this.customerPrice = costumerPrice;
 	}
 
 	public int getProductNum() {
