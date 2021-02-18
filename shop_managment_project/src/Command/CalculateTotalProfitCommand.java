@@ -4,11 +4,11 @@ import java.util.Map;
 
 import shop_managment_project.Product;
 
-public class DeleteProductCommand implements Command {
+public class CalculateTotalProfitCommand implements Command {
 	
 	Map<String,Product> allProducts;
 	
-	public DeleteProductCommand(Map<String, Product> allProducts) {
+	public CalculateTotalProfitCommand(Map<String, Product> allProducts) {
 		this.allProducts = allProducts;
 	}
 
