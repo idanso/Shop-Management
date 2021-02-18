@@ -8,10 +8,10 @@ public class AddProductCommand implements Command{
 	
 	Map<String,Product> allProducts;
 	
+
 	public AddProductCommand(Map<String, Product> allProducts) {
 		this.allProducts = allProducts;
 	}
-
 
 
 	@Override
