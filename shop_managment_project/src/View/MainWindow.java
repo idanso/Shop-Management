@@ -48,6 +48,7 @@ public class MainWindow extends Application {
 
 		backB = new Button("<<Back");
 		backB.setOnAction(e -> mainScene());
+		
 		// pop-up to select the sorting
 		// read and reload the data from the binary file
 	}
@@ -87,14 +88,14 @@ public class MainWindow extends Application {
 	public void addProductsScene() {
 		GridPane grid = new GridPane();
 		HBox hbox1 = new HBox(8);
-		Alert alert = new Alert(AlertType.NONE);
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
 		grid.setHgap(10);
 		Button submmitB = new Button("Submmit");
 		Button clearB = new Button("Clear");
 		RadioButton notification = new RadioButton("Send notification");
-
+		Alert alert = new Alert(AlertType.NONE);
+		
 		Label head = new Label("Add product:");
 
 		TextField txt1 = new TextField();
@@ -169,6 +170,7 @@ public class MainWindow extends Application {
 
 	public void searchProductToRemove() {
 		// search product to remove
+		Alert alert = new Alert(AlertType.NONE);
 		VBox vboxSearch = new VBox(10);
 		TextField makat = new TextField();
 		makat.setMaxWidth(150);
@@ -177,6 +179,13 @@ public class MainWindow extends Application {
 		HBox hbox = new HBox(8);
 		hbox.getChildren().addAll(submmitSearchB, backB);
 		vboxSearch.getChildren().addAll(makat, hbox, table);
+		submmitSearchB.setOnAction(e -> {
+			if(makat.getText().isEmpty()) {
+				alert.setAlertType(AlertType.ERROR);
+				alert.setContentText("The product number is empty");
+				alert.show();
+			}//add the option if the product doesnt exists
+		});
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
 
