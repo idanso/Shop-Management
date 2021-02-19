@@ -23,45 +23,37 @@ import javafx.stage.Stage;
 
 public class MainWindow extends Application{
 	Stage window;
-	Scene starter, addProductScene, sorting, showProductScene, sendNotification;
+	TableView table;
+	
 	@Override
 	public void init() throws Exception{
+		table = new TableView();
+		TableColumn nameProduct = new TableColumn("Name of product");
+        TableColumn priceForShop = new TableColumn("Price for the shop");
+        TableColumn priceForCostumer = new TableColumn("Price at the shop");
+        TableColumn nameCostumer = new TableColumn("Costumer name");
+        TableColumn phoneNumber = new TableColumn("Phone number");
+        TableColumn notificationC = new TableColumn("Want to get news?");
+		table.getColumns().addAll(nameProduct, priceForShop, priceForCostumer, nameCostumer,
+				phoneNumber, notificationC);
+		nameProduct.setMinWidth(150);
+		priceForShop.setMinWidth(150);
+		priceForCostumer.setMinWidth(150);
+		nameCostumer.setMinWidth(150);
+		phoneNumber.setMinWidth(200);
+		notificationC.setMinWidth(150);
 		//pop-up to select the sorting
 		//read and reload the data from the binary file
 	}
 	
-	@Override
-	public void start(Stage mainWindow) throws Exception {
-		window = mainWindow;
-		window.setTitle("Main window");
-		
-		//main window scene
-		Button addProduct = new Button("Add product");
-		addProduct.setOnAction(e -> window.setScene(addProductScene));
-		
-		Button showProduct = new Button ("Show all the products");
-		showProduct.setOnAction(e -> window.setScene(showProductScene));
-		Button undoB = new Button("Undo");
-		RadioButton notification = new RadioButton("Send notification");
-		Button exit = new Button ("EXIT");
-		exit.setOnAction(e ->{
-			try {
-				stop();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			System.exit(0);
-		});
-		VBox vbox = new VBox();
-		vbox.getChildren().addAll(addProduct, showProduct,undoB , notification, exit);
-		vbox.setAlignment(Pos.CENTER);
-		vbox.setPadding(new Insets(20,80,20,80));
-		vbox.setSpacing(10);
-		starter = new Scene(vbox);
+	public void showReceivedMassages() {
 		
 		
 		
-		//addProduct scene
+		
+	}
+	
+	public void addProductsScene() {
 		GridPane grid = new GridPane();
 		HBox hbox1 = new HBox(8);
 		Alert alert = new Alert(AlertType.NONE);
@@ -118,39 +110,57 @@ public class MainWindow extends Application{
 			txt4.clear();
 			txt5.clear();
 		});
-		backB.setOnAction(e -> window.setScene(starter));
+		backB.setOnAction(e -> mainScene());
 		grid.setAlignment(Pos.BASELINE_CENTER);
-		addProductScene = new Scene(grid, 500,300);
+		window.setScene(new Scene(grid, 500,300));
 		
-		
-		//show product scene
-		TableView table = new TableView();
-		Button backB2 = new Button ("<<Back");
-		Label label = new Label("All the products:");
-		TableColumn nameProduct = new TableColumn("Name of product");
-        TableColumn priceForShop = new TableColumn("Price for the shop");
-        TableColumn priceForCostumer = new TableColumn("Price at the shop");
-        TableColumn nameCostumer = new TableColumn("Costumer name");
-        TableColumn phoneNumber = new TableColumn("Phone number");
-        TableColumn notificationC = new TableColumn("Want to get news?");
-		table.getColumns().addAll(nameProduct, priceForShop, priceForCostumer, nameCostumer,
-				phoneNumber, notificationC);
-		nameProduct.setMinWidth(150);
-		priceForShop.setMinWidth(150);
-		priceForCostumer.setMinWidth(150);
-		nameCostumer.setMinWidth(150);
-		phoneNumber.setMinWidth(200);
-		notificationC.setMinWidth(150);
-		
-		VBox vboxTable = new VBox(20);
-		vboxTable.getChildren().addAll(label, table, backB2);
-		backB2.setOnAction(e -> window.setScene(starter));
-		showProductScene = new Scene(vboxTable,950,500);
-		
-		window.setScene(starter);
-		window.show();
 	}
 	
+	public void showProductsScene() {
+		Button backB2 = new Button ("<<Back");
+		Label label = new Label("All the products:");
+		VBox vboxTable = new VBox(20);
+		vboxTable.getChildren().addAll(label, table, backB2);
+		backB2.setOnAction(e -> mainScene());
+		window.setScene(new Scene(vboxTable,950,500));
+	
+		
+	}
+	
+	public void mainScene() {
+		
+		Button addProduct = new Button("Add product");
+		addProduct.setOnAction(e -> addProductsScene());
+		
+		Button showProduct = new Button ("Show all the products");
+		showProduct.setOnAction(e -> showProductsScene());
+		Button undoB = new Button("Undo");
+		RadioButton notification = new RadioButton("Send notification");
+		Button exit = new Button ("EXIT");
+		exit.setOnAction(e ->{
+			try {
+				stop();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			System.exit(0);
+		});
+		VBox vbox = new VBox();
+		vbox.getChildren().addAll(addProduct, showProduct,undoB , notification, exit);
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPadding(new Insets(20,80,20,80));
+		vbox.setSpacing(10);
+		window.setScene(new Scene(vbox));
+	}
+	
+	@Override
+	public void start(Stage mainWindow) throws Exception {
+		window = mainWindow;
+		window.setTitle("Main window");
+		mainScene();
+		window.show();
+
+	}
 	
 	@Override//do the final things after exit the program
 	public void stop() throws Exception{
