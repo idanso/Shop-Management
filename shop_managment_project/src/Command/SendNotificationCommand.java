@@ -8,14 +8,19 @@ public class SendNotificationCommand implements Command {
 	
 	ArrayList<Receiver> allReceivers;
 
-	public SendNotificationCommand(ArrayList<Receiver> allReceivers) {
-		this.allReceivers = allReceivers;
+	public SendNotificationCommand() {
+		allReceivers = new ArrayList<>();
 	}
 
 	
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public void addReceiver(Receiver receiver) {
+		//to fill
 		
 	}
 

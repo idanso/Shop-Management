@@ -4,7 +4,8 @@ import shop_managment_project.Product;
 
 public interface ProfitCommand {
 	
-	int getTotalProfit();
-	int getProductProfit(Product product);
+	public int getTotalProfit();
+	public int getProductProfit(String productNum);
+	public void calculateTotalProfit();
 
 }

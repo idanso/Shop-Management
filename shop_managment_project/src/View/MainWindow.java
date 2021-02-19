@@ -1,6 +1,5 @@
 package View;
 
-import java.awt.Font;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
