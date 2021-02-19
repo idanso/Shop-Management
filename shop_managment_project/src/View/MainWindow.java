@@ -1,5 +1,8 @@
 package View;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +16,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -82,6 +91,28 @@ public class MainWindow extends Application {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
+		
+		FileInputStream input = null;
+		try {
+			input = new FileInputStream("pexels-photo-586744.jpeg");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} 
+		  
+        // create a image 
+        Image image = new Image(input); 
+
+        // create a background image 
+        BackgroundImage backgroundimage = new BackgroundImage(image,  
+                                         BackgroundRepeat.NO_REPEAT,  
+                                         BackgroundRepeat.NO_REPEAT,  
+                                         BackgroundPosition.DEFAULT,  
+                                            BackgroundSize.DEFAULT); 
+
+        // create Background 
+        Background background = new Background(backgroundimage); 
+        
+        vbox.setBackground(background);
 		window.setScene(new Scene(vbox));
 	}
 
@@ -97,6 +128,7 @@ public class MainWindow extends Application {
 		Alert alert = new Alert(AlertType.NONE);
 		
 		Label head = new Label("Add product:");
+		head.setFont(new Font("Arial", 22));
 
 		TextField txt1 = new TextField();
 		txt1.setPromptText("Product Name");
@@ -163,6 +195,7 @@ public class MainWindow extends Application {
 
 	public void showProductsScene() {
 		Label label = new Label("All the products:");
+		label.setFont(new Font("Arial", 22));
 		VBox vboxTable = new VBox(20);
 		vboxTable.getChildren().addAll(label, table, backB);
 		window.setScene(new Scene(vboxTable, 950, 500));
