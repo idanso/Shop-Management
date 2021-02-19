@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 public class MainWindow extends Application{
 	Stage window;
 	TableView table;
+	Button backB;
 	
 	@Override
 	public void init() throws Exception{
@@ -42,6 +43,9 @@ public class MainWindow extends Application{
 		nameCostumer.setMinWidth(150);
 		phoneNumber.setMinWidth(200);
 		notificationC.setMinWidth(150);
+		
+		backB = new Button("<<Back");
+		backB.setOnAction(e -> mainScene());
 		//pop-up to select the sorting
 		//read and reload the data from the binary file
 	}
@@ -62,7 +66,7 @@ public class MainWindow extends Application{
 		grid.setHgap(10);
 		Button submmitB = new Button("Submmit");
 		Button clearB = new Button ("Clear");
-		Button backB = new Button ("<<Back");
+		RadioButton notification = new RadioButton("Send notification");
 		
 		Label head = new Label ("Add product:");
 		
@@ -86,6 +90,7 @@ public class MainWindow extends Application{
 		grid.add(txt3, 0, 2);
 		grid.add(txt4, 1, 2);
 		grid.add(txt5, 0, 3);
+		grid.add(notification, 1, 3);
 		grid.add(hbox1, 0, 4);
 		grid.add(backB,1,4);
 		
@@ -110,18 +115,16 @@ public class MainWindow extends Application{
 			txt4.clear();
 			txt5.clear();
 		});
-		backB.setOnAction(e -> mainScene());
+		
 		grid.setAlignment(Pos.BASELINE_CENTER);
 		window.setScene(new Scene(grid, 500,300));
 		
 	}
 	
 	public void showProductsScene() {
-		Button backB2 = new Button ("<<Back");
 		Label label = new Label("All the products:");
 		VBox vboxTable = new VBox(20);
-		vboxTable.getChildren().addAll(label, table, backB2);
-		backB2.setOnAction(e -> mainScene());
+		vboxTable.getChildren().addAll(label, table, backB);
 		window.setScene(new Scene(vboxTable,950,500));
 	
 		
@@ -134,8 +137,11 @@ public class MainWindow extends Application{
 		
 		Button showProduct = new Button ("Show all the products");
 		showProduct.setOnAction(e -> showProductsScene());
+		
+		Button removeProductB = new Button ("Search and remove product");
+		removeProductB.setOnAction(e -> searchProductToRemove());
+		
 		Button undoB = new Button("Undo");
-		RadioButton notification = new RadioButton("Send notification");
 		Button exit = new Button ("EXIT");
 		exit.setOnAction(e ->{
 			try {
@@ -146,11 +152,24 @@ public class MainWindow extends Application{
 			System.exit(0);
 		});
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(addProduct, showProduct,undoB , notification, exit);
+		vbox.getChildren().addAll(addProduct, showProduct, removeProductB, undoB , exit);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20,80,20,80));
 		vbox.setSpacing(10);
 		window.setScene(new Scene(vbox));
+	}
+	
+	public void searchProductToRemove() {
+		// search product to remove
+		VBox vboxSearch = new VBox(10);
+		TextField makat = new TextField();
+		makat.setMaxWidth(150);
+		makat.setPromptText("Enter the product number");
+		Button submmitSearchB = new Button("Submmit");
+		HBox hbox = new HBox(8);
+		hbox.getChildren().addAll(submmitSearchB, backB);
+		vboxSearch.getChildren().addAll(makat, hbox, table);
+		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
 	
 	@Override
@@ -161,6 +180,8 @@ public class MainWindow extends Application{
 		window.show();
 
 	}
+	
+
 	
 	@Override//do the final things after exit the program
 	public void stop() throws Exception{

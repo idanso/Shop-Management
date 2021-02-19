@@ -78,7 +78,7 @@ public class Shop implements Sender, Receiver {
 	
 	public void sendNotifications() {
 		sendNotificationCommand.execute();
-		vb
+		
 	}
                              
 
