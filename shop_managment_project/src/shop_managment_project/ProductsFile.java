@@ -1,19 +1,20 @@
 package shop_managment_project;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ProductsFile<T> implements Iterable<Map.Entry<String, Product>> {
+public class ProductsFile<T> extends RandomAccessFile implements Iterable<Map.Entry<String, Product>> {
 	
 	private RandomAccessFile iO;
 	private int numOfObjects;
 	private int pos; //like index of the object in the file
 
-	public ProductsFile(File f) {
-		
+	public ProductsFile(File f, String mode) throws FileNotFoundException {
+		super(f,mode);
 		try {
 			iO = new RandomAccessFile(f, "rw");
 			numOfObjects = iO.readInt();
@@ -21,7 +22,20 @@ public class ProductsFile<T> implements Iterable<Map.Entry<String, Product>> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
+	
+	public void append(Product product, String productNumber) throws IOException {
+		iO.writeUTF(product.name);
+		iO.writeInt(product.valuePrice);
+		iO.writeInt(product.customerPrice);
+		iO.writeUTF(product.customer.name);
+		iO.writeUTF(product.customer.number);
+		iO.writeBoolean(product.customer.bNotification);
+		iO.writeUTF(productNumber);
+			
+	}
+	
 
 	@Override
 	public Iterator<Map.Entry<String, Product>> iterator() {
@@ -67,9 +81,5 @@ public class ProductsFile<T> implements Iterable<Map.Entry<String, Product>> {
 		}
 		
 	}
-	
-	
-	 
-	
 	
 }

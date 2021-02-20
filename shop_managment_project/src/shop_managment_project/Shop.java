@@ -1,5 +1,7 @@
 package shop_managment_project;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -19,6 +21,9 @@ public class Shop implements Sender, Receiver {
 
 	Map<String,Product> allProducts;
 	eProductSortType productSortingType;
+	File file;
+	ProductsFile pFile;
+	
 	GetProfitCommand getProfitCommand;
 	AddProductCommand addProdauctCommand;
 	DeleteAllProductsCommand deleteAllProductsCommand;
@@ -28,7 +33,7 @@ public class Shop implements Sender, Receiver {
 	
 	
 	
-	public Shop(Map<String, Product> productsMap, eProductSortType productSortingType) {
+	public Shop(eProductSortType productSortingType, String fileName) {
 		
 		
 		//create an empty map according to the sorting method specified
@@ -41,38 +46,47 @@ public class Shop implements Sender, Receiver {
 		else
 			allProducts = new LinkedHashMap<>();
 		
+		file = new File(fileName);
+		try {
+			pFile = new ProductsFile<>(file, "rw");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		//call commands constructors
-		getProfitCommand = new GetProfitCommand(allProducts);
-		addProdauctCommand = new AddProductCommand(allProducts);
-		deleteAllProductsCommand = new DeleteAllProductsCommand(allProducts);
-		deleteLastCommand = new DeleteLastCommand(allProducts);
-		deleteProductCommand = new DeleteProductCommand(allProducts);
-		sendNotificationCommand = new SendNotificationCommand();
+//		getProfitCommand = new GetProfitCommand(allProducts);
+//		addProdauctCommand = new AddProductCommand(allProducts);
+//		deleteAllProductsCommand = new DeleteAllProductsCommand(allProducts);
+//		deleteLastCommand = new DeleteLastCommand(allProducts);
+//		deleteProductCommand = new DeleteProductCommand(allProducts);
+//		sendNotificationCommand = new SendNotificationCommand();
 	}
 	
 	public void addProduct(Product product) {
-		addProdauctCommand.execute();
+		
+
 	}
 	
 	public void deleteProduct(String productNum) {
-		deleteProductCommand.execute();
+		
+
 	}
 	
 	public void deleteAllProducts() {
-		deleteAllProductsCommand.execute();
+
 	}
 	
 	public void deleteLastProduct() {
-		deleteLastCommand.execute();
+		
 	}
 	
 	public void getProductProfit(String productNum) {
-		getProfitCommand.getProductProfit(productNum);
+
 		
 	}
 	
 	public void getTotalProfit() {
-		getProfitCommand.getTotalProfit();
+
 		
 	}
 	
@@ -94,12 +108,5 @@ public class Shop implements Sender, Receiver {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
