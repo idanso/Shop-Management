@@ -2,3 +2,6 @@
 /Product.class
 /Shop.class
 /eProductSortType.class
+/FileIterator.class
+/ProductsFile.class
+/ProductsFile$fileIterator.class

@@ -5,15 +5,15 @@ public class Product {
 	String name;
 	int valuePrice; 
 	int customerPrice;
-	int productNum; //catalog number
+	//String productNum; //catalog number
 	Customer customer;
 	
 	
-	public Product(String name, int valuePrice, int customerPrice, int productNum, Customer customer) {
+	public Product(String name, int valuePrice, int customerPrice, Customer customer) {
 		setName(name);
 		setValuePrice(valuePrice);
 		setCustomerPrice(customerPrice);
-		setProductNum(productNum);
+		//setProductNum(productNum);
 		setCustomer(customer);;
 	}
 
@@ -41,13 +41,13 @@ public class Product {
 		this.customerPrice = costumerPrice;
 	}
 
-	public int getProductNum() {
-		return productNum;
-	}
-
-	public void setProductNum(int productNum) {
-		this.productNum = productNum;
-	}
+//	public String getProductNum() {
+//		return productNum;
+//	}
+//
+//	public void setProductNum(String productNum) {
+//		this.productNum = productNum;
+//	}
 
 	public Customer getCustomer() {
 		return customer;
