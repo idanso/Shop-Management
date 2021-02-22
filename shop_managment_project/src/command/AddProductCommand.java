@@ -1,4 +1,4 @@
-package Command;
+package command;
 
 import java.util.Map;
 
@@ -9,17 +9,16 @@ public class AddProductCommand implements Command{
 	
 	private Shop shop;
 	private Product product;
-	private r
 	
 
-	public AddProductCommand(Map<String, Product> allProducts) {
-		this.allProducts = allProducts;
+	public AddProductCommand(Shop shop, Product product) {
+		this.shop = shop;
+		this.product = product;
 	}
-
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
+		this.shop.addProduct(product);
 		
 	}
 

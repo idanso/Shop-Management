@@ -6,16 +6,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import Command.AddProductCommand;
-import Command.DeleteAllProductsCommand;
-import Command.DeleteLastCommand;
-import Command.DeleteProductCommand;
-import Command.GetProfitCommand;
-import Command.SendNotificationCommand;
-import Observer.Receiver;
-import Observer.Sender;
+import command.AddProductCommand;
+import command.DeleteAllProductsCommand;
+import command.DeleteLastCommand;
+import command.DeleteProductCommand;
+import command.GetProductProfitCommand;
+import command.SendNotificationCommand;
 import comparators.AlphabeticMapComparator;
 import comparators.ReverseAlphabeticMapCompare;
+import observer.Receiver;
+import observer.Sender;
 
 public class Shop implements Sender, Receiver {
 
@@ -24,7 +24,7 @@ public class Shop implements Sender, Receiver {
 	File file;
 	ProductsFile pFile;
 	
-	GetProfitCommand getProfitCommand;
+	GetProductProfitCommand getProfitCommand;
 	AddProductCommand addProdauctCommand;
 	DeleteAllProductsCommand deleteAllProductsCommand;
 	DeleteLastCommand deleteLastCommand;
@@ -80,18 +80,17 @@ public class Shop implements Sender, Receiver {
 		
 	}
 	
-	public void getProductProfit(String productNum) {
-
+	public int getProductProfit(String productNum) {
+		return 0;
 		
 	}
 	
-	public void getTotalProfit() {
-
+	public int getTotalProfit() {
+		return 0;
 		
 	}
 	
 	public void sendNotifications() {
-		sendNotificationCommand.execute();
 		
 	}
                              

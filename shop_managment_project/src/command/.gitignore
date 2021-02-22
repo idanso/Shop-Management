@@ -7,3 +7,5 @@
 /ProfitCommand.class
 /SendNotificationCommand.class
 /googlesearceCommand.class
+/GetProductProfitCommand.class
+/GetTotalProfitCommand.class

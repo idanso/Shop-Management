@@ -1,7 +1,7 @@
 package shop_managment_project;
 
-import Observer.Receiver;
-import Observer.Sender;
+import observer.Receiver;
+import observer.Sender;
 
 public class Customer implements Sender, Receiver {
 
