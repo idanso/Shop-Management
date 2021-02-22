@@ -2,8 +2,11 @@ package shop_managment_project;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import command.AddProductCommand;
@@ -19,23 +22,16 @@ import observer.Sender;
 
 public class Shop implements Sender, Receiver {
 
-	Map<String,Product> allProducts;
-	eProductSortType productSortingType;
-	File file;
-	ProductsFile pFile;
-	
-	GetProductProfitCommand getProfitCommand;
-	AddProductCommand addProdauctCommand;
-	DeleteAllProductsCommand deleteAllProductsCommand;
-	DeleteLastCommand deleteLastCommand;
-	DeleteProductCommand deleteProductCommand;
-	SendNotificationCommand sendNotificationCommand;
-	
+	private Map<String,Product> allProducts;
+	private eProductSortType productSortingType;
+	private File file;
+	private ProductsFile pFile;
+	private int numOfProducts;
 	
 	
 	public Shop(eProductSortType productSortingType, String fileName) {
 		
-		
+		this.productSortingType = productSortingType;
 		//create an empty map according to the sorting method specified
 		if (productSortingType == eProductSortType.FROM_UP)
 			allProducts = new TreeMap<>(new ReverseAlphabeticMapCompare());
@@ -48,23 +44,22 @@ public class Shop implements Sender, Receiver {
 		
 		file = new File(fileName);
 		try {
-			pFile = new ProductsFile<>(file, "rw");
+			pFile = new ProductsFile(file, "rw");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		//call commands constructors
-//		getProfitCommand = new GetProfitCommand(allProducts);
-//		addProdauctCommand = new AddProductCommand(allProducts);
-//		deleteAllProductsCommand = new DeleteAllProductsCommand(allProducts);
-//		deleteLastCommand = new DeleteLastCommand(allProducts);
-//		deleteProductCommand = new DeleteProductCommand(allProducts);
-//		sendNotificationCommand = new SendNotificationCommand();
+
 	}
 	
-	public void addProduct(Product product) {
+	public void addProduct(String productName, int valuePrice, int customerPrice, String productNumber, 
+			String customerName, String customerNumber, boolean bNotification) {
 		
-
+		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
+				new Customer(customerName, customerNumber, bNotification)));
+		
+		numOfProducts++;
+		pFile.setNumOfProducts(numOfProducts);
+		saveAllProductsToFile();
 	}
 	
 	public void deleteProduct(String productNum) {
@@ -93,8 +88,16 @@ public class Shop implements Sender, Receiver {
 	public void sendNotifications() {
 		
 	}
-                             
-
+	
+	public void saveAllProductsToFile() {
+		Set<Map.Entry<String, Product>> setProducts = allProducts.entrySet();
+		try {
+			pFile.saveAllProducts(setProducts);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void receiveMSG(Sender s, String msg) {
 		// TODO Auto-generated method stub

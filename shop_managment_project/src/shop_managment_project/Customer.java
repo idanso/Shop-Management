@@ -5,9 +5,9 @@ import observer.Sender;
 
 public class Customer implements Sender, Receiver {
 
-	String name;
-	String number;
-	boolean bNotification;
+	private String name;
+	private String number;
+	private boolean bNotification;
 	
 	
 	public Customer(String name, String number, boolean bNotification) {
@@ -37,7 +37,7 @@ public class Customer implements Sender, Receiver {
 	}
 
 
-	public boolean isbNotification() {
+	public boolean getBNotification() {
 		return bNotification;
 	}
 
@@ -45,6 +45,8 @@ public class Customer implements Sender, Receiver {
 	public void setbNotification(boolean bNotification) {
 		this.bNotification = bNotification;
 	}
+	
+	
 
 
 	@Override

@@ -6,18 +6,18 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
-public class ProductsFile<T> extends RandomAccessFile implements Iterable<Map.Entry<String, Product>> {
+public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 	
-	private RandomAccessFile iO;
-	private int numOfObjects;
+	private RandomAccessFile raf;
+	private int numOfProducts;
 	private int pos; //like index of the object in the file
 
 	public ProductsFile(File f, String mode) throws FileNotFoundException {
-		super(f,mode);
 		try {
-			iO = new RandomAccessFile(f, "rw");
-			numOfObjects = iO.readInt();
+			raf = new RandomAccessFile(f, "rw");
+			numOfProducts = raf.readInt();
 			pos = 0;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -25,15 +25,26 @@ public class ProductsFile<T> extends RandomAccessFile implements Iterable<Map.En
 		
 	}
 	
-	public void append(Product product, String productNumber) throws IOException {
-		iO.writeUTF(product.name);
-		iO.writeInt(product.valuePrice);
-		iO.writeInt(product.customerPrice);
-		iO.writeUTF(product.customer.name);
-		iO.writeUTF(product.customer.number);
-		iO.writeBoolean(product.customer.bNotification);
-		iO.writeUTF(productNumber);
-			
+	public void saveAllProducts(Set<Map.Entry<String, Product>> setProducts) throws IOException {
+		raf.seek(0);
+		raf.writeInt(numOfProducts);
+		for(Map.Entry<String, Product> p : setProducts ) {
+			saveProduct(p.getValue(), p.getKey());
+		}
+	}
+	
+	public void saveProduct(Product product, String productNumber) throws IOException {
+		raf.writeUTF(product.getName());
+		raf.writeInt(product.getValuePrice());
+		raf.writeInt(product.getCostumerPrice());
+		raf.writeUTF(product.getCustomer().getName());
+		raf.writeUTF(product.getCustomer().getNumber());
+		raf.writeBoolean(product.getCustomer().getBNotification());
+		raf.writeUTF(productNumber);
+	}
+	
+	public void setNumOfProducts(int numOfProducts) {
+		this.numOfProducts = numOfProducts;
 	}
 	
 
@@ -46,7 +57,7 @@ public class ProductsFile<T> extends RandomAccessFile implements Iterable<Map.En
 
 		@Override
 		public boolean hasNext() {
-			if(pos < numOfObjects)
+			if(pos < numOfProducts)
 				return true;
 			else
 				return false;
@@ -56,13 +67,13 @@ public class ProductsFile<T> extends RandomAccessFile implements Iterable<Map.En
 		public Map.Entry<String, Product> next() {
 			pos++;
 			try {
-				String ProductName = iO.readUTF();
-				int valuePrice = iO.readInt(); 
-				int customerPrice = iO.readInt();
-				String customerName = iO.readUTF();
-				String customerNumber = iO.readUTF();
-				boolean bNotification = iO.readBoolean();
-				String productNum =  iO.readUTF(); //catalog number
+				String ProductName = raf.readUTF();
+				int valuePrice = raf.readInt(); 
+				int customerPrice = raf.readInt();
+				String customerName = raf.readUTF();
+				String customerNumber = raf.readUTF();
+				boolean bNotification = raf.readBoolean();
+				String productNum =  raf.readUTF(); //catalog number
 				Customer customer = new Customer(customerName, customerNumber, bNotification);
 				Product product = new Product(ProductName, valuePrice, customerPrice, customer);
 				return new java.util.AbstractMap.SimpleEntry<String, Product>(productNum,product);
@@ -73,11 +84,11 @@ public class ProductsFile<T> extends RandomAccessFile implements Iterable<Map.En
 		}
 		
 		public long getPos() throws IOException {
-			return iO.getFilePointer();
+			return raf.getFilePointer();
 		}
 		
 		public void seek(long pos) throws IOException {
-			iO.seek(pos);
+			raf.seek(pos);
 		}
 		
 	}

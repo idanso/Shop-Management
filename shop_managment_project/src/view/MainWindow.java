@@ -33,9 +33,9 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
-	Stage window;
-	TableView table;
-	Button backB;
+	private Stage window;
+	private TableView table;
+	private Button backB;
 
 	@Override
 	public void init() throws Exception {

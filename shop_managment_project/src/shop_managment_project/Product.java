@@ -2,11 +2,10 @@ package shop_managment_project;
 
 public class Product {
 	
-	String name;
-	int valuePrice; 
-	int customerPrice;
-	//String productNum; //catalog number
-	Customer customer;
+	private String name;
+	private int valuePrice; 
+	private int customerPrice;
+	private Customer customer;
 	
 	
 	public Product(String name, int valuePrice, int customerPrice, Customer customer) {
