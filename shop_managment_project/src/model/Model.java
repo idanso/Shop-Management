@@ -1,16 +1,17 @@
 package model;
 
-import controller.Controller;
+import java.io.File;
 import shop_managment_project.Shop;
+
 
 public class Model {
 	
 	private Shop shop;
-	private Controller controller;
+	File file;
 
-	public Model(Shop shop, Controller controller) {
-		this.shop = shop;
-		this.controller = controller;
+	public Model(String fileName) {
+		file = new File(fileName);
+		shop = new Shop(file);
 	}
 
 	public Shop getShop() {

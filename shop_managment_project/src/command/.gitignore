@@ -9,3 +9,6 @@
 /googlesearceCommand.class
 /GetProductProfitCommand.class
 /GetTotalProfitCommand.class
+/CreateShop.class
+/CreateShopCommand.class
+/CreateProductMapCommand.class

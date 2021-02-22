@@ -3,18 +3,10 @@ package shop_managment_project;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import command.AddProductCommand;
-import command.DeleteAllProductsCommand;
-import command.DeleteLastCommand;
-import command.DeleteProductCommand;
-import command.GetProductProfitCommand;
-import command.SendNotificationCommand;
 import comparators.AlphabeticMapComparator;
 import comparators.ReverseAlphabeticMapCompare;
 import observer.Receiver;
@@ -23,32 +15,33 @@ import observer.Sender;
 public class Shop implements Sender, Receiver {
 
 	private Map<String,Product> allProducts;
-	private eProductSortType productSortingType;
-	private File file;
+	private EProductSortType productSortingType;
 	private ProductsFile pFile;
 	private int numOfProducts;
 	
 	
-	public Shop(eProductSortType productSortingType, String fileName) {
-		
-		this.productSortingType = productSortingType;
-		//create an empty map according to the sorting method specified
-		if (productSortingType == eProductSortType.FROM_UP)
-			allProducts = new TreeMap<>(new ReverseAlphabeticMapCompare());
-			
-		else if (productSortingType == eProductSortType.FROM_DOWN)
-			allProducts = new TreeMap<>(new AlphabeticMapComparator());
-		
-		else
-			allProducts = new LinkedHashMap<>();
-		
-		file = new File(fileName);
+	public Shop(File file) {
 		try {
 			pFile = new ProductsFile(file, "rw");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void createProductsMap(EProductSortType eProductSortingType) {
+		
+		this.productSortingType = productSortingType;
+		
+		//create an empty map according to the sorting method specified
+		if (productSortingType == EProductSortType.FROM_UP)
+			allProducts = new TreeMap<>(new ReverseAlphabeticMapCompare());
+			
+		else if (productSortingType == EProductSortType.FROM_DOWN)
+			allProducts = new TreeMap<>(new AlphabeticMapComparator());
+		
+		else
+			allProducts = new LinkedHashMap<>();
 	}
 	
 	public void addProduct(String productName, int valuePrice, int customerPrice, String productNumber, 

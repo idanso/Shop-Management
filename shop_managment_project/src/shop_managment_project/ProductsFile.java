@@ -17,8 +17,6 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 	public ProductsFile(File f, String mode) throws FileNotFoundException {
 		try {
 			raf = new RandomAccessFile(f, "rw");
-			numOfProducts = raf.readInt();
-			pos = 0;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
