@@ -9,29 +9,38 @@ import java.util.Set;
 import java.util.TreeMap;
 import comparators.AlphabeticMapComparator;
 import comparators.ReverseAlphabeticMapCompare;
-import observer.Receiver;
-import observer.Sender;
 
-public class Shop implements Sender, Receiver {
+
+public class Shop  {
 
 	private Map<String,Product> allProducts;
 	private EProductSortType productSortingType;
+	
+	private static Shop shop_Instance = null;
 	private ProductsFile pFile;
 	private int numOfProducts;
 	
-	
-	public Shop(File file) {
+	private  Shop(File file) {
 		try {
 			pFile = new ProductsFile(file, "rw");
+			numOfProducts =0;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
 	}
 	
+	public static Shop getInstanceOf(File file) {
+		if(shop_Instance == null)
+			shop_Instance = new Shop(file);
+		return shop_Instance;
+	}
+
+	
+	
 	public void createProductsMap(EProductSortType eProductSortingType) {
 		
-		this.productSortingType = productSortingType;
+		this.productSortingType = eProductSortingType;
 		
 		//create an empty map according to the sorting method specified
 		if (productSortingType == EProductSortType.FROM_UP)
@@ -91,17 +100,17 @@ public class Shop implements Sender, Receiver {
 		}
 	}
 	
-	@Override
-	public void receiveMSG(Sender s, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void sendMSG(Receiver r, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void receiveMSG(Sender s, String msg) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void sendMSG(Receiver r, String msg) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }
