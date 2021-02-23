@@ -3,8 +3,10 @@ package shop_managment_project;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import comparators.AlphabeticMapComparator;
@@ -65,12 +67,35 @@ public class Shop  {
 	}
 	
 	public void deleteProduct(String productNum) {
+		Iterator<Map.Entry<String, Product>> firstIterator = pFile.iterator();
+		Entry<String, Product> entry;
+		
+		long productToDeletePos = 0;
+		
+		while(firstIterator.hasNext()) {
+			try {
+				productToDeletePos = pFile.getPos();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			entry = firstIterator.next();
+			if(entry.getKey().equals(productNum)) {
+				break;
+			}
+		}
 		
 
 	}
 	
 	public void deleteAllProducts() {
-
+		try {
+			pFile.clear();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		allProducts.clear();
+		
 	}
 	
 	public void deleteLastProduct() {

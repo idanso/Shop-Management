@@ -12,7 +12,7 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 	
 	private RandomAccessFile raf;
 	private int numOfProducts;
-	private int pos; //like index of the object in the file
+	private long pos; //like index of the object in the file
 
 	public ProductsFile(File f, String mode) throws FileNotFoundException {
 		try {
@@ -45,6 +45,9 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 		this.numOfProducts = numOfProducts;
 	}
 	
+	public void clear() throws IOException {
+		raf.setLength(0);
+	}
 
 	@Override
 	public Iterator<Map.Entry<String, Product>> iterator() {
@@ -52,6 +55,16 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 	}
 	
 	public class fileIterator implements Iterator<Map.Entry<String, Product>>{
+		
+		
+		
+		public fileIterator() {
+			try {
+				raf.seek(0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		@Override
 		public boolean hasNext() {
@@ -63,7 +76,11 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 
 		@Override
 		public Map.Entry<String, Product> next() {
-			pos++;
+			try {
+				pos = raf.getFilePointer();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			try {
 				String ProductName = raf.readUTF();
 				int valuePrice = raf.readInt(); 
@@ -81,12 +98,9 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 			return null;
 		}
 		
-		public long getPos() throws IOException {
-			return raf.getFilePointer();
-		}
-		
-		public void seek(long pos) throws IOException {
-			raf.seek(pos);
+		@Override
+		public void remove() {
+			
 		}
 		
 	}
