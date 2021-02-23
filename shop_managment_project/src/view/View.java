@@ -31,11 +31,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import shop_managment_project.*;
 
-public class MainWindow extends Application {
+public class View extends Application {
+		
 	private Stage window;
 	private TableView table;
 	private Button backB;
+	private TextField productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber;
+	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
+	private Alert alert;
 
 	@Override
 	public void init() throws Exception {
@@ -55,15 +60,68 @@ public class MainWindow extends Application {
 		phoneNumber.setMinWidth(200);
 		notificationC.setMinWidth(150);
 
+		
 		backB = new Button("<<Back");
 		backB.setOnAction(e -> mainScene());
 		
 		// pop-up to select the sorting
 		// read and reload the data from the binary file
+		
+		
+		
 	}
 
 	public void mainScene() {
-
+		alert = new Alert(AlertType.NONE);
+		Label head = new Label("Choose type of sorting:");
+		head.setFont(new Font("Arial", 22));
+		sortUp = new RadioButton("Sorting by Alpha-Bet");
+		sortDown = new RadioButton("Sorting by revers Alpha-Bet");
+		sortOrder = new RadioButton("Sorting by order input");
+		Button submmitSorting = new Button ("Submmit");
+		submmitSorting.setOnAction(e -> {
+			
+			if (sortUp.isSelected()==false && sortDown.isSelected()==false && sortOrder.isSelected()==false) {
+				alert.setAlertType(AlertType.ERROR);
+				alert.setContentText("Choose one of the option");
+				alert.show();
+			} else {
+				mainWindow();
+			}
+			
+		});
+		VBox vbox = new VBox();
+		vbox.getChildren().addAll(head, sortUp, sortDown, sortOrder, submmitSorting);
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPadding(new Insets(20, 80, 20, 80));
+		vbox.setSpacing(10);
+		
+		
+//		FileInputStream input = null;
+//		try {
+//			input = new FileInputStream("pexels-photo-586744.jpeg");
+//		} catch (FileNotFoundException e1) {
+//			e1.printStackTrace();
+//		} 
+//		  
+//        // create a image 
+//        Image image = new Image(input); 
+//
+//        // create a background image 
+//        BackgroundImage backgroundimage = new BackgroundImage(image,  
+//                                         BackgroundRepeat.NO_REPEAT,  
+//                                         BackgroundRepeat.NO_REPEAT,  
+//                                         BackgroundPosition.DEFAULT,  
+//                                            BackgroundSize.DEFAULT); 
+//
+//        // create Background 
+//        Background background = new Background(backgroundimage); 
+//        
+//        vbox.setBackground(background);
+		window.setScene(new Scene(vbox));
+	}
+	
+	public void mainWindow() {
 		Button addProduct = new Button("Add product");
 		addProduct.setOnAction(e -> addProductsScene());
 
@@ -91,28 +149,6 @@ public class MainWindow extends Application {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
-		
-		FileInputStream input = null;
-		try {
-			input = new FileInputStream("pexels-photo-586744.jpeg");
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} 
-		  
-        // create a image 
-        Image image = new Image(input); 
-
-        // create a background image 
-        BackgroundImage backgroundimage = new BackgroundImage(image,  
-                                         BackgroundRepeat.NO_REPEAT,  
-                                         BackgroundRepeat.NO_REPEAT,  
-                                         BackgroundPosition.DEFAULT,  
-                                            BackgroundSize.DEFAULT); 
-
-        // create Background 
-        Background background = new Background(backgroundimage); 
-        
-        vbox.setBackground(background);
 		window.setScene(new Scene(vbox));
 	}
 
@@ -124,40 +160,40 @@ public class MainWindow extends Application {
 		grid.setHgap(10);
 		Button submmitB = new Button("Submmit");
 		Button clearB = new Button("Clear");
-		RadioButton notification = new RadioButton("Send notification");
-		Alert alert = new Alert(AlertType.NONE);
+		notificationForCostumer = new RadioButton("Send notification");
+		alert = new Alert(AlertType.NONE);
 		
 		Label head = new Label("Add product:");
 		head.setFont(new Font("Arial", 22));
 
-		TextField txt1 = new TextField();
-		txt1.setPromptText("Product Name");
+		productNumber = new TextField();
+		productNumber.setPromptText("Product Number (makat)");
 
-		TextField txt2 = new TextField();
-		txt2.setPromptText("Price for the shop");
+		priceForShop = new TextField();
+		priceForShop.setPromptText("Price for the shop");
 
-		TextField txt3 = new TextField();
-		txt3.setPromptText("Costumer price");
-		TextField txt4 = new TextField();
-
-		txt4.setPromptText("Costumer Name");
-		TextField txt5 = new TextField();
-
-		txt5.setPromptText("Phone number");
+		priceForCostumer = new TextField();
+		priceForCostumer.setPromptText("Costumer price");
+		
+		costumerName = new TextField();
+		costumerName.setPromptText("Costumer Name");
+		
+		phoneNumber = new TextField();
+		phoneNumber.setPromptText("Phone number");
 		grid.add(head, 0, 0);
-		grid.add(txt1, 0, 1);
-		grid.add(txt2, 1, 1);
-		grid.add(txt3, 0, 2);
-		grid.add(txt4, 1, 2);
-		grid.add(txt5, 0, 3);
-		grid.add(notification, 1, 3);
+		grid.add(productNumber, 0, 1);
+		grid.add(priceForShop, 1, 1);
+		grid.add(priceForCostumer, 0, 2);
+		grid.add(costumerName, 1, 2);
+		grid.add(phoneNumber, 0, 3);
+		grid.add(notificationForCostumer, 1, 3);
 		grid.add(hbox1, 0, 4);
 		grid.add(backB, 1, 4);
 
 		hbox1.getChildren().addAll(submmitB, clearB);
 		submmitB.setOnAction(e -> {
-			if (txt1.getText().isEmpty() || txt2.getText().isEmpty() || txt3.getText().isEmpty()
-					|| txt4.getText().isEmpty() || txt5.getText().isEmpty()) {
+			if (productNumber.getText().isEmpty() || priceForShop.getText().isEmpty() || priceForCostumer.getText().isEmpty()
+					|| costumerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
 				alert.setAlertType(AlertType.ERROR);
 				alert.setContentText("Fill all up before the dreadful idan will kill you!");
 				alert.show();
@@ -168,11 +204,11 @@ public class MainWindow extends Application {
 			}
 		});
 		clearB.setOnAction(e -> {
-			txt1.clear();
-			txt2.clear();
-			txt3.clear();
-			txt4.clear();
-			txt5.clear();
+			productNumber.clear();
+			priceForShop.clear();
+			priceForCostumer.clear();
+			costumerName.clear();
+			phoneNumber.clear();
 		});
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
@@ -236,5 +272,43 @@ public class MainWindow extends Application {
 		System.out.println("Good bye!");
 		System.out.println("After the program");
 	}
+	
+	public String getProductNumber (View view) {
+		return view.productNumber.getText();
+	}
+	
+	public int getPriceForShop(View view) {
+		return Integer.parseInt(view.priceForShop.getText());
+	}
+	
+	public int getPriceForCostumer(View view) {
+		return Integer.parseInt(view.priceForCostumer.getText());
+	}
+	
+	public String getCostumerName(View view) {
+		return view.costumerName.getText();
+	}
+	
+	public String getCostumerPhoneNumber(View view) {
+		return view.phoneNumber.getText();
+	}
+	
+	public boolean getNewsCostumer (View view) {
+		return view.notificationForCostumer.isSelected();
+	}
+	
+	public EProductSortType getTypeOfSorting(View view) {
+		if(view.sortUp.isSelected() == true) return EProductSortType.FROM_UP;
+		else {
+			if(view.sortDown.isSelected() == true) return EProductSortType.FROM_DOWN;
+		}
+		return EProductSortType.ENTER_ORDER;
+	}
+	
+	
+	
+	
+	
+	
 
 }

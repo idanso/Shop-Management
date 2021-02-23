@@ -10,15 +10,15 @@ import command.GetTotalProfitCommand;
 import command.SendNotificationCommand;
 import model.Model;
 import shop_managment_project.Shop;
-import view.MainWindow;
+import view.View;
 
 public class Controller {
 	
-	private MainWindow view;
+	private View view;
 	private Model model;
 	
 	
-	public Controller(MainWindow view, Model model) {
+	public Controller(View view, Model model) {
 		this.view = view;
 		this.model = model;
 		

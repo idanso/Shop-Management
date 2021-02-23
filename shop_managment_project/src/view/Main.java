@@ -9,7 +9,7 @@ public class Main{
 
 	public static void main(String[] args) {
 		Model model = new Model(FILE_NAME);
-		MainWindow view = new MainWindow();
+		View view = new View();
 		Controller controller = new Controller(view, model);
 		Application.launch(view.getClass(),args);
 	}
