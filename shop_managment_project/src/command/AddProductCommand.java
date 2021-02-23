@@ -4,7 +4,7 @@ import java.util.Map;
 
 import shop_managment_project.Product;
 import shop_managment_project.Shop;
-
+import view.View;
 public class AddProductCommand implements Command{
 	
 	private Shop shop;
@@ -16,16 +16,15 @@ public class AddProductCommand implements Command{
 	private String customerNumber;
 	private boolean bNotification;
 
-	public AddProductCommand(Shop shop, String productName, int valuePrice,String productNumber, int customerPrice,
-			String customerName, String customerNumber, boolean bNotification) {
+	public AddProductCommand(Shop shop, View view) {
 		this.shop = shop;
-		this.productName = productName;
-		this.valuePrice = valuePrice;
-		this.productNumber = productNumber;
-		this.customerPrice = customerPrice;
-		this.customerName = customerName;
-		this.customerNumber = customerNumber;
-		this.bNotification = bNotification;
+		this.productName = view.getProductName();
+		this.valuePrice = view.getPriceForShop();
+		this.productNumber =view.getProductNumber();
+		this.customerPrice = view.getPriceForCostumer();
+		this.customerName = view.getCostumerName();
+		this.customerNumber = view.getCostumerPhoneNumber();
+		this.bNotification = view.getNewsCostumer();
 	}
 
 

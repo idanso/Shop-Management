@@ -29,13 +29,12 @@ public class Controller {
 	}
 
 	public void addProduct() {
-//		new AddProductCommand(model.getShop(), view.getAddValuePrice(), view.getAddProductNumber(), view.getAddCustomerPrice(),
-//				view.getAddCustomerName(), view.getAddCustomerNumber(), view.getAddBNotification()).execute();
+		new AddProductCommand(model.getShop(), view);
 		
 	}
 	
 	public void deleteProduct() {
-//		new DeleteProductCommand(model.getShop(), view.getDelProductNumber());
+		new DeleteProductCommand(model.getShop(), view.getDeleteProductNumber());
 	}
 	
 	public void undoProduct() {

@@ -5,16 +5,16 @@ import shop_managment_project.Shop;
 public class DeleteProductCommand implements Command {
 	
 	private Shop shop;
-	String productNum;
+	String productNumber;
 
-	public DeleteProductCommand(Shop shop, String productNum) {
+	public DeleteProductCommand(Shop shop, String productNumber) {
 		this.shop = shop;
-		this.productNum = productNum;
+		this.productNumber = productNumber;
 	}
 
 	@Override
 	public void execute() {
-		this.shop.deleteProduct(productNum);	
+		this.shop.deleteProduct(productNumber);	
 	}
 
 }

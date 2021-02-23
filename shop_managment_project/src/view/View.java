@@ -38,7 +38,7 @@ public class View extends Application {
 	private Stage window;
 	private TableView table;
 	private Button backB;
-	private TextField productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber;
+	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber, deleteProduct;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
 
@@ -165,6 +165,9 @@ public class View extends Application {
 		
 		Label head = new Label("Add product:");
 		head.setFont(new Font("Arial", 22));
+		
+		productName = new TextField();
+		productName.setText("Product name");
 
 		productNumber = new TextField();
 		productNumber.setPromptText("Product Number (makat)");
@@ -181,6 +184,7 @@ public class View extends Application {
 		phoneNumber = new TextField();
 		phoneNumber.setPromptText("Phone number");
 		grid.add(head, 0, 0);
+		grid.add(productName, 1, 0);
 		grid.add(productNumber, 0, 1);
 		grid.add(priceForShop, 1, 1);
 		grid.add(priceForCostumer, 0, 2);
@@ -192,18 +196,20 @@ public class View extends Application {
 
 		hbox1.getChildren().addAll(submmitB, clearB);
 		submmitB.setOnAction(e -> {
-			if (productNumber.getText().isEmpty() || priceForShop.getText().isEmpty() || priceForCostumer.getText().isEmpty()
+			if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty() || priceForCostumer.getText().isEmpty()
 					|| costumerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
 				alert.setAlertType(AlertType.ERROR);
 				alert.setContentText("Fill all up before the dreadful idan will kill you!");
 				alert.show();
 			} else {
+				
 				alert.setAlertType(AlertType.CONFIRMATION);
 				alert.setContentText("The product was successfully added");
 				alert.show();
 			}
 		});
 		clearB.setOnAction(e -> {
+			productName.clear();
 			productNumber.clear();
 			priceForShop.clear();
 			priceForCostumer.clear();
@@ -241,19 +247,20 @@ public class View extends Application {
 		// search product to remove
 		Alert alert = new Alert(AlertType.NONE);
 		VBox vboxSearch = new VBox(10);
-		TextField makat = new TextField();
-		makat.setMaxWidth(150);
-		makat.setPromptText("Enter the product number");
+		deleteProduct = new TextField();
+		deleteProduct.setMaxWidth(150);
+		deleteProduct.setPromptText("Enter the product number");
 		Button submmitSearchB = new Button("Submmit");
 		HBox hbox = new HBox(8);
 		hbox.getChildren().addAll(submmitSearchB, backB);
-		vboxSearch.getChildren().addAll(makat, hbox, table);
+		vboxSearch.getChildren().addAll(deleteProduct, hbox, table);
 		submmitSearchB.setOnAction(e -> {
-			if(makat.getText().isEmpty()) {
+			if(deleteProduct.getText().isEmpty()) {
 				alert.setAlertType(AlertType.ERROR);
 				alert.setContentText("The product number is empty");
 				alert.show();
 			}//add the option if the product doesnt exists
+			
 		});
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
@@ -273,36 +280,44 @@ public class View extends Application {
 		System.out.println("After the program");
 	}
 	
-	public String getProductNumber (View view) {
-		return view.productNumber.getText();
+	public String getProductName() {
+		return this.productName.getText();
 	}
 	
-	public int getPriceForShop(View view) {
-		return Integer.parseInt(view.priceForShop.getText());
+	public String getProductNumber () {
+		return this.productNumber.getText();
 	}
 	
-	public int getPriceForCostumer(View view) {
-		return Integer.parseInt(view.priceForCostumer.getText());
+	public int getPriceForShop() {
+		return Integer.parseInt(this.priceForShop.getText());
 	}
 	
-	public String getCostumerName(View view) {
-		return view.costumerName.getText();
+	public int getPriceForCostumer() {
+		return Integer.parseInt(this.priceForCostumer.getText());
 	}
 	
-	public String getCostumerPhoneNumber(View view) {
-		return view.phoneNumber.getText();
+	public String getCostumerName() {
+		return this.costumerName.getText();
 	}
 	
-	public boolean getNewsCostumer (View view) {
-		return view.notificationForCostumer.isSelected();
+	public String getCostumerPhoneNumber() {
+		return this.phoneNumber.getText();
 	}
 	
-	public EProductSortType getTypeOfSorting(View view) {
-		if(view.sortUp.isSelected() == true) return EProductSortType.FROM_UP;
+	public boolean getNewsCostumer () {
+		return this.notificationForCostumer.isSelected();
+	}
+	
+	public EProductSortType getTypeOfSorting() {
+		if(this.sortUp.isSelected() == true) return EProductSortType.FROM_UP;
 		else {
-			if(view.sortDown.isSelected() == true) return EProductSortType.FROM_DOWN;
+			if(this.sortDown.isSelected() == true) return EProductSortType.FROM_DOWN;
 		}
 		return EProductSortType.ENTER_ORDER;
+	}
+	
+	public String getDeleteProductNumber () {
+		return this.deleteProduct.getText();
 	}
 	
 	
