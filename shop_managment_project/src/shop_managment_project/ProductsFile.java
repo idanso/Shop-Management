@@ -77,7 +77,7 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 		@Override
 		public Map.Entry<String, Product> next() {
 			try {
-				pos = raf.getFilePointer();
+				pos = raf.getFilePointer(); //save the pointer file of where the object begin
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -100,6 +100,21 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 		
 		@Override
 		public void remove() {
+				long readPointer = 0, writePointer = pos, lengthBeforeTheDeletedObject = 0;
+				next();
+				readPointer = pos;
+				
+				byte[] data = new byte[ (int) lengthBeforeTheDeletedObject];
+				try {
+					lengthBeforeTheDeletedObject = raf.length() - readPointer;
+					raf.read(data);
+					raf.seek(writePointer);
+					raf.write(data);
+					raf.setLength(lengthBeforeTheDeletedObject + writePointer);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
 			
 		}
 		

@@ -11,38 +11,29 @@ import java.util.Set;
 import java.util.TreeMap;
 import comparators.AlphabeticMapComparator;
 import comparators.ReverseAlphabeticMapCompare;
+import observer.Receiver;
+import observer.Sender;
 
-
-public class Shop  {
+public class Shop implements Sender, Receiver {
 
 	private Map<String,Product> allProducts;
 	private EProductSortType productSortingType;
-	
-	private static Shop shop_Instance = null;
 	private ProductsFile pFile;
 	private int numOfProducts;
 	
-	private  Shop(File file) {
+	
+	public Shop(File file) {
 		try {
 			pFile = new ProductsFile(file, "rw");
-			numOfProducts =0;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
 	}
 	
-	public static Shop getInstanceOf(File file) {
-		if(shop_Instance == null)
-			shop_Instance = new Shop(file);
-		return shop_Instance;
-	}
-
-	
-	
 	public void createProductsMap(EProductSortType eProductSortingType) {
 		
-		this.productSortingType = eProductSortingType;
+		this.productSortingType = productSortingType;
 		
 		//create an empty map according to the sorting method specified
 		if (productSortingType == EProductSortType.FROM_UP)
@@ -67,23 +58,16 @@ public class Shop  {
 	}
 	
 	public void deleteProduct(String productNum) {
-		Iterator<Map.Entry<String, Product>> firstIterator = pFile.iterator();
+		Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
 		Entry<String, Product> entry;
 		
-		long productToDeletePos = 0;
-		
-		while(firstIterator.hasNext()) {
-			try {
-				productToDeletePos = pFile.getPos();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			entry = firstIterator.next();
+		while(fIterator.hasNext()) {
+			entry = fIterator.next();
 			if(entry.getKey().equals(productNum)) {
+				fIterator.remove();
 				break;
 			}
 		}
-		
 
 	}
 	
@@ -125,17 +109,35 @@ public class Shop  {
 		}
 	}
 	
-//	@Override
-//	public void receiveMSG(Sender s, String msg) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//
-//	@Override
-//	public void sendMSG(Receiver r, String msg) {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	@Override
+	public void receiveMSG(Sender s, String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void sendMSG(Receiver r, String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProductToShop(Product product, String succeed) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeProductFromShop(EMassageFromShop massage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void costumerNotification(boolean news) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
