@@ -1,7 +1,11 @@
 package view;
 
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 
 import controller.Controller;
 import javafx.application.Application;
@@ -20,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -37,15 +42,21 @@ import javafx.stage.Stage;
 import shop_managment_project.*;
 
 public class View extends Application {
-		
+
 	private Stage window;
 	private TableView table;
-	private Button backB;
-	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber, deleteProduct;
+	private Button backB, submmitAddProductB, submmitSorting;
+	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
+			deleteProduct;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
 	private Controller controller;
+	private Label head;
 //	private EventHandler<ActionEvent> addProduct;
+	
+	public void setController(Controller controller) {
+		this.controller = controller;
+	}
 
 	@Override
 	public void init() throws Exception {
@@ -64,43 +75,36 @@ public class View extends Application {
 		nameCostumer.setMinWidth(150);
 		phoneNumber.setMinWidth(200);
 		notificationC.setMinWidth(150);
+		
+		head = new Label("Choose type of sorting:");
+		sortUp = new RadioButton("Sorting by Alpha-Bet");
+		sortDown = new RadioButton("Sorting by revers Alpha-Bet");
+		sortOrder = new RadioButton("Sorting by order input");
+		submmitSorting = new Button ("Submmit");
+		
+		submmitAddProductB = new Button("Submmit");
+
 		this.getController(controller);
-		
-		
+
 		backB = new Button("<<Back");
-		backB.setOnAction(e -> mainScene());
-		
+		backB.setOnAction(e -> mainWindow());
+
 		// pop-up to select the sorting
 		// read and reload the data from the binary file
-		
-		
-		
+
 	}
 
 	public void mainScene() {
 		alert = new Alert(AlertType.NONE);
-		Label head = new Label("Choose type of sorting:");
 		head.setFont(new Font("Arial", 22));
-		sortUp = new RadioButton("Sorting by Alpha-Bet");
-		sortDown = new RadioButton("Sorting by revers Alpha-Bet");
-		sortOrder = new RadioButton("Sorting by order input");
-		Button submmitSorting = new Button ("Submmit");
-		submmitSorting.setOnAction(e -> {
-			
-			if (sortUp.isSelected()==false && sortDown.isSelected()==false && sortOrder.isSelected()==false) {
-				alert.setAlertType(AlertType.ERROR);
-				alert.setContentText("Choose one of the option");
-				alert.show();
-			} else {
-				mainWindow();
-			}
-			
-		});
+		submmitSorting.setOnAction(e -> massageChoosSorting());
 		VBox vbox = new VBox();
 		vbox.getChildren().addAll(head, sortUp, sortDown, sortOrder, submmitSorting);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
+		ButtonGroup bgnot = new ButtonGroup();
+		
 		
 		
 //		FileInputStream input = null;
@@ -126,7 +130,7 @@ public class View extends Application {
 //        vbox.setBackground(background);
 		window.setScene(new Scene(vbox));
 	}
-	
+
 	public void mainWindow() {
 		Button addProduct = new Button("Add product");
 		addProduct.setOnAction(e -> addProductsScene());
@@ -164,14 +168,13 @@ public class View extends Application {
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
 		grid.setHgap(10);
-		Button submmitB = new Button("Submmit");
 		Button clearB = new Button("Clear");
 		notificationForCostumer = new RadioButton("Send notification");
 		alert = new Alert(AlertType.NONE);
-		
-		Label head = new Label("Add product:");
-		head.setFont(new Font("Arial", 22));
-		
+
+		Label headAddProduct = new Label("Add product:");
+		headAddProduct.setFont(new Font("Arial", 22));
+
 		productName = new TextField();
 		productName.setText("Product name");
 
@@ -183,13 +186,13 @@ public class View extends Application {
 
 		priceForCostumer = new TextField();
 		priceForCostumer.setPromptText("Costumer price");
-		
+
 		costumerName = new TextField();
 		costumerName.setPromptText("Costumer Name");
-		
+
 		phoneNumber = new TextField();
 		phoneNumber.setPromptText("Phone number");
-		grid.add(head, 0, 0);
+		grid.add(headAddProduct, 0, 0);
 		grid.add(productName, 1, 0);
 		grid.add(productNumber, 0, 1);
 		grid.add(priceForShop, 1, 1);
@@ -200,21 +203,12 @@ public class View extends Application {
 		grid.add(hbox1, 0, 4);
 		grid.add(backB, 1, 4);
 
-		hbox1.getChildren().addAll(submmitB, clearB);
-		submmitB.setOnAction(e -> {
-			if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty() || priceForCostumer.getText().isEmpty()
-					|| costumerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
-				alert.setAlertType(AlertType.ERROR);
-				alert.setContentText("Fill all up before the dreadful idan will kill you!");
-				alert.show();
-			} else {
-				controller.addProduct();
-				alert.setAlertType(AlertType.CONFIRMATION);
-				alert.setContentText("The product was successfully added");
-				alert.show();
-			}
+		hbox1.getChildren().addAll(submmitAddProductB, clearB);
+		submmitAddProductB.setOnAction(e -> {
+			massageAddProduct();
+			controller.addProduct();
 		});
-		clearB.setOnAction(Clear);
+		clearB.setOnAction(e -> Clear());
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
 		window.setScene(new Scene(grid, 500, 300));
@@ -254,12 +248,12 @@ public class View extends Application {
 		hbox.getChildren().addAll(submmitSearchB, backB);
 		vboxSearch.getChildren().addAll(deleteProduct, hbox, table);
 		submmitSearchB.setOnAction(e -> {
-			if(deleteProduct.getText().isEmpty()) {
+			if (deleteProduct.getText().isEmpty()) {
 				alert.setAlertType(AlertType.ERROR);
 				alert.setContentText("The product number is empty");
 				alert.show();
-			}//TODO add the option if the product doesnt exists
-			
+			} // TODO add the option if the product doesnt exists
+
 		});
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
@@ -274,15 +268,15 @@ public class View extends Application {
 	}
 
 	@Override // do the final things after exit the program
-	public void stop() throws Exception { //TODO *****need to add call to close file in shop*****
+	public void stop() throws Exception { // TODO *****need to add call to close file in shop*****
 		System.out.println("Good bye!");
 		System.out.println("After the program");
 	}
+
 	public void getController(Controller controller) {
 		this.controller = controller;
 	}
-	
-	
+
 	public void Clear() {
 		productName.clear();
 		productNumber.clear();
@@ -290,58 +284,82 @@ public class View extends Application {
 		priceForCostumer.clear();
 		costumerName.clear();
 		phoneNumber.clear();
+		notificationForCostumer.setSelected(false);
 	}
-	EventHandler<ActionEvent> Clear = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent clear) {
-			Clear();	
-		}
-	};
-	
+
 	public String getProductName() {
 		return this.productName.getText();
 	}
-	
-	public String getProductNumber () {
+
+	public String getProductNumber() {
 		return this.productNumber.getText();
 	}
-	
+
 	public int getPriceForShop() {
 		return Integer.parseInt(this.priceForShop.getText());
 	}
-	
+
 	public int getPriceForCostumer() {
 		return Integer.parseInt(this.priceForCostumer.getText());
 	}
-	
+
 	public String getCostumerName() {
 		return this.costumerName.getText();
 	}
-	
+
 	public String getCostumerPhoneNumber() {
 		return this.phoneNumber.getText();
 	}
-	
-	public boolean getNewsCostumer () {
+
+	public boolean getNewsCostumer() {
 		return this.notificationForCostumer.isSelected();
 	}
-	
+
 	public EProductSortType getTypeOfSorting() {
-		if(this.sortUp.isSelected() == true) return EProductSortType.FROM_UP;
+		if (this.sortUp.isSelected() == true)
+			return EProductSortType.FROM_UP;
 		else {
-			if(this.sortDown.isSelected() == true) return EProductSortType.FROM_DOWN;
+			if (this.sortDown.isSelected() == true)
+				return EProductSortType.FROM_DOWN;
 		}
 		return EProductSortType.ENTER_ORDER;
 	}
-	
-	public String getDeleteProductNumber () {
+
+	public String getDeleteProductNumber() {
 		return this.deleteProduct.getText();
 	}
+
+	void addProductListener(ActionListener listenerAddProduuct) {
+
+	}
+
+	public void massageAddProduct() {
+		{
+			if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty()
+					|| priceForCostumer.getText().isEmpty() || costumerName.getText().isEmpty()
+					|| phoneNumber.getText().isEmpty()) {
+				alert.setAlertType(AlertType.ERROR);
+				alert.setContentText("Fill all up before the dreadful idan will kill you!");
+				alert.show();
+			} else {
+				controller.addProduct();
+				alert.setAlertType(AlertType.CONFIRMATION);
+				alert.setContentText("The product was successfully added");
+				alert.show();
+			}
+		}
+	}
+
+	public void massageChoosSorting() {
+		if (sortUp.isSelected() == false && sortDown.isSelected() == false && sortOrder.isSelected() == false) {
+			alert.setAlertType(AlertType.ERROR);
+			alert.setContentText("Choose one of the option");
+			alert.show();
+		} 
 	
-	
-	
-	
-	
-	
+		else {
+			mainWindow();
+		}
+	}
 
 }

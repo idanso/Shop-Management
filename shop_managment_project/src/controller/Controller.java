@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.event.ActionListener;
+
 import command.AddProductCommand;
 import command.CreateProductMapCommand;
 import command.DeleteAllProductsCommand;
@@ -31,6 +33,7 @@ public class Controller {
 	}
 
 	public void addProduct() {
+		System.out.println("asdfasdf");
 		new AddProductCommand(model.getShop(), view);
 		
 	}
@@ -59,14 +62,24 @@ public class Controller {
 		new SendNotificationCommand(model.getShop());
 	}
 	
-	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {
+//	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {
+//		@Override
+//		public void handle(ActionEvent addProduct) {
+//			System.out.println("idannnnnnnnnnnnnnnnnnnnnnnnnn");
+//			new AddProductCommand(model.getShop(), view);
+//			
+//		}
+//	};
+	
+	class AddProductListener implements ActionListener{
+
 		@Override
-		public void handle(ActionEvent addProduct) {
-			System.out.println("idannnnnnnnnnnnnnnnnnnnnnnnnn");
-			new AddProductCommand(model.getShop(), view);
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			
 			
 		}
-	};
+		
+	}
 
 
 	
