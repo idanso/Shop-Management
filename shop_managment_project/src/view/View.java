@@ -3,7 +3,10 @@ package view;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import controller.Controller;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,6 +44,8 @@ public class View extends Application {
 	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber, deleteProduct;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
+	private Controller controller;
+//	private EventHandler<ActionEvent> addProduct;
 
 	@Override
 	public void init() throws Exception {
@@ -59,7 +64,8 @@ public class View extends Application {
 		nameCostumer.setMinWidth(150);
 		phoneNumber.setMinWidth(200);
 		notificationC.setMinWidth(150);
-
+		this.getController(controller);
+		
 		
 		backB = new Button("<<Back");
 		backB.setOnAction(e -> mainScene());
@@ -202,20 +208,13 @@ public class View extends Application {
 				alert.setContentText("Fill all up before the dreadful idan will kill you!");
 				alert.show();
 			} else {
-				
+				controller.addProduct();
 				alert.setAlertType(AlertType.CONFIRMATION);
 				alert.setContentText("The product was successfully added");
 				alert.show();
 			}
 		});
-		clearB.setOnAction(e -> {
-			productName.clear();
-			productNumber.clear();
-			priceForShop.clear();
-			priceForCostumer.clear();
-			costumerName.clear();
-			phoneNumber.clear();
-		});
+		clearB.setOnAction(Clear);
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
 		window.setScene(new Scene(grid, 500, 300));
@@ -279,6 +278,25 @@ public class View extends Application {
 		System.out.println("Good bye!");
 		System.out.println("After the program");
 	}
+	public void getController(Controller controller) {
+		this.controller = controller;
+	}
+	
+	
+	public void Clear() {
+		productName.clear();
+		productNumber.clear();
+		priceForShop.clear();
+		priceForCostumer.clear();
+		costumerName.clear();
+		phoneNumber.clear();
+	}
+	EventHandler<ActionEvent> Clear = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent clear) {
+			Clear();	
+		}
+	};
 	
 	public String getProductName() {
 		return this.productName.getText();

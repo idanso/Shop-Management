@@ -8,6 +8,8 @@ import command.DeleteProductCommand;
 import command.GetProductProfitCommand;
 import command.GetTotalProfitCommand;
 import command.SendNotificationCommand;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import model.Model;
 import shop_managment_project.Shop;
 import view.View;
@@ -56,6 +58,17 @@ public class Controller {
 	public void sendNotification() {
 		new SendNotificationCommand(model.getShop());
 	}
+	
+	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent addProduct) {
+			System.out.println("idannnnnnnnnnnnnnnnnnnnnnnnnn");
+			new AddProductCommand(model.getShop(), view);
+			
+		}
+	};
+
+
 	
 	
 
