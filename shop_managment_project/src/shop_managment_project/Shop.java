@@ -22,15 +22,22 @@ public class Shop implements Sender, Receiver {
 	private ProductsFile pFile;
 	private int numOfProducts;
 	private ShopMemento memento;
+	private static Shop shop_Instance ;
 	
 	
-	public Shop(File file) {
+	private Shop(File file) {
 		try {
 			pFile = new ProductsFile(file, "rw");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static Shop getInstance(File file) {
+		if(shop_Instance == null)
+			shop_Instance = new Shop (file);
+		return shop_Instance;
 	}
 	
 	public void createProductsMap(EProductSortType eProductSortingType) {
