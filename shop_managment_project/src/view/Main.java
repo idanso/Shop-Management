@@ -11,6 +11,7 @@ public class Main{
 		Model model = new Model(FILE_NAME);
 		View view = new View();
 		Controller controller = new Controller(view, model);
+		view.setController(controller);
 		Application.launch(view.getClass(),args);
 	}
 

@@ -34,7 +34,7 @@ public class Controller {
 
 	public void addProduct() {
 		System.out.println("asdfasdf");
-		new AddProductCommand(model.getShop(), view);
+		//new AddProductCommand(model.getShop(), view);
 		
 	}
 	
@@ -71,15 +71,15 @@ public class Controller {
 //		}
 //	};
 	
-	class AddProductListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			
-			
-		}
-		
-	}
+//	class AddProductListener implements ActionListener{
+//
+//		@Override
+//		public void actionPerformed(java.awt.event.ActionEvent e) {
+//			
+//			
+//		}
+//		
+//	}
 
 
 	

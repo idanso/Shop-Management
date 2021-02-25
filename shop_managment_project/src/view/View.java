@@ -50,7 +50,7 @@ public class View extends Application {
 			deleteProduct;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
-	private Controller controller;
+	static Controller controller;
 	private Label head;
 //	private EventHandler<ActionEvent> addProduct;
 	
@@ -84,7 +84,6 @@ public class View extends Application {
 		
 		submmitAddProductB = new Button("Submmit");
 
-		this.getController(controller);
 
 		backB = new Button("<<Back");
 		backB.setOnAction(e -> mainWindow());
@@ -204,10 +203,8 @@ public class View extends Application {
 		grid.add(backB, 1, 4);
 
 		hbox1.getChildren().addAll(submmitAddProductB, clearB);
-		submmitAddProductB.setOnAction(e -> {
-			massageAddProduct();
-			controller.addProduct();
-		});
+		submmitAddProductB.setOnAction(e ->massageAddProduct());
+			
 		clearB.setOnAction(e -> Clear());
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
@@ -342,10 +339,10 @@ public class View extends Application {
 				alert.setContentText("Fill all up before the dreadful idan will kill you!");
 				alert.show();
 			} else {
-				controller.addProduct();
 				alert.setAlertType(AlertType.CONFIRMATION);
 				alert.setContentText("The product was successfully added");
 				alert.show();
+				controller.addProduct();
 			}
 		}
 	}
