@@ -12,7 +12,7 @@ public class DeleteLastCommand implements Command {
 
 	@Override
 	public void execute() {
-		this.shop.deleteLastProduct();
+		this.shop.undo(shop.getMemento());
 		
 	}
 	

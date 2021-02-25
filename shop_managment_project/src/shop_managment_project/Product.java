@@ -12,8 +12,7 @@ public class Product {
 		setName(name);
 		setValuePrice(valuePrice);
 		setCustomerPrice(customerPrice);
-		//setProductNum(productNum);
-		setCustomer(customer);;
+		setCustomer(customer);
 	}
 
 	public String getName() {

@@ -46,18 +46,34 @@ public class Customer implements Sender, Receiver {
 		this.bNotification = bNotification;
 	}
 	
-	
-
-
-	@Override
 	public void receiveMSG(Sender s, String msg) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	@Override
 	public void sendMSG(Receiver r, String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addProductToShop(Product product, String succeed) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeProductFromShop(EMassageFromShop massage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void costumerNotification(boolean news) {
 		// TODO Auto-generated method stub
 		
 	}

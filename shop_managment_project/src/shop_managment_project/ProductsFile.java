@@ -48,6 +48,10 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 	public void clear() throws IOException {
 		raf.setLength(0);
 	}
+	
+	public void close() throws IOException {
+		raf.close();
+	}
 
 	@Override
 	public Iterator<Map.Entry<String, Product>> iterator() {

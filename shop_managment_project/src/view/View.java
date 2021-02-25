@@ -259,7 +259,7 @@ public class View extends Application {
 				alert.setAlertType(AlertType.ERROR);
 				alert.setContentText("The product number is empty");
 				alert.show();
-			}//add the option if the product doesnt exists
+			}//TODO add the option if the product doesnt exists
 			
 		});
 		window.setScene(new Scene(vboxSearch, 950, 300));
@@ -275,7 +275,7 @@ public class View extends Application {
 	}
 
 	@Override // do the final things after exit the program
-	public void stop() throws Exception {
+	public void stop() throws Exception { //TODO *****need to add call to close file in shop*****
 		System.out.println("Good bye!");
 		System.out.println("After the program");
 	}

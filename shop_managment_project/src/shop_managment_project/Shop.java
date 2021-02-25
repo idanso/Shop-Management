@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import comparators.AlphabeticMapComparator;
 import comparators.ReverseAlphabeticMapCompare;
+import memento.ShopMemento;
 import observer.Receiver;
 import observer.Sender;
 
@@ -20,6 +21,7 @@ public class Shop implements Sender, Receiver {
 	private EProductSortType productSortingType;
 	private ProductsFile pFile;
 	private int numOfProducts;
+	private ShopMemento memento;
 	
 	
 	public Shop(File file) {
@@ -48,12 +50,20 @@ public class Shop implements Sender, Receiver {
 	
 	public void addProduct(String productName, int valuePrice, int customerPrice, String productNumber, 
 			String customerName, String customerNumber, boolean bNotification) {
+		boolean productExist = false;
+		
+		if(allProducts.containsKey(productNumber)) {//check if products exist in system
+			productExist = true;
+		}
 		
 		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
 				new Customer(customerName, customerNumber, bNotification)));
 		
-		numOfProducts++;
-		pFile.setNumOfProducts(numOfProducts);
+		if(!productExist) {//in case the new product not exist in system raise number of products
+			numOfProducts++;
+			pFile.setNumOfProducts(numOfProducts);
+		}
+		
 		saveAllProductsToFile();
 	}
 	
@@ -68,7 +78,7 @@ public class Shop implements Sender, Receiver {
 				break;
 			}
 		}
-
+		allProducts.remove(productNum);
 	}
 	
 	public void deleteAllProducts() {
@@ -82,20 +92,45 @@ public class Shop implements Sender, Receiver {
 		
 	}
 	
-	public void deleteLastProduct() {
-		
-	}
-	
 	public int getProductProfit(String productNum) {
-		return 0;
+		Product product = allProducts.get(productNum);
+		return product.getCostumerPrice() - product.getValuePrice();
 		
 	}
 	
 	public int getTotalProfit() {
-		return 0;
+		Set<Map.Entry<String, Product>> setProducts = allProducts.entrySet();
+		int totalProfit = 0;	
+		for (Entry<String, Product> entry : setProducts) {
+			totalProfit += getProductProfit(entry.getKey());
+		}
 		
+		return totalProfit;	
 	}
 	
+	public void saveLastProduct(String productNum) {
+		if(memento == null) {
+			memento = new ShopMemento(productNum);
+		}
+		else
+			memento.setProductNum(productNum);
+	}
+	
+	public boolean undo(ShopMemento memento) {
+		//check if first product added to system before undo can apply regards if there are products from first start from the file
+		if(memento != null) { 
+			deleteProduct(memento.getProduct());
+			
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public ShopMemento getMemento() {
+		return memento;
+	}
+
 	public void sendNotifications() {
 		
 	}
@@ -109,14 +144,14 @@ public class Shop implements Sender, Receiver {
 		}
 	}
 	
-	@Override
+	
 	public void receiveMSG(Sender s, String msg) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	@Override
+	
 	public void sendMSG(Receiver r, String msg) {
 		// TODO Auto-generated method stub
 		
@@ -139,5 +174,7 @@ public class Shop implements Sender, Receiver {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }
