@@ -23,6 +23,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -48,6 +49,7 @@ public class View extends Application {
 	private Button backB, submmitAddProductB, submmitSorting;
 	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
 			deleteProduct;
+	private ToggleGroup TGSorting;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
 	static Controller controller;
@@ -77,9 +79,13 @@ public class View extends Application {
 		notificationC.setMinWidth(150);
 		
 		head = new Label("Choose type of sorting:");
+		TGSorting = new ToggleGroup();
 		sortUp = new RadioButton("Sorting by Alpha-Bet");
+		sortUp.setToggleGroup(TGSorting);
 		sortDown = new RadioButton("Sorting by revers Alpha-Bet");
+		sortDown.setToggleGroup(TGSorting);
 		sortOrder = new RadioButton("Sorting by order input");
+		sortOrder.setToggleGroup(TGSorting);
 		submmitSorting = new Button ("Submmit");
 		
 		submmitAddProductB = new Button("Submmit");
@@ -96,7 +102,7 @@ public class View extends Application {
 	public void mainScene() {
 		alert = new Alert(AlertType.NONE);
 		head.setFont(new Font("Arial", 22));
-		submmitSorting.setOnAction(e -> massageChoosSorting());
+		submmitSorting.setOnAction(e -> choosSorting());
 		VBox vbox = new VBox();
 		vbox.getChildren().addAll(head, sortUp, sortDown, sortOrder, submmitSorting);
 		vbox.setAlignment(Pos.CENTER);
@@ -347,16 +353,17 @@ public class View extends Application {
 		}
 	}
 
-	public void massageChoosSorting() {
+	public void choosSorting() {
 		if (sortUp.isSelected() == false && sortDown.isSelected() == false && sortOrder.isSelected() == false) {
 			alert.setAlertType(AlertType.ERROR);
 			alert.setContentText("Choose one of the option");
 			alert.show();
 		} 
-	
 		else {
+			controller.createProductsMap();
 			mainWindow();
 		}
 	}
+
 
 }

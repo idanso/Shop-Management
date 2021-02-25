@@ -69,6 +69,7 @@ public class Shop implements Sender, Receiver {
 		if(!productExist) {//in case the new product not exist in system raise number of products
 			numOfProducts++;
 			pFile.setNumOfProducts(numOfProducts);
+			saveLastProduct(productNumber); //save last product as memento only in case new product created and not updated
 		}
 		
 		saveAllProductsToFile();

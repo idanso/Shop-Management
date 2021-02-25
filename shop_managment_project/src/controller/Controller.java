@@ -29,7 +29,7 @@ public class Controller {
 	}
 	
 	public void createProductsMap() {
-//		new CreateProductMapCommand(model.shop, view.getEProductSortType());
+	//	new CreateProductMapCommand(model.getShop(), view.);
 	}
 
 	public void addProduct() {

@@ -14,7 +14,7 @@ public class Model {
 
 	public Model(String fileName) {
 		file = new File(fileName);
-//		Shop shop = Shop.getInstanceOf(file);
+		Shop shop = Shop.getInstance(file);
 	}
 
 	public Shop getShop() {
