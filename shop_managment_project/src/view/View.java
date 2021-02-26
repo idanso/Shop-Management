@@ -33,13 +33,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import model.Model;
 import shop_managment_project.*;
 
 public class View extends Application {
 
 	private Stage window;
+	
 	private TableView table;
+	private TableColumn nameProductTable, priceForShopTable, priceForCostumerTable, nameCostumerTable,
+	phoneNumberTable, notificationTable;
+	
 	private Button backB, submmitAddProductB, submmitSorting;
+	private Button addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene,
+	sendNotificationsMainScene, undoFuncrionMainScene;
+	
 	public TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
 			deleteProduct;
 	private ToggleGroup TGSorting;
@@ -48,50 +56,78 @@ public class View extends Application {
 	static Controller controller;
 	private Label head;
 //	private EventHandler<ActionEvent> addProduct;
+	
 
 	public void setController(Controller controller) {
 		this.controller=controller;
 	}
+	
+	private final static String FILE_NAME = "allProducts.txt";
 
+	
+	public static void main(String[] args) {
+		System.out.println("asdasd");
+		launch(args);
+	}
+	
 	@Override
-	public void init() throws Exception {
+	public void start(Stage mainWindow) throws Exception {
+		Model model = new Model(FILE_NAME);
+		controller = new Controller(this, model);
 		table = new TableView();
-		TableColumn nameProduct = new TableColumn("Name of product");
-		TableColumn priceForShop = new TableColumn("Price for the shop");
-		TableColumn priceForCostumer = new TableColumn("Price at the shop");
-		TableColumn nameCostumer = new TableColumn("Costumer name");
-		TableColumn phoneNumber = new TableColumn("Phone number");
-		TableColumn notificationC = new TableColumn("Want to get news?");
-		table.getColumns().addAll(nameProduct, priceForShop, priceForCostumer, nameCostumer, phoneNumber,
-				notificationC);
-		nameProduct.setMinWidth(150);
-		priceForShop.setMinWidth(150);
-		priceForCostumer.setMinWidth(150);
-		nameCostumer.setMinWidth(150);
-		phoneNumber.setMinWidth(200);
-		notificationC.setMinWidth(150);
-
-		head = new Label("Choose type of sorting:");
-		TGSorting = new ToggleGroup();
-		sortUp = new RadioButton("Sorting by Alpha-Bet");
-		sortUp.setToggleGroup(TGSorting);
-		sortDown = new RadioButton("Sorting by revers Alpha-Bet");
-		sortDown.setToggleGroup(TGSorting);
-		sortOrder = new RadioButton("Sorting by order input");
-		sortOrder.setToggleGroup(TGSorting);
+		this.sortUp = new RadioButton();
+		sortDown = new RadioButton();
+		sortOrder = new RadioButton();
 		submmitSorting = new Button("Submmit");
-
 		submmitAddProductB = new Button("Submmit");
-
 		backB = new Button("<<Back");
 		backB.setOnAction(e -> mainWindow());
-
-		// pop-up to select the sorting
-		// read and reload the data from the binary file
+		
+		//mainWindow Initialize
+		addProductMainScene = new Button("Add product");
+		showAllProductsMainScene = new Button("Show all the products");
+		searchForRemoveMainScene = new Button("Search and remove product");
+		sendNotificationsMainScene = new Button("send notifications");
+		undoFuncrionMainScene = new Button("Undo");
+		
+		//addProductScene
+		productName = new TextField();
+		productNumber = new TextField();
+		priceForShop = new TextField();
+		priceForCostumer = new TextField();
+		costumerName = new TextField();
+		phoneNumber = new TextField();
+		
+		//show all product
+		nameProductTable = new TableColumn<>("Name of product");
+		priceForShopTable = new TableColumn<>("Price for the shop");
+		priceForCostumerTable = new TableColumn<>("Price at the shop");
+		nameCostumerTable = new TableColumn<>("Costumer name");
+		phoneNumberTable = new TableColumn<>("Phone number");
+		notificationTable = new TableColumn<>("Want to get news?");
+		
+		window = mainWindow;
+		window.setTitle("Main window");
+		mainScene();
+		window.show();
 
 	}
 
+
 	public void mainScene() {
+		
+		head = new Label("Choose type of sorting:");
+		TGSorting = new ToggleGroup();
+		
+		sortUp.setText("Sorting by Alpha-Bet");
+		sortUp.setToggleGroup(TGSorting);
+		
+		sortDown.setText("Sorting by revers Alpha-Bet");
+		sortDown.setToggleGroup(TGSorting);
+		
+		sortOrder.setText("Sorting by order input");
+		sortOrder.setToggleGroup(TGSorting);
+		
 		alert = new Alert(AlertType.NONE);
 		head.setFont(new Font("Arial", 22));
 		submmitSorting.setOnAction(e -> choosSorting());
@@ -126,19 +162,11 @@ public class View extends Application {
 	}
 
 	public void mainWindow() {
-		Button addProduct = new Button("Add product");
-		addProduct.setOnAction(e -> addProductsScene());
-
-		Button showProduct = new Button("Show all the products");
-		showProduct.setOnAction(e -> showProductsScene());
-
-		Button removeProductB = new Button("Search and remove product");
-		removeProductB.setOnAction(e -> searchProductToRemove());
-
-		Button sendNotificationsB = new Button("send notifications");
-		sendNotificationsB.setOnAction(e -> showReceivedMassages()); // need to add the function to send notification
-
-		Button undoB = new Button("Undo");
+		
+		addProductMainScene.setOnAction(e -> addProductsScene());
+		showAllProductsMainScene.setOnAction(e -> showProductsScene());
+		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
+		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // need to add the function to send notification
 		Button exit = new Button("EXIT");
 		exit.setOnAction(e -> {
 			try {
@@ -149,7 +177,7 @@ public class View extends Application {
 			System.exit(0);
 		});
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(addProduct, showProduct, removeProductB, sendNotificationsB, undoB, exit);
+		vbox.getChildren().addAll(addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene, sendNotificationsMainScene, undoFuncrionMainScene, exit);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
@@ -169,23 +197,14 @@ public class View extends Application {
 		Label headAddProduct = new Label("Add product:");
 		headAddProduct.setFont(new Font("Arial", 22));
 
-		productName = new TextField();
 		productName.setPromptText("Product name");
-
-		productNumber = new TextField();
 		productNumber.setPromptText("Product Number (makat)");
-
-		priceForShop = new TextField();
 		priceForShop.setPromptText("Price for the shop");
-
-		priceForCostumer = new TextField();
 		priceForCostumer.setPromptText("Costumer price");
-
-		costumerName = new TextField();
 		costumerName.setPromptText("Costumer Name");
-
-		phoneNumber = new TextField();
 		phoneNumber.setPromptText("Phone number");
+		
+		
 		grid.add(headAddProduct, 0, 0);
 		grid.add(productName, 1, 0);
 		grid.add(productNumber, 0, 1);
@@ -199,7 +218,6 @@ public class View extends Application {
 
 		hbox1.getChildren().addAll(submmitAddProductB, clearB);
 		submmitAddProductB.setOnAction(e -> massageAddProduct());
-
 		clearB.setOnAction(e -> Clear());
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
@@ -221,6 +239,15 @@ public class View extends Application {
 	}
 
 	public void showProductsScene() {
+		table.getColumns().addAll(nameProductTable, priceForShopTable, priceForCostumerTable, nameCostumerTable, phoneNumberTable,
+				notificationTable);
+		nameProductTable.setMinWidth(150);
+		priceForShopTable.setMinWidth(150);
+		priceForCostumerTable.setMinWidth(150);
+		nameCostumerTable.setMinWidth(150);
+		phoneNumberTable.setMinWidth(200);
+		notificationTable.setMinWidth(150);
+		
 		Label label = new Label("All the products:");
 		label.setFont(new Font("Arial", 22));
 		VBox vboxTable = new VBox(20);
@@ -250,14 +277,7 @@ public class View extends Application {
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
 
-	@Override
-	public void start(Stage mainWindow) throws Exception {
-		window = mainWindow;
-		window.setTitle("Main window");
-		mainScene();
-		window.show();
 
-	}
 
 	@Override // do the final things after exit the program
 	public void stop() throws Exception { // TODO *****need to add call to close file in shop*****

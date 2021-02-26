@@ -12,6 +12,8 @@ import command.GetTotalProfitCommand;
 import command.SendNotificationCommand;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import model.Model;
 import shop_managment_project.Shop;
@@ -19,8 +21,8 @@ import view.View;
 
 public class Controller {
 	
-	static View view;
-	static Model model;
+	private View view;
+	private Model model;
 	
 	
 	public Controller(View view, Model model) {
@@ -34,7 +36,6 @@ public class Controller {
 	}
 
 	public void addProduct() {
-		System.out.println("asdasd");
 		new AddProductCommand(model.getShop(), view);
 		
 	}
@@ -81,9 +82,5 @@ public class Controller {
 //		}
 //		
 //	}
-
-
-	
-	
 
 }
