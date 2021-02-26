@@ -12,14 +12,15 @@ import command.GetTotalProfitCommand;
 import command.SendNotificationCommand;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert.AlertType;
 import model.Model;
 import shop_managment_project.Shop;
 import view.View;
 
 public class Controller {
 	
-	private View view;
-	private Model model;
+	static View view;
+	static Model model;
 	
 	
 	public Controller(View view, Model model) {
@@ -33,8 +34,8 @@ public class Controller {
 	}
 
 	public void addProduct() {
-		System.out.println("asdfasdf");
-		//new AddProductCommand(model.getShop(), view);
+		System.out.println("asdasd");
+		new AddProductCommand(model.getShop(), view);
 		
 	}
 	

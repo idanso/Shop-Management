@@ -13,6 +13,6 @@ public class Main{
 		Controller controller = new Controller(view, model);
 		view.setController(controller);
 		Application.launch(view.getClass(),args);
-	}
+	}//arnonb@afeka.ac.il
 
 }

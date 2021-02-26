@@ -3,10 +3,6 @@ package view;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-
 import controller.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -35,9 +31,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import shop_managment_project.*;
@@ -47,7 +40,7 @@ public class View extends Application {
 	private Stage window;
 	private TableView table;
 	private Button backB, submmitAddProductB, submmitSorting;
-	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
+	public TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
 			deleteProduct;
 	private ToggleGroup TGSorting;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
@@ -55,9 +48,9 @@ public class View extends Application {
 	static Controller controller;
 	private Label head;
 //	private EventHandler<ActionEvent> addProduct;
-	
+
 	public void setController(Controller controller) {
-		this.controller = controller;
+		this.controller=controller;
 	}
 
 	@Override
@@ -77,7 +70,7 @@ public class View extends Application {
 		nameCostumer.setMinWidth(150);
 		phoneNumber.setMinWidth(200);
 		notificationC.setMinWidth(150);
-		
+
 		head = new Label("Choose type of sorting:");
 		TGSorting = new ToggleGroup();
 		sortUp = new RadioButton("Sorting by Alpha-Bet");
@@ -86,10 +79,9 @@ public class View extends Application {
 		sortDown.setToggleGroup(TGSorting);
 		sortOrder = new RadioButton("Sorting by order input");
 		sortOrder.setToggleGroup(TGSorting);
-		submmitSorting = new Button ("Submmit");
-		
-		submmitAddProductB = new Button("Submmit");
+		submmitSorting = new Button("Submmit");
 
+		submmitAddProductB = new Button("Submmit");
 
 		backB = new Button("<<Back");
 		backB.setOnAction(e -> mainWindow());
@@ -108,10 +100,7 @@ public class View extends Application {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
-		ButtonGroup bgnot = new ButtonGroup();
-		
-		
-		
+
 //		FileInputStream input = null;
 //		try {
 //			input = new FileInputStream("pexels-photo-586744.jpeg");
@@ -181,7 +170,7 @@ public class View extends Application {
 		headAddProduct.setFont(new Font("Arial", 22));
 
 		productName = new TextField();
-		productName.setText("Product name");
+		productName.setPromptText("Product name");
 
 		productNumber = new TextField();
 		productNumber.setPromptText("Product Number (makat)");
@@ -209,8 +198,8 @@ public class View extends Application {
 		grid.add(backB, 1, 4);
 
 		hbox1.getChildren().addAll(submmitAddProductB, clearB);
-		submmitAddProductB.setOnAction(e ->massageAddProduct());
-			
+		submmitAddProductB.setOnAction(e -> massageAddProduct());
+
 		clearB.setOnAction(e -> Clear());
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
@@ -276,10 +265,6 @@ public class View extends Application {
 		System.out.println("After the program");
 	}
 
-	public void getController(Controller controller) {
-		this.controller = controller;
-	}
-
 	public void Clear() {
 		productName.clear();
 		productNumber.clear();
@@ -291,45 +276,51 @@ public class View extends Application {
 	}
 
 	public String getProductName() {
-		return this.productName.getText();
+		return productName.getText();
 	}
 
 	public String getProductNumber() {
-		return this.productNumber.getText();
+		return productNumber.getText();
 	}
 
 	public int getPriceForShop() {
-		return Integer.parseInt(this.priceForShop.getText());
+		int price = 0;
+		try {
+			price = Integer.parseInt(priceForShop.getText());
+		} catch (Exception e) {
+			System.out.println("The price for the shop must be a number");
+		}
+		return price;
 	}
 
 	public int getPriceForCostumer() {
-		return Integer.parseInt(this.priceForCostumer.getText());
+		return Integer.parseInt(priceForCostumer.getText());
 	}
 
 	public String getCostumerName() {
-		return this.costumerName.getText();
+		return costumerName.getText();
 	}
 
 	public String getCostumerPhoneNumber() {
-		return this.phoneNumber.getText();
+		return phoneNumber.getText();
 	}
 
 	public boolean getNewsCostumer() {
-		return this.notificationForCostumer.isSelected();
+		return notificationForCostumer.isSelected();
 	}
 
 	public EProductSortType getTypeOfSorting() {
-		if (this.sortUp.isSelected() == true)
+		if (sortUp.isSelected() == true)
 			return EProductSortType.FROM_UP;
 		else {
-			if (this.sortDown.isSelected() == true)
+			if (sortDown.isSelected() == true)
 				return EProductSortType.FROM_DOWN;
 		}
 		return EProductSortType.ENTER_ORDER;
 	}
 
 	public String getDeleteProductNumber() {
-		return this.deleteProduct.getText();
+		return deleteProduct.getText();
 	}
 
 	void addProductListener(ActionListener listenerAddProduuct) {
@@ -337,19 +328,18 @@ public class View extends Application {
 	}
 
 	public void massageAddProduct() {
-		{
-			if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty()
-					|| priceForCostumer.getText().isEmpty() || costumerName.getText().isEmpty()
-					|| phoneNumber.getText().isEmpty()) {
-				alert.setAlertType(AlertType.ERROR);
-				alert.setContentText("Fill all up before the dreadful idan will kill you!");
-				alert.show();
-			} else {
-				alert.setAlertType(AlertType.CONFIRMATION);
-				alert.setContentText("The product was successfully added");
-				alert.show();
-				controller.addProduct();
-			}
+		if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty()
+				|| priceForCostumer.getText().isEmpty() || costumerName.getText().isEmpty()
+				|| phoneNumber.getText().isEmpty()) {
+			alert.setAlertType(AlertType.ERROR);
+			alert.setContentText("Fill all up before the dreadful idan will kill you!");
+			alert.show();
+		} else {
+			
+			controller.addProduct();
+			alert.setAlertType(AlertType.CONFIRMATION);
+			alert.setContentText("The product was successfully added");
+			alert.show();
 		}
 	}
 
@@ -358,12 +348,10 @@ public class View extends Application {
 			alert.setAlertType(AlertType.ERROR);
 			alert.setContentText("Choose one of the option");
 			alert.show();
-		} 
-		else {
+		} else {
 			controller.createProductsMap();
 			mainWindow();
 		}
 	}
-
 
 }
