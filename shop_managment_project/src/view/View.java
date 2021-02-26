@@ -45,13 +45,16 @@ public class View extends Application {
 	private ToggleGroup TGSorting;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
-	static Controller controller;
+	private Controller controller;
 	private Label head;
 //	private EventHandler<ActionEvent> addProduct;
+	
+
 
 	public void setController(Controller controller) {
 		this.controller=controller;
 	}
+
 
 	@Override
 	public void init() throws Exception {
@@ -352,6 +355,15 @@ public class View extends Application {
 			controller.createProductsMap();
 			mainWindow();
 		}
+	}
+
+	public EProductSortType getSelectedRadioButton() {
+		if(sortDown.isSelected())
+			return EProductSortType.FROM_UP;
+		else if(sortUp.isSelected())
+			return EProductSortType.FROM_DOWN;
+		else
+			return EProductSortType.ENTER_ORDER;
 	}
 
 }

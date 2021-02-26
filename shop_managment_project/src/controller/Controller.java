@@ -24,13 +24,14 @@ public class Controller {
 	
 	
 	public Controller(View view, Model model) {
-		this.view = view;
+		Controller.view = view;
 		this.model = model;
 		
 	}
 	
 	public void createProductsMap() {
-	//	new CreateProductMapCommand(model.getShop(), view.);
+		System.out.println("selected button: " + view.getSelectedRadioButton().toString());
+		//new CreateProductMapCommand(model.getShop(), view.getSelectedRadioButton());
 	}
 
 	public void addProduct() {

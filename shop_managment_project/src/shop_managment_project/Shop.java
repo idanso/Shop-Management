@@ -18,6 +18,7 @@ import observer.Sender;
 public class Shop implements Sender, Receiver {
 
 	private Map<String,Product> allProducts;
+	private NotificationHandler notificationHandler;
 	private EProductSortType productSortingType;
 	private ProductsFile pFile;
 	private int numOfProducts;
@@ -31,6 +32,7 @@ public class Shop implements Sender, Receiver {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		notificationHandler = new NotificationHandler();
 
 	}
 	
@@ -60,11 +62,15 @@ public class Shop implements Sender, Receiver {
 		boolean productExist = false;
 		
 		if(allProducts.containsKey(productNumber)) {//check if products exist in system
+			notificationHandler.removeCustomer(allProducts.get(productNumber).getCustomer()); //remove customer in case customer chnaged
 			productExist = true;
 		}
 		
+		
 		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
 				new Customer(customerName, customerNumber, bNotification)));
+		
+		notificationHandler.addCustomerAdReceiver(allProducts.get(productNumber).getCustomer()); //add the customer to the receivers list
 		
 		if(!productExist) {//in case the new product not exist in system raise number of products
 			numOfProducts++;
