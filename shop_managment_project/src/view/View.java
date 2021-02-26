@@ -373,5 +373,14 @@ public class View extends Application {
 			mainWindow();
 		}
 	}
+	
+	public EProductSortType getSelectedRadioButton() {
+		if(sortDown.isSelected())
+			return EProductSortType.FROM_UP;
+		else if(sortUp.isSelected())
+			return EProductSortType.FROM_DOWN;
+		else
+			return EProductSortType.ENTER_ORDER;
+	}
 
 }
