@@ -10,12 +10,14 @@ import command.DeleteProductCommand;
 import command.GetProductProfitCommand;
 import command.GetTotalProfitCommand;
 import command.SendNotificationCommand;
+import command.ShowMassagesFromCustomersCommand;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import model.Model;
+import shop_managment_project.NotificationHandler;
 import shop_managment_project.Shop;
 import view.View;
 
@@ -24,11 +26,9 @@ public class Controller {
 	private View view;
 	private Model model;
 	
-	
 	public Controller(View view, Model model) {
 		this.view = view;
 		this.model = model;
-		
 	}
 	
 	public void createProductsMap() {
@@ -66,6 +66,12 @@ public class Controller {
 	
 	public void printAllProducts() { // to delete for testing
 		model.getShop().printAllProducts();
+	}
+	
+	public void showCustomersMassages() {
+		NotificationHandler	nHandler = new NotificationHandler(view.getMassagesLabel());
+		nHandler.setCustomers(model.getShop().getAllCustomersWithNotification());
+		new ShowMassagesFromCustomersCommand(nHandler).execute();
 	}
 	
 //	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {

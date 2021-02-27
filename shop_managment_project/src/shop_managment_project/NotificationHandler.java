@@ -2,16 +2,20 @@ package shop_managment_project;
 
 import java.util.ArrayList;
 
+import javafx.concurrent.Task;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import observer.Receiver;
 
-public class NotificationHandler extends Thread {
+public class NotificationHandler extends Task<Integer> {
 	
-	private ArrayList<Receiver> customers;
+	private ArrayList<Customer> customers;
 	private StringBuffer output; //the string with the customers name
+	private Label textLabel;
 	
 	
-	public NotificationHandler() {
-		customers = new ArrayList<>();
+	public NotificationHandler(Label label) {
+		this.textLabel = label;
 		output = new StringBuffer();
 	}
 	
@@ -22,21 +26,53 @@ public class NotificationHandler extends Thread {
 	public void removeCustomer(Customer customer) {
 		customers.remove(customer);
 	}
+
+	public void setCustomers(ArrayList<Customer> customers) {
+		this.customers = customers;
+	}
 	
-
-
-	@Override
-	public void run() {
-		for (Receiver receiver : customers) {
-			output.append(((Customer)receiver).getName() + "approved notification\n");
-			//TODO need to add reference to the text box in the view
+	public void printToLabel() {//to delete
+		for (Customer customer : customers) {
+			output.append(customer.getName() + "approved notification\n");
+			this.textLabel.setText(output.toString());
 			try {
-				sleep(2000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
+
+	@Override
+	public void run() {
+		for (Customer customer : customers) {
+			output.append(customer.getName() + "approved notification\n");
+			this.textLabel.setText(output.toString());
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	protected Integer call() throws Exception {
+		for (Customer customer : customers) {
+			output.append(customer.getName() + "approved notification\n");
+			this.textLabel.setText(output.toString());
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return 10;
+	}
+
+
 	
 	
 

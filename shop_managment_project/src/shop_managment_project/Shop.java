@@ -3,6 +3,7 @@ package shop_managment_project;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +19,6 @@ import observer.Sender;
 public class Shop implements Sender, Receiver {
 
 	private Map<String,Product> allProducts;
-	private NotificationHandler notificationHandler;
 	private EProductSortType productSortingType;
 	private ProductsFile pFile;
 	private int numOfProducts;
@@ -33,8 +33,6 @@ public class Shop implements Sender, Receiver {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		notificationHandler = new NotificationHandler();
-
 	}
 	
 	public static Shop getInstance(File file) {
@@ -81,22 +79,23 @@ public class Shop implements Sender, Receiver {
 			String customerName, String customerNumber, boolean bNotification) {
 		boolean productExist = false;
 		
-		if(allProducts.containsKey(productNumber)) {//check if products exist in system
-			notificationHandler.removeCustomer(allProducts.get(productNumber).getCustomer()); //remove customer in case customer chnaged
-			productExist = true;
-		}
+//		if(allProducts.containsKey(productNumber)) {//check if products exist in system
+//			notificationHandler.removeCustomer(allProducts.get(productNumber).getCustomer()); //remove customer in case customer chnaged
+//			productExist = true;
+//		}
 		
 		
 		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
 				new Customer(customerName, customerNumber, bNotification)));
 		
-		notificationHandler.addCustomerAdReceiver(allProducts.get(productNumber).getCustomer()); //add the customer to the receivers list
+		//notificationHandler.addCustomerAdReceiver(allProducts.get(productNumber).getCustomer()); //add the customer to the receivers list
 		
 		if(!productExist) {//in case the new product not exist in system raise number of products
 			numOfProducts++;
 			try {
 				pFile.setNumOfProducts(numOfProducts);
 			} catch (IOException e) {
+				
 				e.printStackTrace();
 			}
 			saveLastProduct(productNumber); //save last product as memento only in case new product created and not updated
@@ -105,7 +104,7 @@ public class Shop implements Sender, Receiver {
 		saveAllProductsToFile();
 	}
 	
-	public void deleteProduct(String productNum) {
+	public boolean deleteProduct(String productNum) {
 		try {
 			if(!pFile.isEmpty()) {
 				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
@@ -117,14 +116,16 @@ public class Shop implements Sender, Receiver {
 						pFile.setNumOfProducts(numOfProducts);
 						allProducts.clear();
 						readAllProductsFromFile();
-						break;
+						return true;
 					}
 				}
 
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return false;
 		
 	}
 	
@@ -177,6 +178,17 @@ public class Shop implements Sender, Receiver {
 		}
 			
 	}
+	
+	public ArrayList<Customer> getAllCustomersWithNotification() {
+		ArrayList<Customer> customersList = new ArrayList<Customer>();
+		for (Entry<String, Product> entry : allProducts.entrySet()) {
+			if (entry.getValue().getCustomer().getBNotification()) {
+				customersList.add(entry.getValue().getCustomer());
+			}
+		}
+		return customersList;
+	}
+	
 	
 	public ShopMemento getMemento() {
 		return memento;

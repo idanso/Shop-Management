@@ -6,6 +6,8 @@ public class DeleteProductCommand implements Command {
 	
 	private Shop shop;
 	String productNumber;
+	
+	private boolean bResult;
 
 	public DeleteProductCommand(Shop shop, String productNumber) {
 		this.shop = shop;
@@ -14,7 +16,7 @@ public class DeleteProductCommand implements Command {
 
 	@Override
 	public void execute() {
-		this.shop.deleteProduct(productNumber);	
+		bResult = this.shop.deleteProduct(productNumber);	
 	}
 
 }

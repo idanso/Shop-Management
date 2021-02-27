@@ -15,6 +15,8 @@ public class AddProductCommand implements Command{
 	private String customerName;
 	private String customerNumber;
 	private boolean bNotification;
+	
+
 
 	public AddProductCommand(Shop shop, View view) {
 		this.shop = shop;

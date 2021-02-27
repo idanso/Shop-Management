@@ -51,20 +51,21 @@ public class View extends Application {
 	private Button addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene,
 	sendNotificationsMainScene, undoFuncrionMainScene;
 	
-	public TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
+	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
 			deleteProduct;
 	private ToggleGroup TGSorting;
 	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
 	private Alert alert;
 	static Controller controller;
 	private Label head;
+	private Label massagesLabel;
+	private TextFlow massagesTextFlow;
 //	private EventHandler<ActionEvent> addProduct;
 	
 	private final static String FILE_NAME = "allProducts.txt";
 
 	
 	public static void main(String[] args) {
-		System.out.println("asdasd");
 		launch(args);
 	}
 	
@@ -166,7 +167,7 @@ public class View extends Application {
 		
 		//TODO delete the secont statment adn restore first function
 		//showAllProductsMainScene.setOnAction(e -> showProductsScene()); 
-		showAllProductsMainScene.setOnAction(e -> printProductsToTetminall()); //to delete
+		showAllProductsMainScene.setOnAction(e -> printProductsToTetminal()); //to delete
 		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
 		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // need to add the function to send notification
@@ -229,15 +230,22 @@ public class View extends Application {
 	}
 
 	public void showReceivedMassages() {
+		Stage massageStage = new Stage();
 		VBox receivedMassagesVBox = new VBox(20);
 		receivedMassagesVBox.setPadding(new Insets(10, 10, 10, 10));
 		Label receivedMassagesL = new Label("Received Customers Massages");
 		receivedMassagesL.setFont(new Font("Arial", 22));
-		TextFlow massagesTextFlow = new TextFlow();
+		massagesLabel = new Label();
+		massagesLabel.setPrefSize(400, 300);
+		massagesTextFlow = new TextFlow();
 		massagesTextFlow.setPrefSize(400, 300);
+		massagesTextFlow.getChildren().add(massagesLabel);
 		ScrollPane massagesScrollPane = new ScrollPane(massagesTextFlow);
 		receivedMassagesVBox.getChildren().addAll(receivedMassagesL, massagesScrollPane, backB); // need to add backB
-		window.setScene(new Scene(receivedMassagesVBox));
+		massageStage.setScene(new Scene(receivedMassagesVBox));
+		massageStage.show();
+		controller.showCustomersMassages();
+		//window.setScene(new Scene(receivedMassagesVBox));
 
 	}
 
@@ -386,8 +394,14 @@ public class View extends Application {
 		}
 	}
 	
-	public void printProductsToTetminall() { // to delete
+	public void printProductsToTetminal() { // to delete
 		controller.printAllProducts(); 
 	}
+
+	public Label getMassagesLabel() {
+		return massagesLabel;
+	}
+	
+	
 
 }
