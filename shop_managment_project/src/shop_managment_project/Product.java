@@ -54,6 +54,12 @@ public class Product {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+
+	@Override
+	public String toString() {
+		return "Product [name=" + name + ", valuePrice=" + valuePrice + ", customerPrice=" + customerPrice
+				+ ", customer=" + customer + "]";
+	}
 	
 	
 	

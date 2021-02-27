@@ -46,6 +46,12 @@ public class Customer implements Sender, Receiver {
 		this.bNotification = bNotification;
 	}
 	
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", number=" + number + ", bNotification=" + bNotification + "]";
+	}
+
+
 	public void receiveMSG(Sender s, String msg) {
 		// TODO Auto-generated method stub
 		

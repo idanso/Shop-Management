@@ -9,12 +9,12 @@ import shop_managment_project.Shop;
 public class Model {
 	
 	private Shop shop;
-	private Command command;
+	private Command command; //meybe to delete
 	File file;
 
 	public Model(String fileName) {
-		file = new File(fileName);
-		Shop shop = Shop.getInstance(file);
+		this.file = new File(fileName);
+		this.shop = Shop.getInstance(file);
 	}
 
 	public Shop getShop() {

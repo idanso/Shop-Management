@@ -32,20 +32,20 @@ public class Controller {
 	}
 	
 	public void createProductsMap() {
-	//	new CreateProductMapCommand(model.getShop(), view.);
+		new CreateProductMapCommand(model.getShop(), view.getTypeOfSorting()).execute();
 	}
 
 	public void addProduct() {
-		new AddProductCommand(model.getShop(), view);
+		new AddProductCommand(model.getShop(), view).execute();
 		
 	}
 	
 	public void deleteProduct() {
-		new DeleteProductCommand(model.getShop(), view.getDeleteProductNumber());
+		new DeleteProductCommand(model.getShop(), view.getDeleteProductNumber()).execute();
 	}
 	
 	public void undoProduct() {
-		new DeleteLastCommand(model.getShop());
+		new DeleteLastCommand(model.getShop()).execute();
 	}
 	
 	public void deleteAllProducts() {
@@ -62,6 +62,10 @@ public class Controller {
 	
 	public void sendNotification() {
 		new SendNotificationCommand(model.getShop());
+	}
+	
+	public void printAllProducts() { // to delete for testing
+		model.getShop().printAllProducts();
 	}
 	
 //	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {

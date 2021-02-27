@@ -3,6 +3,9 @@ package view;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+import com.sun.javafx.tk.PrintPipeline;
+
 import controller.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -57,11 +60,6 @@ public class View extends Application {
 	private Label head;
 //	private EventHandler<ActionEvent> addProduct;
 	
-
-	public void setController(Controller controller) {
-		this.controller=controller;
-	}
-	
 	private final static String FILE_NAME = "allProducts.txt";
 
 	
@@ -89,6 +87,7 @@ public class View extends Application {
 		searchForRemoveMainScene = new Button("Search and remove product");
 		sendNotificationsMainScene = new Button("send notifications");
 		undoFuncrionMainScene = new Button("Undo");
+		undoFuncrionMainScene.setOnAction(e -> controller.undoProduct());
 		
 		//addProductScene
 		productName = new TextField();
@@ -164,7 +163,11 @@ public class View extends Application {
 	public void mainWindow() {
 		
 		addProductMainScene.setOnAction(e -> addProductsScene());
-		showAllProductsMainScene.setOnAction(e -> showProductsScene());
+		
+		//TODO delete the secont statment adn restore first function
+		//showAllProductsMainScene.setOnAction(e -> showProductsScene()); 
+		showAllProductsMainScene.setOnAction(e -> printProductsToTetminall()); //to delete
+		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
 		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // need to add the function to send notification
 		Button exit = new Button("EXIT");
@@ -217,8 +220,8 @@ public class View extends Application {
 		grid.add(backB, 1, 4);
 
 		hbox1.getChildren().addAll(submmitAddProductB, clearB);
-		submmitAddProductB.setOnAction(e -> massageAddProduct());
-		clearB.setOnAction(e -> Clear());
+		submmitAddProductB.setOnAction(e -> addProduct());
+		clearB.setOnAction(e -> clear());
 
 		grid.setAlignment(Pos.BASELINE_CENTER);
 		window.setScene(new Scene(grid, 500, 300));
@@ -271,7 +274,10 @@ public class View extends Application {
 				alert.setAlertType(AlertType.ERROR);
 				alert.setContentText("The product number is empty");
 				alert.show();
-			} // TODO add the option if the product doesnt exists
+					
+			}
+			else
+				controller.deleteProduct();// TODO add the option if the product doesnt exists
 
 		});
 		window.setScene(new Scene(vboxSearch, 950, 300));
@@ -285,7 +291,7 @@ public class View extends Application {
 		System.out.println("After the program");
 	}
 
-	public void Clear() {
+	public void clear() {
 		productName.clear();
 		productNumber.clear();
 		priceForShop.clear();
@@ -304,7 +310,7 @@ public class View extends Application {
 	}
 
 	public int getPriceForShop() {
-		int price = 0;
+		int price = -1;
 		try {
 			price = Integer.parseInt(priceForShop.getText());
 		} catch (Exception e) {
@@ -314,7 +320,13 @@ public class View extends Application {
 	}
 
 	public int getPriceForCostumer() {
-		return Integer.parseInt(priceForCostumer.getText());
+		int price = -1;
+		try {
+			price = Integer.parseInt(priceForCostumer.getText());
+		} catch (Exception e) {
+			System.out.println("The price for the shop must be a number");
+		}
+		return price;
 	}
 
 	public String getCostumerName() {
@@ -331,12 +343,11 @@ public class View extends Application {
 
 	public EProductSortType getTypeOfSorting() {
 		if (sortUp.isSelected() == true)
+			return EProductSortType.FROM_DOWN;
+		else if (sortDown.isSelected() == true) 
 			return EProductSortType.FROM_UP;
-		else {
-			if (sortDown.isSelected() == true)
-				return EProductSortType.FROM_DOWN;
-		}
-		return EProductSortType.ENTER_ORDER;
+		else
+			return EProductSortType.ENTER_ORDER;
 	}
 
 	public String getDeleteProductNumber() {
@@ -347,7 +358,7 @@ public class View extends Application {
 
 	}
 
-	public void massageAddProduct() {
+	public void addProduct() {
 		if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty()
 				|| priceForCostumer.getText().isEmpty() || costumerName.getText().isEmpty()
 				|| phoneNumber.getText().isEmpty()) {
@@ -360,6 +371,7 @@ public class View extends Application {
 			alert.setAlertType(AlertType.CONFIRMATION);
 			alert.setContentText("The product was successfully added");
 			alert.show();
+			clear();
 		}
 	}
 
@@ -374,13 +386,8 @@ public class View extends Application {
 		}
 	}
 	
-	public EProductSortType getSelectedRadioButton() {
-		if(sortDown.isSelected())
-			return EProductSortType.FROM_UP;
-		else if(sortUp.isSelected())
-			return EProductSortType.FROM_DOWN;
-		else
-			return EProductSortType.ENTER_ORDER;
+	public void printProductsToTetminall() { // to delete
+		controller.printAllProducts(); 
 	}
 
 }

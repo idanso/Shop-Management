@@ -29,6 +29,7 @@ public class Shop implements Sender, Receiver {
 	private Shop(File file) {
 		try {
 			pFile = new ProductsFile(file, "rw");
+			numOfProducts = pFile.getNumOfProducts();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -44,17 +45,36 @@ public class Shop implements Sender, Receiver {
 	
 	public void createProductsMap(EProductSortType eProductSortingType) {
 		
-		this.productSortingType = productSortingType;
+		this.productSortingType = eProductSortingType;
 		
 		//create an empty map according to the sorting method specified
-		if (productSortingType == EProductSortType.FROM_UP)
+		if (this.productSortingType.equals(EProductSortType.FROM_UP))
 			allProducts = new TreeMap<>(new ReverseAlphabeticMapCompare());
 			
-		else if (productSortingType == EProductSortType.FROM_DOWN)
+		else if (this.productSortingType.equals(EProductSortType.FROM_DOWN))
 			allProducts = new TreeMap<>(new AlphabeticMapComparator());
 		
 		else
 			allProducts = new LinkedHashMap<>();
+		
+		readAllProductsFromFile();
+		saveAllProductsToFile();//to save the product in the file as the selected sorting type
+	}
+	
+	public void readAllProductsFromFile() {
+		try {
+			if(!pFile.isEmpty()) {
+				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
+				Entry<String, Product> entry;
+				
+				while(fIterator.hasNext()) {
+					entry = fIterator.next();
+					allProducts.put(entry.getKey(), entry.getValue());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void addProduct(String productName, int valuePrice, int customerPrice, String productNumber, 
@@ -74,7 +94,11 @@ public class Shop implements Sender, Receiver {
 		
 		if(!productExist) {//in case the new product not exist in system raise number of products
 			numOfProducts++;
-			pFile.setNumOfProducts(numOfProducts);
+			try {
+				pFile.setNumOfProducts(numOfProducts);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			saveLastProduct(productNumber); //save last product as memento only in case new product created and not updated
 		}
 		
@@ -82,17 +106,26 @@ public class Shop implements Sender, Receiver {
 	}
 	
 	public void deleteProduct(String productNum) {
-		Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
-		Entry<String, Product> entry;
-		
-		while(fIterator.hasNext()) {
-			entry = fIterator.next();
-			if(entry.getKey().equals(productNum)) {
-				fIterator.remove();
-				break;
+		try {
+			if(!pFile.isEmpty()) {
+				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
+				
+				while(fIterator.hasNext()) {
+					if(fIterator.next().getKey().equals(productNum)) {
+						fIterator.remove();
+						numOfProducts--;
+						pFile.setNumOfProducts(numOfProducts);
+						allProducts.clear();
+						readAllProductsFromFile();
+						break;
+					}
+				}
+
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		allProducts.remove(productNum);
+		
 	}
 	
 	public void deleteAllProducts() {
@@ -132,13 +165,17 @@ public class Shop implements Sender, Receiver {
 	
 	public boolean undo(ShopMemento memento) {
 		//check if first product added to system before undo can apply regards if there are products from first start from the file
-		if(memento != null) { 
+		if(memento != null && allProducts.containsKey(memento.getProduct())) { 
 			deleteProduct(memento.getProduct());
-			
+			saveLastProduct(null);
+			System.out.println("***undo success***"); //to delete
 			return true;
 		}
-		else
+		else {
+			System.out.println("***undo fail***"); //to delete
 			return false;
+		}
+			
 	}
 	
 	public ShopMemento getMemento() {
@@ -186,6 +223,15 @@ public class Shop implements Sender, Receiver {
 	@Override
 	public void costumerNotification(boolean news) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void printAllProducts() {
+		System.out.println("******************");
+		for (Entry<String, Product> entry : allProducts.entrySet()) {
+			System.out.println("\n" + "product number : " + entry.getKey());
+			System.out.println(entry.toString());
+		}
 		
 	}
 

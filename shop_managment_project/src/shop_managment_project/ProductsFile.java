@@ -12,17 +12,25 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 	
 	private RandomAccessFile raf;
 	private int numOfProducts;
-	private long pos; //like index of the object in the file
+	private long pos;
 
 	public ProductsFile(File f, String mode) throws FileNotFoundException {
 		try {
 			raf = new RandomAccessFile(f, "rw");
+			if(raf.length() > 0)
+					numOfProducts = raf.readInt();
+			else
+				numOfProducts = 0;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
+	public int getNumOfProducts() {
+		return numOfProducts;
+	}
+
 	public void saveAllProducts(Set<Map.Entry<String, Product>> setProducts) throws IOException {
 		raf.seek(0);
 		raf.writeInt(numOfProducts);
@@ -41,8 +49,10 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 		raf.writeUTF(productNumber);
 	}
 	
-	public void setNumOfProducts(int numOfProducts) {
+	public void setNumOfProducts(int numOfProducts) throws IOException {
 		this.numOfProducts = numOfProducts;
+		raf.seek(0);
+		raf.writeInt(numOfProducts);
 	}
 	
 	public void clear() throws IOException {
@@ -65,6 +75,7 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 		public fileIterator() {
 			try {
 				raf.seek(0);
+				raf.readInt();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -72,10 +83,14 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 
 		@Override
 		public boolean hasNext() {
-			if(pos < numOfProducts)
-				return true;
-			else
-				return false;
+			try {
+				if(raf.getFilePointer() < raf.length())
+					return true;
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+			return false;
 		}
 
 		@Override
@@ -105,12 +120,31 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 		@Override
 		public void remove() {
 				long readPointer = 0, writePointer = pos, lengthBeforeTheDeletedObject = 0;
-				next();
+				
+				if(hasNext()) //check if not last product
+					next();
+				else
+					try {
+						
+						pos = raf.getFilePointer();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				
 				readPointer = pos;
 				
-				byte[] data = new byte[ (int) lengthBeforeTheDeletedObject];
+				try {
+					System.out.println("length= " + raf.getFilePointer()); //to delete
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} //to delete
+				
+				
 				try {
 					lengthBeforeTheDeletedObject = raf.length() - readPointer;
+					byte[] data = new byte[ (int) lengthBeforeTheDeletedObject];
+					raf.seek(readPointer);
 					raf.read(data);
 					raf.seek(writePointer);
 					raf.write(data);
@@ -122,6 +156,10 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 			
 		}
 		
+	}
+
+	public boolean isEmpty() throws IOException {
+		return raf.length() > 0 ? false : true;
 	}
 	
 }
