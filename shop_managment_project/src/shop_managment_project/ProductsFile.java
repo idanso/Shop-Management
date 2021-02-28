@@ -134,26 +134,20 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 				readPointer = pos;
 				
 				try {
-					System.out.println("length= " + raf.getFilePointer()); //to delete
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} //to delete
-				
-				
-				try {
 					lengthBeforeTheDeletedObject = raf.length() - readPointer;
-					byte[] data = new byte[ (int) lengthBeforeTheDeletedObject];
-					raf.seek(readPointer);
-					raf.read(data);
-					raf.seek(writePointer);
-					raf.write(data);
+					if(lengthBeforeTheDeletedObject != 0) { //check if not last product
+						byte[] data = new byte[ (int) lengthBeforeTheDeletedObject];
+						raf.seek(readPointer);
+						raf.read(data);
+						raf.seek(writePointer);
+						raf.write(data);
+					}
 					raf.setLength(lengthBeforeTheDeletedObject + writePointer);
+					raf.seek(writePointer);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
-			
 		}
 		
 	}

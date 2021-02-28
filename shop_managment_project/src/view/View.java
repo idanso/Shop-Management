@@ -62,6 +62,7 @@ public class View extends Application {
 	private TextFlow massagesTextFlow;
 	NotificationHandler nHandler;
 	Button bCloseShowMassagesWindows;
+	Button bRemoveAllProducts;
 //	private EventHandler<ActionEvent> addProduct;
 	
 	private final static String FILE_NAME = "allProducts.txt";
@@ -87,8 +88,9 @@ public class View extends Application {
 		//mainWindow Initialize
 		addProductMainScene = new Button("Add product");
 		showAllProductsMainScene = new Button("Show all the products");
-		searchForRemoveMainScene = new Button("Search and remove product");
-		sendNotificationsMainScene = new Button("send notifications");
+		searchForRemoveMainScene = new Button("remove product");
+		bRemoveAllProducts = new Button("remove all products");
+		sendNotificationsMainScene = new Button("show customers with notification");
 		undoFuncrionMainScene = new Button("Undo");
 		undoFuncrionMainScene.setOnAction(e -> controller.undoProduct());
 		
@@ -167,12 +169,13 @@ public class View extends Application {
 		
 		addProductMainScene.setOnAction(e -> addProductsScene());
 		
-		//TODO delete the secont statment adn restore first function
+		//TODO delete the second statment and restore first function
 		//showAllProductsMainScene.setOnAction(e -> showProductsScene()); 
 		showAllProductsMainScene.setOnAction(e -> printProductsToTetminal()); //to delete
 		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
-		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // need to add the function to send notification
+		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // TODO need to add the function to send notification
+		bRemoveAllProducts.setOnAction(e -> controller.deleteAllProducts()); // TODO need to add pop up massage
 		Button exit = new Button("EXIT");
 		exit.setOnAction(e -> {
 			try {
@@ -183,7 +186,7 @@ public class View extends Application {
 			System.exit(0);
 		});
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene, sendNotificationsMainScene, undoFuncrionMainScene, exit);
+		vbox.getChildren().addAll(addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene, bRemoveAllProducts, sendNotificationsMainScene, undoFuncrionMainScene, exit);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);

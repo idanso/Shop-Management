@@ -60,6 +60,7 @@ public class Shop implements Sender, Receiver {
 	}
 	
 	public void readAllProductsFromFile() {
+		allProducts.clear();
 		try {
 			if(!pFile.isEmpty()) {
 				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
@@ -130,14 +131,19 @@ public class Shop implements Sender, Receiver {
 	}
 	
 	public void deleteAllProducts() {
+		Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
+		
+		for (int i = 0; i < numOfProducts; i++) {
+			fIterator.next();
+			fIterator.remove();
+		}
+		numOfProducts = 0;
 		try {
-			pFile.clear();
+			pFile.setNumOfProducts(0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		allProducts.clear();
-		
+		readAllProductsFromFile();
 	}
 	
 	public int getProductProfit(String productNum) {

@@ -49,7 +49,7 @@ public class Controller {
 	}
 	
 	public void deleteAllProducts() {
-		new DeleteAllProductsCommand(model.getShop());
+		new DeleteAllProductsCommand(model.getShop()).execute();
 	}
 	
 	public void getProductProfit() {
