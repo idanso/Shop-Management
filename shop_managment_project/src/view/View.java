@@ -60,9 +60,12 @@ public class View extends Application {
 	static Controller controller;
 	private Label head;
 	private TextFlow massagesTextFlow;
-	NotificationHandler nHandler;
-	Button bCloseShowMassagesWindows;
-	Button bRemoveAllProducts;
+	private NotificationHandler nHandler;
+	private Button bCloseShowMassagesWindows;
+	private Button bRemoveAllProducts;
+	private Button bShowProfitSummaryScene;
+	private Label profitSummaryLabel;
+	private TextFlow profitSummaryTextFlow;
 //	private EventHandler<ActionEvent> addProduct;
 	
 	private final static String FILE_NAME = "allProducts.txt";
@@ -89,10 +92,11 @@ public class View extends Application {
 		addProductMainScene = new Button("Add product");
 		showAllProductsMainScene = new Button("Show all the products");
 		searchForRemoveMainScene = new Button("remove product");
-		bRemoveAllProducts = new Button("remove all products");
-		sendNotificationsMainScene = new Button("show customers with notification");
+		bRemoveAllProducts = new Button("Remove all products");
+		sendNotificationsMainScene = new Button("Show customers with notification");
+		bShowProfitSummaryScene = new Button("Show profit Summary");
 		undoFuncrionMainScene = new Button("Undo");
-		undoFuncrionMainScene.setOnAction(e -> controller.undoProduct());
+
 		
 		//addProductScene
 		productName = new TextField();
@@ -176,6 +180,8 @@ public class View extends Application {
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
 		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // TODO need to add the function to send notification
 		bRemoveAllProducts.setOnAction(e -> controller.deleteAllProducts()); // TODO need to add pop up massage
+		undoFuncrionMainScene.setOnAction(e -> controller.undoProduct());
+		bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
 		Button exit = new Button("EXIT");
 		exit.setOnAction(e -> {
 			try {
@@ -186,7 +192,7 @@ public class View extends Application {
 			System.exit(0);
 		});
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene, bRemoveAllProducts, sendNotificationsMainScene, undoFuncrionMainScene, exit);
+		vbox.getChildren().addAll(addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene, bRemoveAllProducts, sendNotificationsMainScene, bShowProfitSummaryScene, undoFuncrionMainScene, exit);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
@@ -241,6 +247,7 @@ public class View extends Application {
 		Label receivedMassagesL = new Label("Received Customers Massages");
 		receivedMassagesL.setFont(new Font("Arial", 22));
 		nHandler = new NotificationHandler();
+		nHandler.setFont(new Font("Arial", 16));
 		massagesTextFlow = new TextFlow();
 		massagesTextFlow.setPrefSize(400, 300);
 		massagesTextFlow.getChildren().add(getnHandler());
@@ -298,6 +305,22 @@ public class View extends Application {
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
 
+	public void showProfitSummaryScene() {
+		
+		VBox ProfitSummaryVBox = new VBox(20);
+		ProfitSummaryVBox.setPadding(new Insets(10, 10, 10, 10));
+		Label profitSummaryHeadLabel = new Label("Profit Summary");
+		profitSummaryHeadLabel.setFont(new Font("Arial", 22));
+		profitSummaryLabel = new Label();
+		profitSummaryLabel.setFont(new Font("Arial", 14));
+		profitSummaryTextFlow = new TextFlow();
+		profitSummaryTextFlow.setPrefSize(400, 300);	
+		profitSummaryTextFlow.getChildren().add(profitSummaryLabel);
+		ScrollPane massagesScrollPane = new ScrollPane(profitSummaryTextFlow);
+		ProfitSummaryVBox.getChildren().addAll(profitSummaryHeadLabel,massagesScrollPane, backB);
+		controller.getProfitSummary();
+		window.setScene(new Scene(ProfitSummaryVBox));
+	}
 
 
 	@Override // do the final things after exit the program
@@ -322,6 +345,10 @@ public class View extends Application {
 
 	public String getProductNumber() {
 		return productNumber.getText();
+	}
+	
+	public Label getProfitSummaryLabel() {
+		return profitSummaryLabel;
 	}
 
 	public int getPriceForShop() {

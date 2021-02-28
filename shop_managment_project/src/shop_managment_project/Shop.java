@@ -23,7 +23,8 @@ public class Shop implements Sender, Receiver {
 	private ProductsFile pFile;
 	private int numOfProducts;
 	private ShopMemento memento;
-	private static Shop shop_Instance ;
+	private static Shop shop_Instance;
+	private ShopProfit shopProfit;
 	
 	
 	private Shop(File file) {
@@ -57,6 +58,8 @@ public class Shop implements Sender, Receiver {
 		
 		readAllProductsFromFile();
 		saveAllProductsToFile();//to save the product in the file as the selected sorting type
+		shopProfit = new ShopProfit(allProducts);
+		shopProfit.calculateTotalProfit();
 	}
 	
 	public void readAllProductsFromFile() {
@@ -103,6 +106,7 @@ public class Shop implements Sender, Receiver {
 		}
 		
 		saveAllProductsToFile();
+		shopProfit.calculateTotalProfit();
 	}
 	
 	public boolean deleteProduct(String productNum) {
@@ -126,6 +130,7 @@ public class Shop implements Sender, Receiver {
 			e.printStackTrace();
 			return false;
 		}
+		shopProfit.calculateTotalProfit();
 		return false;
 		
 	}
@@ -144,22 +149,7 @@ public class Shop implements Sender, Receiver {
 			e.printStackTrace();
 		}
 		readAllProductsFromFile();
-	}
-	
-	public int getProductProfit(String productNum) {
-		Product product = allProducts.get(productNum);
-		return product.getCostumerPrice() - product.getValuePrice();
-		
-	}
-	
-	public int getTotalProfit() {
-		Set<Map.Entry<String, Product>> setProducts = allProducts.entrySet();
-		int totalProfit = 0;	
-		for (Entry<String, Product> entry : setProducts) {
-			totalProfit += getProductProfit(entry.getKey());
-		}
-		
-		return totalProfit;	
+		shopProfit.calculateTotalProfit();
 	}
 	
 	public void saveLastProduct(String productNum) {
@@ -211,6 +201,11 @@ public class Shop implements Sender, Receiver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String profitSummaryToString() {
+		return shopProfit.toString();
+		
 	}
 	
 	

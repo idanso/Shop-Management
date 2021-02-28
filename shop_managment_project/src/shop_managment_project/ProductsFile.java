@@ -147,7 +147,6 @@ public class ProductsFile implements Iterable<Map.Entry<String, Product>> {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 		}
 		
 	}

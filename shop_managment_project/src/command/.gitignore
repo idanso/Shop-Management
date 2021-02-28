@@ -13,3 +13,5 @@
 /CreateShopCommand.class
 /CreateProductMapCommand.class
 /ShowMassagesFromCustomersCommand.class
+/ProfitToStringCommand.class
+/GetProfitSummaryCommand.class

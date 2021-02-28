@@ -8,7 +8,7 @@ import command.DeleteAllProductsCommand;
 import command.DeleteLastCommand;
 import command.DeleteProductCommand;
 import command.GetProductProfitCommand;
-import command.GetTotalProfitCommand;
+import command.GetProfitSummaryCommand;
 import command.SendNotificationCommand;
 import command.ShowMassagesFromCustomersCommand;
 import javafx.event.ActionEvent;
@@ -56,8 +56,8 @@ public class Controller {
 //		new GetProductProfitCommand(model.getShop(), view.getProfitProduct());
 	}
 	
-	public void getTotalProfit() {
-		new GetTotalProfitCommand(model.getShop());
+	public void getProfitSummary() {
+		new GetProfitSummaryCommand(model.getShop(),view.getProfitSummaryLabel()).execute();
 	}
 	
 	public void sendNotification() {
