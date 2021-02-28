@@ -8,6 +8,7 @@ import com.sun.javafx.tk.PrintPipeline;
 
 import controller.Controller;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -58,8 +59,9 @@ public class View extends Application {
 	private Alert alert;
 	static Controller controller;
 	private Label head;
-	private Label massagesLabel;
 	private TextFlow massagesTextFlow;
+	NotificationHandler nHandler;
+	Button bCloseShowMassagesWindows;
 //	private EventHandler<ActionEvent> addProduct;
 	
 	private final static String FILE_NAME = "allProducts.txt";
@@ -235,16 +237,18 @@ public class View extends Application {
 		receivedMassagesVBox.setPadding(new Insets(10, 10, 10, 10));
 		Label receivedMassagesL = new Label("Received Customers Massages");
 		receivedMassagesL.setFont(new Font("Arial", 22));
-		massagesLabel = new Label();
-		massagesLabel.setPrefSize(400, 300);
+		nHandler = new NotificationHandler();
 		massagesTextFlow = new TextFlow();
 		massagesTextFlow.setPrefSize(400, 300);
-		massagesTextFlow.getChildren().add(massagesLabel);
+		massagesTextFlow.getChildren().add(getnHandler());
 		ScrollPane massagesScrollPane = new ScrollPane(massagesTextFlow);
-		receivedMassagesVBox.getChildren().addAll(receivedMassagesL, massagesScrollPane, backB); // need to add backB
+		bCloseShowMassagesWindows = new Button();
+		bCloseShowMassagesWindows.setText("Close");
+		bCloseShowMassagesWindows.setOnAction(e -> massageStage.close());
+		receivedMassagesVBox.getChildren().addAll(receivedMassagesL, massagesScrollPane, bCloseShowMassagesWindows); // need to add backB
 		massageStage.setScene(new Scene(receivedMassagesVBox));
 		massageStage.show();
-		controller.showCustomersMassages();
+		Platform.runLater(() -> controller.showCustomersMassages());
 		//window.setScene(new Scene(receivedMassagesVBox));
 
 	}
@@ -398,9 +402,10 @@ public class View extends Application {
 		controller.printAllProducts(); 
 	}
 
-	public Label getMassagesLabel() {
-		return massagesLabel;
+	public NotificationHandler getnHandler() {
+		return nHandler;
 	}
+
 	
 	
 

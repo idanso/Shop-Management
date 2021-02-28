@@ -2,20 +2,19 @@ package shop_managment_project;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import observer.Receiver;
 
-public class NotificationHandler extends Task<Integer> {
+public class NotificationHandler extends Label implements Runnable{
 	
 	private ArrayList<Customer> customers;
 	private StringBuffer output; //the string with the customers name
-	private Label textLabel;
 	
 	
-	public NotificationHandler(Label label) {
-		this.textLabel = label;
+	public NotificationHandler() {
 		output = new StringBuffer();
 	}
 	
@@ -34,11 +33,10 @@ public class NotificationHandler extends Task<Integer> {
 	public void printToLabel() {//to delete
 		for (Customer customer : customers) {
 			output.append(customer.getName() + "approved notification\n");
-			this.textLabel.setText(output.toString());
+			Platform.runLater(() -> setText(output.toString()));
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -47,8 +45,8 @@ public class NotificationHandler extends Task<Integer> {
 	@Override
 	public void run() {
 		for (Customer customer : customers) {
-			output.append(customer.getName() + "approved notification\n");
-			this.textLabel.setText(output.toString());
+			output.append(customer.getName() + ": received massage\n");
+			Platform.runLater(() -> setText(output.toString()));
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
@@ -58,19 +56,6 @@ public class NotificationHandler extends Task<Integer> {
 		
 	}
 
-	@Override
-	protected Integer call() throws Exception {
-		for (Customer customer : customers) {
-			output.append(customer.getName() + "approved notification\n");
-			this.textLabel.setText(output.toString());
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		return 10;
-	}
 
 
 	

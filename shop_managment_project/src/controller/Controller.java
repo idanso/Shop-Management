@@ -69,9 +69,8 @@ public class Controller {
 	}
 	
 	public void showCustomersMassages() {
-		NotificationHandler	nHandler = new NotificationHandler(view.getMassagesLabel());
-		nHandler.setCustomers(model.getShop().getAllCustomersWithNotification());
-		new ShowMassagesFromCustomersCommand(nHandler).execute();
+		view.getnHandler().setCustomers(model.getShop().getAllCustomersWithNotification());
+		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
 	}
 	
 //	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {
