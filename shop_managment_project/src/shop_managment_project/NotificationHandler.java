@@ -3,10 +3,8 @@ package shop_managment_project;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import observer.Receiver;
+
 
 public class NotificationHandler extends Label implements Runnable{
 	
@@ -55,10 +53,4 @@ public class NotificationHandler extends Label implements Runnable{
 		}
 		
 	}
-
-
-
-	
-	
-
 }

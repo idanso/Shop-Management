@@ -7,18 +7,10 @@ import command.CreateProductMapCommand;
 import command.DeleteAllProductsCommand;
 import command.DeleteLastCommand;
 import command.DeleteProductCommand;
-import command.GetProductProfitCommand;
 import command.GetProfitSummaryCommand;
 import command.SendNotificationCommand;
 import command.ShowMassagesFromCustomersCommand;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import model.Model;
-import shop_managment_project.NotificationHandler;
-import shop_managment_project.Shop;
 import view.View;
 
 public class Controller {
@@ -50,10 +42,6 @@ public class Controller {
 	
 	public void deleteAllProducts() {
 		new DeleteAllProductsCommand(model.getShop()).execute();
-	}
-	
-	public void getProductProfit() {
-//		new GetProductProfitCommand(model.getShop(), view.getProfitProduct());
 	}
 	
 	public void getProfitSummary() {
