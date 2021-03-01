@@ -1,9 +1,9 @@
 package shop_managment_project;
 
-import observer.Receiver;
-import observer.Sender;
+import observer.ObserverCostumers;
+import observer.ObservableShop;
 
-public class Customer implements Sender, Receiver {
+public class Customer implements ObserverCostumers {
 
 	private String name;
 	private String number;
@@ -52,37 +52,16 @@ public class Customer implements Sender, Receiver {
 	}
 
 
-	public void receiveMSG(Sender s, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	public void sendMSG(Receiver r, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	@Override
-	public void addProductToShop(Product product, String succeed) {
-		// TODO Auto-generated method stub
+	public void reciveMassage(ObservableShop obs, String discountMassage) {
+		if(obs instanceof Shop) {
+			((Shop) obs).addCostumerNameRecivedMassage(this.name);
+		}
 		
 	}
 
 
-	@Override
-	public void removeProductFromShop(EMassageFromShop massage) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void costumerNotification(boolean news) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 	

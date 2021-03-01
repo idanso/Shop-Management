@@ -242,7 +242,7 @@ public class View extends Application {
 
 	public void searchProductToRemove() {
 		// search product to remove
-		Alert alert = new Alert(AlertType.NONE);
+		alert = new Alert(AlertType.NONE);
 		vboxSearch = new VBox(10);
 		
 	    setVboxSearchToRemove();
@@ -535,17 +535,10 @@ public class View extends Application {
 				
 		}
 		else
-			if(controller.checkIfProductExist(deleteProduct.getText()) ==false) {
-				alert.setAlertType(AlertType.ERROR);
-				alert.setContentText("The product doesnt exist");
-				alert.show();
-			}
-			else
-				controller.deleteProduct();
+			popupWindowMassage(controller.deleteProduct());
 	}
 	
 	public void popupWindowMassage(EMassageFromShop massage) {
-		
 		if(massage.equals(EMassageFromShop.SUCCEES)) {
 			alert.setAlertType(AlertType.CONFIRMATION);
 			alert.setContentText("success");

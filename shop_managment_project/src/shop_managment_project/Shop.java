@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -13,19 +14,30 @@ import java.util.TreeMap;
 import comparators.AlphabeticMapComparator;
 import comparators.ReverseAlphabeticMapCompare;
 import memento.ShopMemento;
-import observer.Receiver;
-import observer.Sender;
+import observer.ObserverCostumers;
+import observer.ObservableShop;
 
-public class Shop implements Sender, Receiver {
+public class Shop implements ObservableShop {
 
 	private Map<String,Product> allProducts;
+	
+	private List <ObserverCostumers> costumersListNotification;//List of the costumer that want to receive news from the shop
+	private List <String> costumersListNames;//List of the names of the costumers that received the massage from the shop
+	
 	private EProductSortType productSortingType;
+	private EMassageFromShop Emassage;
+	
 	private ProductsFile pFile;
+	
 	private int numOfProducts;
+	
 	private ShopMemento memento;
+	
 	private ShopProfit shopProfit;
 	
 	private static Shop shop_Instance;
+	
+	private final String MASSAGE_TO_COSTUMER= "Discount";//String massage for costumers to know the news from the shop
 	
 	
 	private Shop(File file) {
@@ -115,7 +127,7 @@ public class Shop implements Sender, Receiver {
 		shopProfit.calculateTotalProfit();
 	}
 	
-	public boolean deleteProduct(String productNumber) {
+	public EMassageFromShop deleteProduct(String productNumber) {
 		try {
 			if(!pFile.isEmpty()) {
 				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
@@ -127,35 +139,36 @@ public class Shop implements Sender, Receiver {
 						pFile.setNumOfProducts(numOfProducts);
 						allProducts.clear();
 						readAllProductsFromFile();
-						return true;
+						return Emassage.SUCCEES;
 					}
 				}
 
 			}
+		
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return Emassage.FAILE;
 		}
 		shopProfit.calculateTotalProfit();
-		return false;
+		return	checkIfProductExist(productNumber);
 		
 	}
 	
-	public boolean checkIfProductExist(String productNumber) {
+	public EMassageFromShop checkIfProductExist(String productNumber) {
 		try {
 			if(!pFile.isEmpty()) {
 				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
 				
 				while(fIterator.hasNext()) {
 					if(fIterator.next().getKey().equals(productNumber)) 
-						return true;
+						return Emassage.SUCCEES;
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return Emassage.FAILE;
 		}
-		return false;
+		return Emassage.DOESNT_EXIST;
 	}
 	
 	public void deleteAllProducts() {
@@ -232,35 +245,8 @@ public class Shop implements Sender, Receiver {
 	}
 	
 	
-	public void receiveMSG(Sender s, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	
-	public void sendMSG(Receiver r, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void addProductToShop(Product product, String succeed) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeProductFromShop(EMassageFromShop massage) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void costumerNotification(boolean news) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public void printAllProducts() {
 		System.out.println("******************");
@@ -270,6 +256,32 @@ public class Shop implements Sender, Receiver {
 		}
 		
 	}
+
+	@Override
+	public void addCostumerObserver(ObserverCostumers o) {
+		this.costumersListNotification.add(o);
+		
+	}
+
+	@Override
+	public void deleteCostumerObserver(ObserverCostumers o) {
+		this.costumersListNotification.remove(o);
+		
+	}
+
+	@Override
+	public void sendNewsToCostumer(ObservableShop shop, String discountMassage) {
+		for(ObserverCostumers o : costumersListNotification) {
+			o.reciveMassage(this, MASSAGE_TO_COSTUMER);
+		}
+		
+	}
+	
+	public void addCostumerNameRecivedMassage (String name) {
+		this.costumersListNames.add(name);
+	}
+
+	
 
 
 

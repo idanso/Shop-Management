@@ -9,12 +9,14 @@ import command.GetProfitSummaryCommand;
 import command.SendNotificationCommand;
 import command.ShowMassagesFromCustomersCommand;
 import model.Model;
+import shop_managment_project.EMassageFromShop;
 import view.View;
 
 public class Controller {
 	
 	private View view;
 	private Model model;
+	private EMassageFromShop Emassage;
 	
 	public Controller(View view, Model model) {
 		this.view = view;
@@ -30,8 +32,8 @@ public class Controller {
 		
 	}
 	
-	public void deleteProduct() {
-		new DeleteProductCommand(model.getShop(), view.getDeleteProductNumber()).execute();
+	public EMassageFromShop deleteProduct() {
+		return new DeleteProductCommand(model.getShop(), view.getDeleteProductNumber()).execute();
 	}
 	
 	public void undoProduct() {
@@ -59,8 +61,5 @@ public class Controller {
 		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
 	}
 
-	public boolean checkIfProductExist(String productNumber) {
-		return model.getShop().checkIfProductExist(productNumber);
-	}
 	
 }
