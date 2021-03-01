@@ -200,7 +200,10 @@ public class View extends Application {
 	    setHboxForButtons();
 	    
 		vboxSearch.getChildren().addAll(searchToRemove, deleteProduct, hboxSearchProduct);
-		submitSearchB.setOnAction(e -> searchToRemoveFunction());
+		submitSearchB.setOnAction(e -> {
+			searchToRemoveFunction();
+			deleteProduct.clear();
+		});
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
 
