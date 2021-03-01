@@ -81,17 +81,18 @@ public class View extends Application {
 				  headAddProduct,
 				  profitSummaryLabel, 
 				  profitSummaryHeadLabel,
-				  searchToRemove;
+				  searchToRemove,
+				  showProductsLabel,
+				  allProductsLabel;
 	
-	private VBox vboxSorting, vboxSearch ;
+	private VBox vboxSorting, vboxSearch, vboxShowAllProducts ;
 	private HBox hboxAddProduct, hboxSearchProduct;
+	private ScrollPane massagesScrollPane, showAllProduct;
 	
 	private GridPane gridAddProduct;
 	
-	private ObservableList<Map<String, Product>> items;
-	
 	private Alert alert;
-	private TextFlow massagesTextFlow;
+	private TextFlow massagesTextFlow, showAllProductsFlow;
 	private NotificationHandler nHandler;
 	private TextFlow profitSummaryTextFlow;
 	
@@ -141,7 +142,7 @@ public class View extends Application {
 		
 		//TODO delete the second statment and restore first function
 		//showAllProductsMainScene.setOnAction(e -> showProductsScene()); 
-		showAllProductsMainScene.setOnAction(e -> printProductsToTerminal()); //to delete
+		showAllProductsMainScene.setOnAction(e -> showProductsScene());
 		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
 		
@@ -205,7 +206,7 @@ public class View extends Application {
 		massagesTextFlow = new TextFlow();
 		massagesTextFlow.setPrefSize(400, 300);
 		massagesTextFlow.getChildren().add(getnHandler());
-		ScrollPane massagesScrollPane = new ScrollPane(massagesTextFlow);
+		massagesScrollPane = new ScrollPane(massagesTextFlow);
 		bCloseShowMassagesWindows = new Button();
 		bCloseShowMassagesWindows.setText("Close");
 		bCloseShowMassagesWindows.setOnAction(e -> massageStage.close());
@@ -218,11 +219,10 @@ public class View extends Application {
 	}
 
 	public void showProductsScene() {
-		Label label = new Label("All the products:");
-		label.setFont(new Font("Arial", 22));
-		VBox vboxTable = new VBox(20);
-		vboxTable.getChildren().addAll(label, backB);
-		window.setScene(new Scene(vboxTable, 950, 500));
+		vboxShowAllProducts = new VBox(10);
+		setWindowLabelsAndTextFlow();
+		vboxShowAllProducts.getChildren().addAll(showAllProduct, backB);
+		window.setScene(new Scene(vboxShowAllProducts, 500, 500));
 	}
 
 	public void searchProductToRemove() {
@@ -323,9 +323,6 @@ public class View extends Application {
 		return deleteProduct.getText();
 	}
 
-	void addProductListener(ActionListener listenerAddProduuct) {
-
-	}
 
 	public void addProduct() {
 		if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty()
@@ -355,12 +352,20 @@ public class View extends Application {
 		}
 	}
 	
-	public void printProductsToTerminal() { // to delete
-		controller.printAllProducts(); 
-	}
 
 	public NotificationHandler getnHandler() {
 		return nHandler;
+	}
+	
+	public void setWindowLabelsAndTextFlow(){
+		showProductsLabel = new Label("All the products:");
+		showProductsLabel.setFont(new Font("Arial", 22));
+		allProductsLabel = new Label();
+		showAllProductsFlow = new TextFlow();
+		showAllProductsFlow.setPrefSize(400, 300);
+		showAllProductsFlow.getChildren().add(allProductsLabel);
+		showAllProduct = new ScrollPane();
+		
 	}
 	
 	private void createButtons() {

@@ -49,8 +49,11 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [name=" + name + ", valuePrice=" + valuePrice + ", customerPrice=" + customerPrice
-				+ ", customer=" + customer + "]";
+		return "Product:" +
+				"Name: " + name + 
+				"Price for the Shop: " + valuePrice + 
+				"Price for costumer: " + customerPrice +
+				"Customer: " + customer + "\n";
 	}
 	
 	

@@ -56,16 +56,10 @@ public class Controller {
 		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
 	}
 	
-//	public EMassageFromShop sendNotification() { need to delete**
-//		return new SendNotificationCommand(model.getShop());
-//	}
 	
 	public void printAllProducts() { // to delete for testing
 		model.getShop().printAllProducts();
 	}
 	
-	public Map<String,Product> getProductMap(){
-		return model.getShop().getallProducts();
-	}
 	
 }

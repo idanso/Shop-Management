@@ -243,11 +243,6 @@ public class Shop implements ObservableShop {
 	public ShopMemento getMemento() {
 		return memento;
 	}
-
-	public EMassageFromShop sendNotifications() {
-		
-		return Emassage.SUCCEES;
-	}
 	
 	public void saveAllProductsToFile() {
 		Set<Map.Entry<String, Product>> setProducts = allProducts.entrySet();
@@ -267,12 +262,13 @@ public class Shop implements ObservableShop {
 	
 
 
-	public void printAllProducts() {
-		System.out.println("******************");
+	public StringBuffer printAllProducts() {
+		StringBuffer allProductsToString = new StringBuffer();
 		for (Entry<String, Product> entry : allProducts.entrySet()) {
-			System.out.println("\n" + "product number : " + entry.getKey());
-			System.out.println(entry.toString());
+			allProductsToString.append("\n" + "product number : " + entry.getKey());
+			allProductsToString.append(entry.toString());
 		}
+		return allProductsToString;
 		
 	}
 
@@ -289,7 +285,7 @@ public class Shop implements ObservableShop {
 	}
 
 	@Override
-	public void sendNewsToCostumer(ObservableShop shop, String discountMassage) {
+	public void sendNewsToCostumer(String discountMassage) {
 		for(ObserverCostumers o : costumersListNotification) {
 			o.reciveMassage(this, MASSAGE_TO_COSTUMER);
 		}
@@ -298,10 +294,6 @@ public class Shop implements ObservableShop {
 	
 	public void addCostumerNameRecivedMassage (String name) {
 		this.costumersListNames.add(name);
-	}
-	
-	public Map<String,Product> getallProducts(){
-		return allProducts;
 	}
 
 	

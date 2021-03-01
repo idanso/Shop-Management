@@ -48,7 +48,10 @@ public class Customer implements ObserverCostumers {
 	
 	@Override
 	public String toString() {
-		return "Customer [name=" + name + ", number=" + number + ", bNotification=" + bNotification + "]";
+		return
+				"Costumer name: " + name + 
+				"Phone numner: " + number + 
+				"Is the costumer want to recieve news from the shop? " + bNotification + "\n";
 	}
 
 
