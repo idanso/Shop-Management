@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -99,14 +98,14 @@ public class Shop implements ObservableShop {
 	
 	public EMassageFromShop addProduct(String productName, 
 									   int valuePrice, 
-									   int customerPrice, 
+									   int costumerPrice, 
 									   String productNumber, 
 									   String customerName, 
 									   String customerNumber, 
 									   boolean bNotification) {
 		
 		Product productTemp; //to check if product exist in system	
-		productTemp = allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
+		productTemp = allProducts.put(productNumber, new Product(productName, valuePrice, costumerPrice,
 						new Customer(customerName, customerNumber, bNotification)));
 		
 		
@@ -133,19 +132,6 @@ public class Shop implements ObservableShop {
 		saveAllProductsToFile();
 		shopProfit.calculateTotalProfit();
 		return Emassage.SUCCEES;
-	}
-	
-	public void addProductAndCostumerToTheShop(String productName, 
-											   int valuePrice, 
-											   int customerPrice, 
-											   String productNumber, 
-											   String customerName, 
-											   String customerNumber, 
-											   boolean bNotification) {
-		
-
-		
-
 	}
 	
 	public EMassageFromShop deleteProduct(String productNumber) {

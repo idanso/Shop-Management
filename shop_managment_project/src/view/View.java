@@ -1,19 +1,8 @@
 package view;
 
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Map;
-
-import com.sun.javafx.tk.PrintPipeline;
-
 import controller.Controller;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,18 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -95,6 +74,7 @@ public class View extends Application {
 	private TextFlow massagesTextFlow, showAllProductsFlow;
 	private NotificationHandler nHandler;
 	private TextFlow profitSummaryTextFlow;
+	private EMassageFromShop Emassage;
 	
 	static Controller controller;
 	
@@ -146,7 +126,7 @@ public class View extends Application {
 		
 		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // TODO need to add the function to send notification
 		
-		bRemoveAllProducts.setOnAction(e -> controller.deleteAllProducts()); // TODO need to add pop up massage
+		bRemoveAllProducts.setOnAction(e -> popupWindowMassage(controller.deleteAllProducts())); // TODO need to add pop up massage
 		
 		bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
 		
@@ -278,21 +258,21 @@ public class View extends Application {
 	}
 
 	public int getPriceForShop() {
-		int price = -1;
+		int price = 0;
 		try {
 			price = Integer.parseInt(priceForShop.getText());
 		} catch (Exception e) {
-			System.out.println("The price for the shop must be a number");
+			popupWindowMassage(Emassage.FAILE);
 		}
 		return price;
 	}
 
 	public int getPriceForCostumer() {
-		int price = -1;
+		int price = 0;
 		try {
 			price = Integer.parseInt(priceForCostumer.getText());
 		} catch (Exception e) {
-			System.out.println("The price for the shop must be a number");
+			popupWindowMassage(Emassage.FAILE);
 		}
 		return price;
 	}
@@ -332,7 +312,9 @@ public class View extends Application {
 			alert.show();
 		} else {
 			
-			controller.addProduct();
+			if(controller.addProduct() == Emassage.FAILE) {
+				popupWindowMassage(Emassage.FAILE);
+			}
 			alert.setAlertType(AlertType.CONFIRMATION);
 			alert.setContentText("The product was successfully added");
 			alert.show();

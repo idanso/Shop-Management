@@ -1,9 +1,7 @@
 package command;
 
-import java.util.Map;
 
 import shop_managment_project.EMassageFromShop;
-import shop_managment_project.Product;
 import shop_managment_project.Shop;
 import view.View;
 public class AddProductCommand implements Command{

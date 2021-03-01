@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.Map;
-
 import command.AddProductCommand;
 import command.CreateProductMapCommand;
 import command.DeleteAllProductsCommand;
@@ -10,17 +8,14 @@ import command.DeleteProductCommand;
 import command.GetProfitSummaryCommand;
 import command.PrintAllProducts;
 import command.SendNotificationCommand;
-import command.ShowMassagesFromCustomersCommand;
 import model.Model;
 import shop_managment_project.EMassageFromShop;
-import shop_managment_project.Product;
 import view.View;
 
 public class Controller {
 	
 	private View view;
 	private Model model;
-	private EMassageFromShop Emassage;
 	
 	public Controller(View view, Model model) {
 		this.view = view;
