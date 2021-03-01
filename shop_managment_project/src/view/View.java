@@ -123,9 +123,9 @@ public class View extends Application {
 		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
 		
-		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // TODO need to add the function to send notification
+		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages());
 		
-		bRemoveAllProducts.setOnAction(e -> popupWindowMassage(controller.deleteAllProducts())); // TODO need to add pop up massage
+		bRemoveAllProducts.setOnAction(e -> popupWindowMassage(controller.deleteAllProducts())); 
 		
 		bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
 		
@@ -223,8 +223,6 @@ public class View extends Application {
 	@Override // do the final things after exit the program
 	public void stop() throws Exception {
 		controller.closeShopFile();
-		System.out.println("Good bye!");
-		System.out.println("After the program");
 	}
 
 	public void clear() {
