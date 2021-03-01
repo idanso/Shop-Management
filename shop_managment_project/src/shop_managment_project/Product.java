@@ -39,14 +39,6 @@ public class Product {
 		this.customerPrice = costumerPrice;
 	}
 
-//	public String getProductNum() {
-//		return productNum;
-//	}
-//
-//	public void setProductNum(String productNum) {
-//		this.productNum = productNum;
-//	}
-
 	public Customer getCustomer() {
 		return customer;
 	}

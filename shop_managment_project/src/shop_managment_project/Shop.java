@@ -23,8 +23,9 @@ public class Shop implements Sender, Receiver {
 	private ProductsFile pFile;
 	private int numOfProducts;
 	private ShopMemento memento;
-	private static Shop shop_Instance;
 	private ShopProfit shopProfit;
+	
+	private static Shop shop_Instance;
 	
 	
 	private Shop(File file) {
@@ -79,8 +80,13 @@ public class Shop implements Sender, Receiver {
 		}
 	}
 	
-	public void addProduct(String productName, int valuePrice, int customerPrice, String productNumber, 
-			String customerName, String customerNumber, boolean bNotification) {
+	public void addProduct(String productName, 
+						   int valuePrice, 
+						   int customerPrice, 
+						   String productNumber, 
+						   String customerName, 
+						   String customerNumber, 
+						   boolean bNotification) {
 		boolean productExist = false;
 		
 //		if(allProducts.containsKey(productNumber)) {//check if products exist in system
@@ -109,13 +115,13 @@ public class Shop implements Sender, Receiver {
 		shopProfit.calculateTotalProfit();
 	}
 	
-	public boolean deleteProduct(String productNum) {
+	public boolean deleteProduct(String productNumber) {
 		try {
 			if(!pFile.isEmpty()) {
 				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
 				
 				while(fIterator.hasNext()) {
-					if(fIterator.next().getKey().equals(productNum)) {
+					if(fIterator.next().getKey().equals(productNumber)) {
 						fIterator.remove();
 						numOfProducts--;
 						pFile.setNumOfProducts(numOfProducts);
@@ -133,6 +139,23 @@ public class Shop implements Sender, Receiver {
 		shopProfit.calculateTotalProfit();
 		return false;
 		
+	}
+	
+	public boolean checkIfProductExist(String productNumber) {
+		try {
+			if(!pFile.isEmpty()) {
+				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
+				
+				while(fIterator.hasNext()) {
+					if(fIterator.next().getKey().equals(productNumber)) 
+						return true;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
 	}
 	
 	public void deleteAllProducts() {

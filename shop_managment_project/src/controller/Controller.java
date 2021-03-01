@@ -60,24 +60,9 @@ public class Controller {
 		view.getnHandler().setCustomers(model.getShop().getAllCustomersWithNotification());
 		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
 	}
+	public boolean checkIfProductExist(String productNumber) {
+		return model.getShop().checkIfProductExist(productNumber);
+	}
 	
-//	EventHandler<ActionEvent> addProduct = new EventHandler<ActionEvent>() {
-//		@Override
-//		public void handle(ActionEvent addProduct) {
-//			System.out.println("idannnnnnnnnnnnnnnnnnnnnnnnnn");
-//			new AddProductCommand(model.getShop(), view);
-//			
-//		}
-//	};
-	
-//	class AddProductListener implements ActionListener{
-//
-//		@Override
-//		public void actionPerformed(java.awt.event.ActionEvent e) {
-//			
-//			
-//		}
-//		
-//	}
 
 }

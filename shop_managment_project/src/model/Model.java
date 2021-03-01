@@ -9,7 +9,7 @@ import shop_managment_project.Shop;
 public class Model {
 	
 	private Shop shop;
-	private Command command; //meybe to delete
+	private Command command; //Maybe to delete
 	File file;
 
 	public Model(String fileName) {

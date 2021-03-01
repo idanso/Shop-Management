@@ -45,28 +45,60 @@ public class View extends Application {
 	private Stage window;
 	
 	private TableView table;
-	private TableColumn nameProductTable, priceForShopTable, priceForCostumerTable, nameCostumerTable,
-	phoneNumberTable, notificationTable;
+
+	private TableColumn nameProductTable, 
+						priceForShopTable, 
+						priceForCostumerTable, 
+						nameCostumerTable,
+						phoneNumberTable, 
+						notificationTable;
 	
-	private Button backB, submmitAddProductB, submmitSorting;
-	private Button addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene,
-	sendNotificationsMainScene, undoFuncrionMainScene;
+	private Button backB, 
+				   submitAddProductB, 
+				   submitSorting,
+				   submitSearchB,
+				   addProductMainScene, 
+	 			   showAllProductsMainScene, 
+	 			   searchForRemoveMainScene,
+	 			   sendNotificationsMainScene, 
+	 			   undoFunctionMainScene,
+	 			   bShowProfitSummaryScene,
+	 			   bRemoveAllProducts,
+	 			   bCloseShowMassagesWindows;
 	
-	private TextField productName, productNumber, priceForShop, priceForCostumer, costumerName, phoneNumber,
-			deleteProduct;
+	private TextField productName, 
+	                  productNumber, 
+	                  priceForShop, 
+	                  priceForCostumer, 
+	                  costumerName, 
+	                  phoneNumber,
+	                  deleteProduct;
+
 	private ToggleGroup TGSorting;
-	private RadioButton notificationForCostumer, sortUp, sortDown, sortOrder;
+
+	private RadioButton notificationForCostumer, 
+						sortUp, 
+						sortDown, 
+						sortOrder;
+	
+	
+	private Label head, 
+				  headAddProduct,
+				  profitSummaryLabel, 
+				  profitSummaryHeadLabel,
+				  searchToRemove;
+	
+	private VBox vboxSorting, vboxSearch ;
+	private HBox hboxAddProduct, hboxSearchProduct;
+	
+	private GridPane gridAddProduct;
+	
 	private Alert alert;
-	static Controller controller;
-	private Label head;
 	private TextFlow massagesTextFlow;
 	private NotificationHandler nHandler;
-	private Button bCloseShowMassagesWindows;
-	private Button bRemoveAllProducts;
-	private Button bShowProfitSummaryScene;
-	private Label profitSummaryLabel;
 	private TextFlow profitSummaryTextFlow;
-//	private EventHandler<ActionEvent> addProduct;
+	
+	static Controller controller;
 	
 	private final static String FILE_NAME = "allProducts.txt";
 
@@ -80,93 +112,32 @@ public class View extends Application {
 		Model model = new Model(FILE_NAME);
 		controller = new Controller(this, model);
 		table = new TableView();
-		this.sortUp = new RadioButton();
-		sortDown = new RadioButton();
-		sortOrder = new RadioButton();
-		submmitSorting = new Button("Submmit");
-		submmitAddProductB = new Button("Submmit");
-		backB = new Button("<<Back");
-		backB.setOnAction(e -> mainWindow());
-		
-		//mainWindow Initialize
-		addProductMainScene = new Button("Add product");
-		showAllProductsMainScene = new Button("Show all the products");
-		searchForRemoveMainScene = new Button("remove product");
-		bRemoveAllProducts = new Button("Remove all products");
-		sendNotificationsMainScene = new Button("Show customers with notification");
-		bShowProfitSummaryScene = new Button("Show profit Summary");
-		undoFuncrionMainScene = new Button("Undo");
 
-		
-		//addProductScene
-		productName = new TextField();
-		productNumber = new TextField();
-		priceForShop = new TextField();
-		priceForCostumer = new TextField();
-		costumerName = new TextField();
-		phoneNumber = new TextField();
-		
-		//show all product
-		nameProductTable = new TableColumn<>("Name of product");
-		priceForShopTable = new TableColumn<>("Price for the shop");
-		priceForCostumerTable = new TableColumn<>("Price at the shop");
-		nameCostumerTable = new TableColumn<>("Costumer name");
-		phoneNumberTable = new TableColumn<>("Phone number");
-		notificationTable = new TableColumn<>("Want to get news?");
+		this.createButtons();
+		this.createRadioButtons();
+		this.createTextFields();
+		this.createTablesColumn();
+
+		this.setActions();
 		
 		window = mainWindow;
 		window.setTitle("Main window");
 		mainScene();
 		window.show();
-
 	}
 
 
 	public void mainScene() {
 		
-		head = new Label("Choose type of sorting:");
-		TGSorting = new ToggleGroup();
-		
-		sortUp.setText("Sorting by Alpha-Bet");
-		sortUp.setToggleGroup(TGSorting);
-		
-		sortDown.setText("Sorting by revers Alpha-Bet");
-		sortDown.setToggleGroup(TGSorting);
-		
-		sortOrder.setText("Sorting by order input");
-		sortOrder.setToggleGroup(TGSorting);
+		setSortingOptionsLabelText();
 		
 		alert = new Alert(AlertType.NONE);
-		head.setFont(new Font("Arial", 22));
-		submmitSorting.setOnAction(e -> choosSorting());
-		VBox vbox = new VBox();
-		vbox.getChildren().addAll(head, sortUp, sortDown, sortOrder, submmitSorting);
-		vbox.setAlignment(Pos.CENTER);
-		vbox.setPadding(new Insets(20, 80, 20, 80));
-		vbox.setSpacing(10);
-
-//		FileInputStream input = null;
-//		try {
-//			input = new FileInputStream("pexels-photo-586744.jpeg");
-//		} catch (FileNotFoundException e1) {
-//			e1.printStackTrace();
-//		} 
-//		  
-//        // create a image 
-//        Image image = new Image(input); 
-//
-//        // create a background image 
-//        BackgroundImage backgroundimage = new BackgroundImage(image,  
-//                                         BackgroundRepeat.NO_REPEAT,  
-//                                         BackgroundRepeat.NO_REPEAT,  
-//                                         BackgroundPosition.DEFAULT,  
-//                                            BackgroundSize.DEFAULT); 
-//
-//        // create Background 
-//        Background background = new Background(backgroundimage); 
-//        
-//        vbox.setBackground(background);
-		window.setScene(new Scene(vbox));
+		
+		setVbox();
+		createBackground();
+	 // vbox.setBackground(background);
+		submitSorting.setOnAction(e -> choosSorting());
+		window.setScene(new Scene(vboxSorting));
 	}
 
 	public void mainWindow() {
@@ -175,13 +146,18 @@ public class View extends Application {
 		
 		//TODO delete the second statment and restore first function
 		//showAllProductsMainScene.setOnAction(e -> showProductsScene()); 
-		showAllProductsMainScene.setOnAction(e -> printProductsToTetminal()); //to delete
+		showAllProductsMainScene.setOnAction(e -> printProductsToTerminal()); //to delete
 		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
+		
 		sendNotificationsMainScene.setOnAction(e -> showReceivedMassages()); // TODO need to add the function to send notification
+		
 		bRemoveAllProducts.setOnAction(e -> controller.deleteAllProducts()); // TODO need to add pop up massage
-		undoFuncrionMainScene.setOnAction(e -> controller.undoProduct());
-		bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
+		
+		//bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
+		
+		undoFunctionMainScene.setOnAction(e -> controller.undoProduct());
+		
 		Button exit = new Button("EXIT");
 		exit.setOnAction(e -> {
 			try {
@@ -192,7 +168,14 @@ public class View extends Application {
 			System.exit(0);
 		});
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(addProductMainScene, showAllProductsMainScene, searchForRemoveMainScene, bRemoveAllProducts, sendNotificationsMainScene, bShowProfitSummaryScene, undoFuncrionMainScene, exit);
+		vbox.getChildren().addAll(addProductMainScene, 
+								  showAllProductsMainScene, 
+								  searchForRemoveMainScene, 
+								  bRemoveAllProducts, 
+								  sendNotificationsMainScene, 
+								 // bShowProfitSummaryScene, 
+								  undoFunctionMainScene, 
+								  exit);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(20, 80, 20, 80));
 		vbox.setSpacing(10);
@@ -200,43 +183,21 @@ public class View extends Application {
 	}
 
 	public void addProductsScene() {
-		GridPane grid = new GridPane();
-		HBox hbox1 = new HBox(8);
-		grid.setPadding(new Insets(10, 10, 10, 10));
-		grid.setVgap(5);
-		grid.setHgap(10);
+		gridAddProduct = new GridPane();
 		Button clearB = new Button("Clear");
-		notificationForCostumer = new RadioButton("Send notification");
+		hboxAddProduct = new HBox(8);
+		hboxAddProduct.getChildren().addAll(submitAddProductB, clearB);
+		
 		alert = new Alert(AlertType.NONE);
 
-		Label headAddProduct = new Label("Add product:");
-		headAddProduct.setFont(new Font("Arial", 22));
-
-		productName.setPromptText("Product name");
-		productNumber.setPromptText("Product Number (makat)");
-		priceForShop.setPromptText("Price for the shop");
-		priceForCostumer.setPromptText("Costumer price");
-		costumerName.setPromptText("Costumer Name");
-		phoneNumber.setPromptText("Phone number");
+		setTextForAddProduct();
+		setGridAddProduct();
 		
-		
-		grid.add(headAddProduct, 0, 0);
-		grid.add(productName, 1, 0);
-		grid.add(productNumber, 0, 1);
-		grid.add(priceForShop, 1, 1);
-		grid.add(priceForCostumer, 0, 2);
-		grid.add(costumerName, 1, 2);
-		grid.add(phoneNumber, 0, 3);
-		grid.add(notificationForCostumer, 1, 3);
-		grid.add(hbox1, 0, 4);
-		grid.add(backB, 1, 4);
-
-		hbox1.getChildren().addAll(submmitAddProductB, clearB);
-		submmitAddProductB.setOnAction(e -> addProduct());
+		submitAddProductB.setOnAction(e -> addProduct());
 		clearB.setOnAction(e -> clear());
 
-		grid.setAlignment(Pos.BASELINE_CENTER);
-		window.setScene(new Scene(grid, 500, 300));
+		gridAddProduct.setAlignment(Pos.BASELINE_CENTER);
+		window.setScene(new Scene(gridAddProduct, 500, 300));
 
 	}
 
@@ -264,14 +225,13 @@ public class View extends Application {
 	}
 
 	public void showProductsScene() {
-		table.getColumns().addAll(nameProductTable, priceForShopTable, priceForCostumerTable, nameCostumerTable, phoneNumberTable,
-				notificationTable);
-		nameProductTable.setMinWidth(150);
-		priceForShopTable.setMinWidth(150);
-		priceForCostumerTable.setMinWidth(150);
-		nameCostumerTable.setMinWidth(150);
-		phoneNumberTable.setMinWidth(200);
-		notificationTable.setMinWidth(150);
+		table.getColumns().addAll(nameProductTable, 
+								  priceForShopTable, 
+								  priceForCostumerTable, 
+								  nameCostumerTable, 
+								  phoneNumberTable,
+								  notificationTable);
+		setWidthToColumns();
 		
 		Label label = new Label("All the products:");
 		label.setFont(new Font("Arial", 22));
@@ -283,25 +243,13 @@ public class View extends Application {
 	public void searchProductToRemove() {
 		// search product to remove
 		Alert alert = new Alert(AlertType.NONE);
-		VBox vboxSearch = new VBox(10);
-		deleteProduct = new TextField();
-		deleteProduct.setMaxWidth(150);
-		deleteProduct.setPromptText("Enter the product number");
-		Button submmitSearchB = new Button("Submmit");
-		HBox hbox = new HBox(8);
-		hbox.getChildren().addAll(submmitSearchB, backB);
-		vboxSearch.getChildren().addAll(deleteProduct, hbox, table);
-		submmitSearchB.setOnAction(e -> {
-			if (deleteProduct.getText().isEmpty()) {
-				alert.setAlertType(AlertType.ERROR);
-				alert.setContentText("The product number is empty");
-				alert.show();
-					
-			}
-			else
-				controller.deleteProduct();// TODO add the option if the product doesnt exists
-
-		});
+		vboxSearch = new VBox(10);
+		
+	    setVboxSearchToRemove();
+	    setHboxForButtons();
+	    
+		vboxSearch.getChildren().addAll(searchToRemove, deleteProduct, hboxSearchProduct, table);
+		submitSearchB.setOnAction(e -> searchToRemoveFunction());
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
 
@@ -309,12 +257,7 @@ public class View extends Application {
 		
 		VBox ProfitSummaryVBox = new VBox(20);
 		ProfitSummaryVBox.setPadding(new Insets(10, 10, 10, 10));
-		Label profitSummaryHeadLabel = new Label("Profit Summary");
-		profitSummaryHeadLabel.setFont(new Font("Arial", 22));
-		profitSummaryLabel = new Label();
-		profitSummaryLabel.setFont(new Font("Arial", 14));
-		profitSummaryTextFlow = new TextFlow();
-		profitSummaryTextFlow.setPrefSize(400, 300);	
+		createLabelsTextForSummary();	
 		profitSummaryTextFlow.getChildren().add(profitSummaryLabel);
 		ScrollPane massagesScrollPane = new ScrollPane(profitSummaryTextFlow);
 		ProfitSummaryVBox.getChildren().addAll(profitSummaryHeadLabel,massagesScrollPane, backB);
@@ -428,15 +371,176 @@ public class View extends Application {
 		}
 	}
 	
-	public void printProductsToTetminal() { // to delete
+	public void printProductsToTerminal() { // to delete
 		controller.printAllProducts(); 
 	}
 
 	public NotificationHandler getnHandler() {
 		return nHandler;
 	}
+	
+	private void createButtons() {
+		submitSorting = new Button("Submit");
+		submitAddProductB = new Button("Submit");
+		backB = new Button("<<Back");
+		addProductMainScene = new Button("Add product");
+		showAllProductsMainScene = new Button("Show all the products");
+		searchForRemoveMainScene = new Button("remove product");
+		bRemoveAllProducts = new Button("remove all products");
+		sendNotificationsMainScene = new Button("show customers with notification");
+		undoFunctionMainScene = new Button("Undo");
+	}
+	
+	private void createTextFields() {
+		productName = new TextField();
+		productNumber = new TextField();
+		priceForShop = new TextField();
+		priceForCostumer = new TextField();
+		costumerName = new TextField();
+		phoneNumber = new TextField();
+	}
+	
+	private void createTablesColumn() {
+		nameProductTable = new TableColumn<>("Name of product");
+		priceForShopTable = new TableColumn<>("Price for the shop");
+		priceForCostumerTable = new TableColumn<>("Price at the shop");
+		nameCostumerTable = new TableColumn<>("Costumer name");
+		phoneNumberTable = new TableColumn<>("Phone number");
+		notificationTable = new TableColumn<>("Want to get news?");
+	}
 
+	private void createRadioButtons() {
+		sortUp = new RadioButton();
+		sortDown = new RadioButton();
+		sortOrder = new RadioButton();
+	}
+
+	private void setActions() {
+		backB.setOnAction(e -> mainWindow());
+		undoFunctionMainScene.setOnAction(e -> controller.undoProduct());
+	}
 	
+	private void createLabelsTextForSummary() {
+		profitSummaryHeadLabel = new Label("Profit Summary");
+		profitSummaryLabel = new Label();
+		profitSummaryTextFlow = new TextFlow();
+		profitSummaryHeadLabel.setFont(new Font("Arial", 22));
+		profitSummaryLabel.setFont(new Font("Arial", 14));
+		profitSummaryTextFlow.setPrefSize(400, 300);
+	}
+
+	private void setSortingOptionsLabelText () {
+
+		head = new Label("Choose type of sorting:");
+		head.setFont(new Font("Arial", 22));
+		TGSorting = new ToggleGroup();
 	
+		sortUp.setText("Sorting by Alpha-Bet");
+		sortUp.setToggleGroup(TGSorting);
+	
+		sortDown.setText("Sorting by revers Alpha-Bet");
+		sortDown.setToggleGroup(TGSorting);
+	
+		sortOrder.setText("Sorting by order input");
+		sortOrder.setToggleGroup(TGSorting);
+	}
+	
+	private void setVbox() {
+		vboxSorting = new VBox();
+		
+		vboxSorting.getChildren().addAll(head, sortUp, sortDown, sortOrder, submitSorting);
+		vboxSorting.setAlignment(Pos.CENTER);
+		vboxSorting.setPadding(new Insets(20, 80, 20, 80));
+		vboxSorting.setSpacing(10);
+	}
+	
+	private void createBackground() {
+//		FileInputStream input = null;
+//		try {
+//			input = new FileInputStream("pexels-photo-586744.jpeg");
+//		} catch (FileNotFoundException e1) {
+//			e1.printStackTrace();
+//		} 
+//		  
+//        // create a image 
+//        Image image = new Image(input); 
+//
+//        // create a background image 
+//        BackgroundImage backgroundimage = new BackgroundImage(image,  
+//                                         BackgroundRepeat.NO_REPEAT,  
+//                                         BackgroundRepeat.NO_REPEAT,  
+//                                         BackgroundPosition.DEFAULT,  
+//                                            BackgroundSize.DEFAULT); 
+//
+//        // create Background 
+//        Background background = new Background(backgroundimage); 
+	}
+	
+	private void setWidthToColumns() {
+		nameProductTable.setMinWidth(150);
+		priceForShopTable.setMinWidth(150);
+		priceForCostumerTable.setMinWidth(150);
+		nameCostumerTable.setMinWidth(150);
+		phoneNumberTable.setMinWidth(200);
+		notificationTable.setMinWidth(150);
+	}
+	
+	private void setTextForAddProduct() {
+		headAddProduct = new Label("Add product:");
+		headAddProduct.setFont(new Font("Arial", 22));
+		productName.setPromptText("Product name");
+		productNumber.setPromptText("Product Number (makat)");
+		priceForShop.setPromptText("Price for the shop");
+		priceForCostumer.setPromptText("Costumer price");
+		costumerName.setPromptText("Costumer Name");
+		phoneNumber.setPromptText("Phone number");
+		notificationForCostumer = new RadioButton("Send notification");
+	}
+	
+	private void setGridAddProduct() {
+		gridAddProduct.setPadding(new Insets(10, 10, 10, 10));
+		gridAddProduct.setVgap(5);
+		gridAddProduct.setHgap(10);
+		gridAddProduct.add(headAddProduct, 0, 0);
+		gridAddProduct.add(productName, 1, 0);
+		gridAddProduct.add(productNumber, 0, 1);
+		gridAddProduct.add(priceForShop, 1, 1);
+		gridAddProduct.add(priceForCostumer, 0, 2);
+		gridAddProduct.add(costumerName, 1, 2);
+		gridAddProduct.add(phoneNumber, 0, 3);
+		gridAddProduct.add(notificationForCostumer, 1, 3);
+		gridAddProduct.add(hboxAddProduct, 0, 4);
+		gridAddProduct.add(backB, 1, 4);
+	}
+	
+	public void setHboxForButtons() {
+		hboxSearchProduct = new HBox(8);
+		hboxSearchProduct.getChildren().addAll(submitSearchB, backB);
+	}
+	
+	public void setVboxSearchToRemove() {
+		deleteProduct = new TextField();
+		deleteProduct.setMaxWidth(150);
+	    submitSearchB = new Button("Submmit");
+	    searchToRemove = new Label ("Enter the product number (makat):");
+	    searchToRemove.setFont(new Font("Arial", 12));
+	}
+	
+	public void searchToRemoveFunction() {
+		if (deleteProduct.getText().isEmpty()) {
+			alert.setAlertType(AlertType.ERROR);
+			alert.setContentText("The text field for the product number is empty");
+			alert.show();
+				
+		}
+		else
+			if(controller.checkIfProductExist(deleteProduct.getText()) ==false) {
+				alert.setAlertType(AlertType.ERROR);
+				alert.setContentText("The product doesnt exist");
+				alert.show();
+			}
+			else
+				controller.deleteProduct();
+	}
 
 }
