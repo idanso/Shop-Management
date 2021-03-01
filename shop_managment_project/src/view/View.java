@@ -422,7 +422,10 @@ public class View extends Application {
 	}
 	
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 	
 >>>>>>> Stashed changes
 	private void setTextForAddProduct() {
