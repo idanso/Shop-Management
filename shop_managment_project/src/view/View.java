@@ -213,7 +213,7 @@ public class View extends Application {
 		receivedMassagesVBox.getChildren().addAll(receivedMassagesL, massagesScrollPane, bCloseShowMassagesWindows); // need to add backB
 		massageStage.setScene(new Scene(receivedMassagesVBox));
 		massageStage.show();
-		Platform.runLater(() -> controller.showCustomersMassages());
+		Platform.runLater(() -> controller.sendNotification());
 		//window.setScene(new Scene(receivedMassagesVBox));
 
 	}
@@ -377,7 +377,7 @@ public class View extends Application {
 		searchForRemoveMainScene = new Button("remove product");
 		bRemoveAllProducts = new Button("remove all products");
 		bShowProfitSummaryScene = new Button("show profit summary");
-		sendNotificationsMainScene = new Button("show customers with notification");
+		sendNotificationsMainScene = new Button("send notification to customer");
 		undoFunctionMainScene = new Button("Undo");
 	}
 	

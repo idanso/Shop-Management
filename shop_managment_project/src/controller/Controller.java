@@ -51,12 +51,16 @@ public class Controller {
 		return new GetProfitSummaryCommand(model.getShop(),view.getProfitSummaryLabel()).execute();
 	}
 	
-	public void showCustomersMassages() {
-		view.getnHandler().setCustomers(model.getShop().getAllCustomersWithNotification());
-		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
+	public void sendNotification() {
+		new SendNotificationCommand(model.getShop()).execute();
+		view.getnHandler().setCustomers(model.getShop().getCostumersListNames());
+		new Thread(view.getnHandler()).start();
 	}
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 4bdd3e284696db8a8527b6b2e1bb0d5c6199378c
 	public void printAllProducts() { // to delete for testing
 		model.getShop().printAllProducts();
 	}

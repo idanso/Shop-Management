@@ -21,8 +21,8 @@ public class Shop implements ObservableShop {
 
 	private Map<String,Product> allProducts;
 	
-	private List <ObserverCostumers> costumersListNotification;//List of the costumer that want to receive news from the shop
-	private List <String> costumersListNames;//List of the names of the costumers that received the massage from the shop
+	private ArrayList <ObserverCostumers> costumersListNotification;//List of the costumer that want to receive news from the shop
+	private ArrayList <String> costumersListNames;//List of the names of the costumers that received the massage from the shop
 	
 	private EProductSortType productSortingType;
 	private EMassageFromShop Emassage;
@@ -37,8 +37,6 @@ public class Shop implements ObservableShop {
 	
 	private static Shop shop_Instance;
 	
-	private final String MASSAGE_TO_COSTUMER= "Discount";//String massage for costumers to know the news from the shop
-	
 	
 	private Shop(File file) {
 		try {
@@ -47,6 +45,8 @@ public class Shop implements ObservableShop {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		costumersListNotification = new ArrayList<>();
+		costumersListNames = new ArrayList<String>();
 	}
 	
 	public static Shop getInstance(File file) {
@@ -78,6 +78,7 @@ public class Shop implements ObservableShop {
 	
 	public void readAllProductsFromFile() {
 		allProducts.clear();
+		costumersListNotification.clear();
 		try {
 			if(!pFile.isEmpty()) {
 				Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
@@ -86,6 +87,8 @@ public class Shop implements ObservableShop {
 				while(fIterator.hasNext()) {
 					entry = fIterator.next();
 					allProducts.put(entry.getKey(), entry.getValue());
+					if(entry.getValue().getCustomer().getBNotification())
+						costumersListNotification.add(entry.getValue().getCustomer());
 				}
 			}
 		} catch (IOException e) {
@@ -100,23 +103,15 @@ public class Shop implements ObservableShop {
 									   String customerName, 
 									   String customerNumber, 
 									   boolean bNotification) {
-		boolean productExist = false;
 		
-//		if(allProducts.containsKey(productNumber)) {//check if products exist in system
-//			notificationHandler.removeCustomer(allProducts.get(productNumber).getCustomer()); //remove customer in case customer chnaged
-//			productExist = true;
-//		}
+		Product productTemp; //to check if product exist in system	
+		productTemp = allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
+						new Customer(customerName, customerNumber, bNotification)));
 		
-		addProductAndCostumerToTheShop(productName, 
-									   valuePrice, 
-									   customerPrice, 
-									   productNumber, 
-									   customerName, 
-									   customerNumber, 
-									   bNotification);
+		
 		//notificationHandler.addCustomerAdReceiver(allProducts.get(productNumber).getCustomer()); //add the customer to the receivers list
 		
-		if(!productExist) {//in case the new product not exist in system raise number of products
+		if(productTemp == null) {//in case the new product not exist in system raise number of products
 			numOfProducts++;
 			try {
 				pFile.setNumOfProducts(numOfProducts);
@@ -125,6 +120,13 @@ public class Shop implements ObservableShop {
 				return Emassage.FAILE;
 			}
 			saveLastProduct(productNumber); //save last product as memento only in case new product created and not updated
+			if(allProducts.get(productNumber).getCustomer().getBNotification())
+				costumersListNotification.add(allProducts.get(productNumber).getCustomer());
+		}
+		else {
+			costumersListNotification.remove(productTemp.getCustomer());// check if remove
+			if(allProducts.get(productNumber).getCustomer().getBNotification())
+				costumersListNotification.add(allProducts.get(productNumber).getCustomer());
 		}
 		
 		saveAllProductsToFile();
@@ -140,9 +142,9 @@ public class Shop implements ObservableShop {
 											   String customerNumber, 
 											   boolean bNotification) {
 		
-		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
-				new Customer(customerName, customerNumber, bNotification)));
-		costumersListNotification.add(new Customer(customerName, customerNumber, bNotification));
+
+		
+
 	}
 	
 	public EMassageFromShop deleteProduct(String productNumber) {
@@ -168,7 +170,7 @@ public class Shop implements ObservableShop {
 			return Emassage.FAILE;
 		}
 		shopProfit.calculateTotalProfit();
-		return	checkIfProductExist(productNumber);
+		return	checkIfProductExist(productNumber); //verify deletion
 		
 	}
 	
@@ -243,6 +245,10 @@ public class Shop implements ObservableShop {
 	public ShopMemento getMemento() {
 		return memento;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4bdd3e284696db8a8527b6b2e1bb0d5c6199378c
 	
 	public void saveAllProductsToFile() {
 		Set<Map.Entry<String, Product>> setProducts = allProducts.entrySet();
@@ -255,12 +261,7 @@ public class Shop implements ObservableShop {
 	
 	public String profitSummaryToString() {
 		return shopProfit.toString();
-		
 	}
-	
-	
-	
-
 
 	public StringBuffer printAllProducts() {
 		StringBuffer allProductsToString = new StringBuffer();
@@ -285,19 +286,23 @@ public class Shop implements ObservableShop {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public void sendNewsToCostumer(String discountMassage) {
+=======
+	public void sendNewsToCostumers(String discountMassage) {
+		costumersListNames.clear();
+>>>>>>> 4bdd3e284696db8a8527b6b2e1bb0d5c6199378c
 		for(ObserverCostumers o : costumersListNotification) {
-			o.reciveMassage(this, MASSAGE_TO_COSTUMER);
+			o.reciveMassage(this, discountMassage);
 		}
-		
 	}
 	
+	public ArrayList<String> getCostumersListNames() {
+		return costumersListNames;
+	}
+
 	public void addCostumerNameRecivedMassage (String name) {
 		this.costumersListNames.add(name);
 	}
-
-	
-
-
 
 }
