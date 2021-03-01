@@ -1,5 +1,6 @@
 package command;
 
+import shop_managment_project.EMassageFromShop;
 import shop_managment_project.Shop;
 
 public class DeleteLastCommand implements Command {
@@ -12,8 +13,8 @@ public class DeleteLastCommand implements Command {
 	}
 
 	@Override
-	public void execute() {
-		bResult = this.shop.undo(shop.getMemento());
+	public EMassageFromShop execute() {
+		return this.shop.undo(shop.getMemento());
 		
 	}
 	

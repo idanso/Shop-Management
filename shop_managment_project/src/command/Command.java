@@ -1,6 +1,8 @@
 package command;
 
+import shop_managment_project.EMassageFromShop;
+
 public interface Command {
 
-	void execute();
+	EMassageFromShop execute();
 }

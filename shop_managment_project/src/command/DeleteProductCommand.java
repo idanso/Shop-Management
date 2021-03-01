@@ -1,5 +1,6 @@
 package command;
 
+import shop_managment_project.EMassageFromShop;
 import shop_managment_project.Shop;
 
 public class DeleteProductCommand implements Command {
@@ -13,8 +14,8 @@ public class DeleteProductCommand implements Command {
 	}
 
 	@Override
-	public void execute() {
-		this.shop.deleteProduct(productNumber);	
+	public EMassageFromShop execute() {
+		return this.shop.deleteProduct(productNumber);	
 	}
 
 }

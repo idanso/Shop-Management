@@ -1,8 +1,8 @@
 package command;
 
 import javafx.scene.control.Label;
+import shop_managment_project.EMassageFromShop;
 import shop_managment_project.Shop;
-import shop_managment_project.ShopProfit;
 
 public class GetProfitSummaryCommand implements Command {
 	
@@ -15,7 +15,8 @@ public class GetProfitSummaryCommand implements Command {
 	}
 
 	@Override
-	public void execute() {
+	public EMassageFromShop execute() {
 		textLabel.setText(shop.profitSummaryToString());
+		return null;
 	}
 }

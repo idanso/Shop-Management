@@ -1,5 +1,6 @@
 package command;
 
+import shop_managment_project.EMassageFromShop;
 import shop_managment_project.NotificationHandler;
 
 public class ShowMassagesFromCustomersCommand implements Command {
@@ -11,10 +12,9 @@ public class ShowMassagesFromCustomersCommand implements Command {
 	}
 
 	@Override
-	public void execute() {
-		//nHandler.start();
-		//nHandler.printToLabel();
+	public EMassageFromShop execute() {
 		new Thread(nHandler).start();
+		return null;
 	}
 	
 	

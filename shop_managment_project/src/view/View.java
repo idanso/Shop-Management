@@ -44,9 +44,9 @@ public class View extends Application {
 
 	private Stage window;
 	
-	private TableView table;
+	private TableView<Product> table;
 
-	private TableColumn nameProductTable, 
+	private TableColumn<Object, Object> nameProductTable, 
 						priceForShopTable, 
 						priceForCostumerTable, 
 						nameCostumerTable,

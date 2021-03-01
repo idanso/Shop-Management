@@ -55,7 +55,7 @@ public class Shop implements ObservableShop {
 		return shop_Instance;
 	}
 	
-	public void createProductsMap(EProductSortType eProductSortingType) {
+	public EMassageFromShop createProductsMap(EProductSortType eProductSortingType) {
 		
 		this.productSortingType = eProductSortingType;
 		
@@ -73,6 +73,7 @@ public class Shop implements ObservableShop {
 		saveAllProductsToFile();//to save the product in the file as the selected sorting type
 		shopProfit = new ShopProfit(allProducts);
 		shopProfit.calculateTotalProfit();
+		return Emassage.SUCCEES;
 	}
 	
 	public void readAllProductsFromFile() {
@@ -92,13 +93,13 @@ public class Shop implements ObservableShop {
 		}
 	}
 	
-	public void addProduct(String productName, 
-						   int valuePrice, 
-						   int customerPrice, 
-						   String productNumber, 
-						   String customerName, 
-						   String customerNumber, 
-						   boolean bNotification) {
+	public EMassageFromShop addProduct(String productName, 
+									   int valuePrice, 
+									   int customerPrice, 
+									   String productNumber, 
+									   String customerName, 
+									   String customerNumber, 
+									   boolean bNotification) {
 		boolean productExist = false;
 		
 //		if(allProducts.containsKey(productNumber)) {//check if products exist in system
@@ -106,10 +107,13 @@ public class Shop implements ObservableShop {
 //			productExist = true;
 //		}
 		
-		
-		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
-				new Customer(customerName, customerNumber, bNotification)));
-		
+		addProductAndCostumerToTheShop(productName, 
+									   valuePrice, 
+									   customerPrice, 
+									   productNumber, 
+									   customerName, 
+									   customerNumber, 
+									   bNotification);
 		//notificationHandler.addCustomerAdReceiver(allProducts.get(productNumber).getCustomer()); //add the customer to the receivers list
 		
 		if(!productExist) {//in case the new product not exist in system raise number of products
@@ -117,14 +121,28 @@ public class Shop implements ObservableShop {
 			try {
 				pFile.setNumOfProducts(numOfProducts);
 			} catch (IOException e) {
-				
 				e.printStackTrace();
+				return Emassage.FAILE;
 			}
 			saveLastProduct(productNumber); //save last product as memento only in case new product created and not updated
 		}
 		
 		saveAllProductsToFile();
 		shopProfit.calculateTotalProfit();
+		return Emassage.SUCCEES;
+	}
+	
+	public void addProductAndCostumerToTheShop(String productName, 
+											   int valuePrice, 
+											   int customerPrice, 
+											   String productNumber, 
+											   String customerName, 
+											   String customerNumber, 
+											   boolean bNotification) {
+		
+		allProducts.put(productNumber, new Product(productName, valuePrice, customerPrice,
+				new Customer(customerName, customerNumber, bNotification)));
+		costumersListNotification.add(new Customer(customerName, customerNumber, bNotification));
 	}
 	
 	public EMassageFromShop deleteProduct(String productNumber) {
@@ -171,7 +189,7 @@ public class Shop implements ObservableShop {
 		return Emassage.DOESNT_EXIST;
 	}
 	
-	public void deleteAllProducts() {
+	public EMassageFromShop deleteAllProducts() {
 		Iterator<Map.Entry<String, Product>> fIterator = pFile.iterator();
 		
 		for (int i = 0; i < numOfProducts; i++) {
@@ -183,9 +201,11 @@ public class Shop implements ObservableShop {
 			pFile.setNumOfProducts(0);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return Emassage.FAILE;
 		}
 		readAllProductsFromFile();
 		shopProfit.calculateTotalProfit();
+		return Emassage.SUCCEES;
 	}
 	
 	public void saveLastProduct(String productNum) {
@@ -196,17 +216,15 @@ public class Shop implements ObservableShop {
 			memento.setProductNum(productNum);
 	}
 	
-	public boolean undo(ShopMemento memento) {
+	public EMassageFromShop undo(ShopMemento memento) {
 		//check if first product added to system before undo can apply regards if there are products from first start from the file
 		if(memento != null && allProducts.containsKey(memento.getProduct())) { 
 			deleteProduct(memento.getProduct());
 			saveLastProduct(null);
-			System.out.println("***undo success***"); //to delete
-			return true;
+			return Emassage.SUCCEES;
 		}
 		else {
-			System.out.println("***undo fail***"); //to delete
-			return false;
+			return Emassage.FAILE;
 		}
 			
 	}
@@ -226,8 +244,9 @@ public class Shop implements ObservableShop {
 		return memento;
 	}
 
-	public void sendNotifications() {
+	public EMassageFromShop sendNotifications() {
 		
+		return Emassage.SUCCEES;
 	}
 	
 	public void saveAllProductsToFile() {

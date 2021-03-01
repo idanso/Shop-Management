@@ -1,5 +1,6 @@
 package command;
 
+import shop_managment_project.EMassageFromShop;
 import shop_managment_project.EProductSortType;
 import shop_managment_project.Shop;
 
@@ -15,8 +16,8 @@ public class CreateProductMapCommand implements Command {
 
 	
 	@Override
-	public void execute() {
-		shop.createProductsMap(eProductSortType);
+	public EMassageFromShop execute() {
+		return shop.createProductsMap(eProductSortType);
 		
 	}
 

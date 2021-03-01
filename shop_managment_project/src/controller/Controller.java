@@ -23,12 +23,12 @@ public class Controller {
 		this.model = model;
 	}
 	
-	public void createProductsMap() {
-		new CreateProductMapCommand(model.getShop(), view.getTypeOfSorting()).execute();
+	public EMassageFromShop createProductsMap() {
+		return new CreateProductMapCommand(model.getShop(), view.getTypeOfSorting()).execute();
 	}
 
-	public void addProduct() {
-		new AddProductCommand(model.getShop(), view).execute();
+	public EMassageFromShop addProduct() {
+		return new AddProductCommand(model.getShop(), view).execute();
 		
 	}
 	
@@ -36,30 +36,29 @@ public class Controller {
 		return new DeleteProductCommand(model.getShop(), view.getDeleteProductNumber()).execute();
 	}
 	
-	public void undoProduct() {
-		new DeleteLastCommand(model.getShop()).execute();
+	public EMassageFromShop undoProduct() {
+		return new DeleteLastCommand(model.getShop()).execute();
 	}
 	
-	public void deleteAllProducts() {
-		new DeleteAllProductsCommand(model.getShop()).execute();
+	public EMassageFromShop deleteAllProducts() {
+		return new DeleteAllProductsCommand(model.getShop()).execute();
 	}
 	
-	public void getProfitSummary() {
-		new GetProfitSummaryCommand(model.getShop(),view.getProfitSummaryLabel()).execute();
-	}
-	
-	public void sendNotification() {
-		new SendNotificationCommand(model.getShop());
-	}
-	
-	public void printAllProducts() { // to delete for testing
-		model.getShop().printAllProducts();
+	public EMassageFromShop getProfitSummary() {
+		return new GetProfitSummaryCommand(model.getShop(),view.getProfitSummaryLabel()).execute();
 	}
 	
 	public void showCustomersMassages() {
 		view.getnHandler().setCustomers(model.getShop().getAllCustomersWithNotification());
 		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
 	}
-
+	
+//	public EMassageFromShop sendNotification() { need to delete**
+//		return new SendNotificationCommand(model.getShop());
+//	}
+	
+	public void printAllProducts() { // to delete for testing
+		model.getShop().printAllProducts();
+	}
 	
 }

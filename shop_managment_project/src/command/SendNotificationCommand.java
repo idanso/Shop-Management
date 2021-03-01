@@ -1,5 +1,6 @@
 package command;
 
+import shop_managment_project.EMassageFromShop;
 import shop_managment_project.Shop;
 
 public class SendNotificationCommand implements Command {
@@ -11,8 +12,8 @@ public class SendNotificationCommand implements Command {
 	}
 
 	@Override
-	public void execute() {
-		shop.sendNotifications();
+	public EMassageFromShop execute() {
+		return shop.sendNotifications();
 		
 	}
 }
