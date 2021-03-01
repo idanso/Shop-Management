@@ -110,8 +110,6 @@ public class View extends Application {
 		
 		
 		setVbox();
-		createBackground();
-	 // vbox.setBackground(background);
 		submitSorting.setOnAction(e -> choosSorting());
 		window.setScene(new Scene(vboxSorting));
 	}
@@ -192,8 +190,6 @@ public class View extends Application {
 		massageStage.setScene(new Scene(receivedMassagesVBox));
 		massageStage.show();
 		Platform.runLater(() -> controller.sendNotification());
-		//window.setScene(new Scene(receivedMassagesVBox));
-
 	}
 
 	public void showProductsScene() {
@@ -230,7 +226,8 @@ public class View extends Application {
 
 
 	@Override // do the final things after exit the program
-	public void stop() throws Exception { // TODO *****need to add call to close file in shop*****
+	public void stop() throws Exception {
+		controller.closeShopFile();
 		System.out.println("Good bye!");
 		System.out.println("After the program");
 	}
@@ -419,28 +416,6 @@ public class View extends Application {
 		vboxSorting.setAlignment(Pos.CENTER);
 		vboxSorting.setPadding(new Insets(20, 80, 20, 80));
 		vboxSorting.setSpacing(10);
-	}
-	
-	private void createBackground() {
-//		FileInputStream input = null;
-//		try {
-//			input = new FileInputStream("pexels-photo-586744.jpeg");
-//		} catch (FileNotFoundException e1) {
-//			e1.printStackTrace();
-//		} 
-//		  
-//        // create a image 
-//        Image image = new Image(input); 
-//
-//        // create a background image 
-//        BackgroundImage backgroundimage = new BackgroundImage(image,  
-//                                         BackgroundRepeat.NO_REPEAT,  
-//                                         BackgroundRepeat.NO_REPEAT,  
-//                                         BackgroundPosition.DEFAULT,  
-//                                            BackgroundSize.DEFAULT); 
-//
-//        // create Background 
-//        Background background = new Background(backgroundimage); 
 	}
 	
 	private void setTextForAddProduct() {

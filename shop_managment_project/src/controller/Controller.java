@@ -57,5 +57,9 @@ public class Controller {
 		new PrintAllProducts(view.getAllProductsLabel() ,model.getShop()).execute();
 	}
 	
+	public void closeShopFile() {
+		model.getShop().closeFile();
+	}
+	
 	
 }

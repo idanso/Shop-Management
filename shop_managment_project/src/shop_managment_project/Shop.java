@@ -107,10 +107,7 @@ public class Shop implements ObservableShop {
 		Product productTemp; //to check if product exist in system	
 		productTemp = allProducts.put(productNumber, new Product(productName, valuePrice, costumerPrice,
 						new Customer(customerName, customerNumber, bNotification)));
-		
-		
-		//notificationHandler.addCustomerAdReceiver(allProducts.get(productNumber).getCustomer()); //add the customer to the receivers list
-		
+				
 		if(productTemp == null) {//in case the new product not exist in system raise number of products
 			numOfProducts++;
 			try {
@@ -259,9 +256,24 @@ public class Shop implements ObservableShop {
 			counter++;
 		}
 		formatter.close();
-		System.out.println(sb.toString());
 		return sb.toString();
 		
+	}
+	
+	public void closeFile() {
+		try {
+			pFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<String> getCostumersListNames() {
+		return costumersListNames;
+	}
+
+	public void addCostumerNameRecivedMassage (String name) {
+		this.costumersListNames.add(name);
 	}
 
 	@Override
@@ -284,12 +296,6 @@ public class Shop implements ObservableShop {
 		}
 	}
 	
-	public ArrayList<String> getCostumersListNames() {
-		return costumersListNames;
-	}
 
-	public void addCostumerNameRecivedMassage (String name) {
-		this.costumersListNames.add(name);
-	}
 
 }
