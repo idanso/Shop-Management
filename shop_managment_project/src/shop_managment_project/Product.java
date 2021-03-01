@@ -1,5 +1,7 @@
 package shop_managment_project;
 
+import java.util.Formatter;
+
 public class Product {
 	
 	private String name;
@@ -49,11 +51,12 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product:" +
-				"Name: " + name + 
-				"Price for the Shop: " + valuePrice + 
-				"Price for costumer: " + customerPrice +
-				"Customer: " + customer + "\n";
+		StringBuffer sb = new StringBuffer();
+		Formatter formatter = new Formatter(sb);
+		formatter.format("|%-12s|%-11d|%-14d", getName(),getValuePrice(), getCostumerPrice());
+		sb.append(getCustomer().toString());
+		formatter.close();
+		return sb.toString();
 	}
 	
 	

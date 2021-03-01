@@ -1,6 +1,9 @@
 package shop_managment_project;
 
 import observer.ObserverCostumers;
+
+import java.util.Formatter;
+
 import observer.ObservableShop;
 
 public class Customer implements ObserverCostumers {
@@ -48,10 +51,11 @@ public class Customer implements ObserverCostumers {
 	
 	@Override
 	public String toString() {
-		return
-				"Costumer name: " + name + 
-				"Phone numner: " + number + 
-				"Is the costumer want to recieve news from the shop? " + bNotification + "\n";
+		StringBuffer sb = new StringBuffer();
+		Formatter formatter = new Formatter(sb);
+		formatter.format("|%-13s|%-12s|%-11b|", getName(),getNumber(), getBNotification());
+		formatter.close();
+		return sb.toString();
 	}
 
 

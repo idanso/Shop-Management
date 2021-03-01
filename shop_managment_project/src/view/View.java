@@ -140,8 +140,6 @@ public class View extends Application {
 		
 		addProductMainScene.setOnAction(e -> addProductsScene());
 		
-		//TODO delete the second statment and restore first function
-		//showAllProductsMainScene.setOnAction(e -> showProductsScene()); 
 		showAllProductsMainScene.setOnAction(e -> showProductsScene());
 		
 		searchForRemoveMainScene.setOnAction(e -> searchProductToRemove());
@@ -221,8 +219,9 @@ public class View extends Application {
 	public void showProductsScene() {
 		vboxShowAllProducts = new VBox(10);
 		setWindowLabelsAndTextFlow();
-		vboxShowAllProducts.getChildren().addAll(showAllProduct, backB);
-		window.setScene(new Scene(vboxShowAllProducts, 500, 500));
+		vboxShowAllProducts.getChildren().addAll(showProductsLabel,showAllProduct, backB);
+		controller.printAllProducts();
+		window.setScene(new Scene(vboxShowAllProducts, 900, 400));
 	}
 
 	public void searchProductToRemove() {
@@ -361,13 +360,17 @@ public class View extends Application {
 		showProductsLabel = new Label("All the products:");
 		showProductsLabel.setFont(new Font("Arial", 22));
 		allProductsLabel = new Label();
+		allProductsLabel.setFont(new Font("Consolas", 16));
 		showAllProductsFlow = new TextFlow();
 		showAllProductsFlow.setPrefSize(400, 300);
 		showAllProductsFlow.getChildren().add(allProductsLabel);
-		showAllProduct = new ScrollPane();
-		
+		showAllProduct = new ScrollPane(showAllProductsFlow);
 	}
 	
+	public Label getAllProductsLabel() {
+		return allProductsLabel;
+	}
+
 	private void createButtons() {
 		submitSorting = new Button("Submit");
 		submitAddProductB = new Button("Submit");

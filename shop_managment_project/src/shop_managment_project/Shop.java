@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -245,10 +246,6 @@ public class Shop implements ObservableShop {
 	public ShopMemento getMemento() {
 		return memento;
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 4bdd3e284696db8a8527b6b2e1bb0d5c6199378c
 	
 	public void saveAllProductsToFile() {
 		Set<Map.Entry<String, Product>> setProducts = allProducts.entrySet();
@@ -263,13 +260,21 @@ public class Shop implements ObservableShop {
 		return shopProfit.toString();
 	}
 
-	public StringBuffer printAllProducts() {
-		StringBuffer allProductsToString = new StringBuffer();
+	public String printAllProducts() {
+		StringBuffer sb = new StringBuffer();
+		Formatter formatter = new Formatter(sb);
+		int counter = 1;
+		sb.append("    |product number|product name|value Price|customer price|customer name|phone number|notification|\n");
+		sb.append("----------------------------------------------------------------------------------------------------\n");
 		for (Entry<String, Product> entry : allProducts.entrySet()) {
-			allProductsToString.append("\n" + "product number : " + entry.getKey());
-			allProductsToString.append(entry.toString());
+			formatter.format("%-2d) |%-14s", counter, entry.getKey());
+			sb.append(entry.getValue().toString());
+			sb.append("\n");
+			counter++;
 		}
-		return allProductsToString;
+		formatter.close();
+		System.out.println(sb.toString());
+		return sb.toString();
 		
 	}
 
@@ -286,12 +291,8 @@ public class Shop implements ObservableShop {
 	}
 
 	@Override
-<<<<<<< HEAD
-	public void sendNewsToCostumer(String discountMassage) {
-=======
 	public void sendNewsToCostumers(String discountMassage) {
 		costumersListNames.clear();
->>>>>>> 4bdd3e284696db8a8527b6b2e1bb0d5c6199378c
 		for(ObserverCostumers o : costumersListNotification) {
 			o.reciveMassage(this, discountMassage);
 		}

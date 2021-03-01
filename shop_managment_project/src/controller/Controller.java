@@ -8,6 +8,7 @@ import command.DeleteAllProductsCommand;
 import command.DeleteLastCommand;
 import command.DeleteProductCommand;
 import command.GetProfitSummaryCommand;
+import command.PrintAllProducts;
 import command.SendNotificationCommand;
 import command.ShowMassagesFromCustomersCommand;
 import model.Model;
@@ -57,12 +58,8 @@ public class Controller {
 		new Thread(view.getnHandler()).start();
 	}
 	
-<<<<<<< HEAD
-	
-=======
->>>>>>> 4bdd3e284696db8a8527b6b2e1bb0d5c6199378c
-	public void printAllProducts() { // to delete for testing
-		model.getShop().printAllProducts();
+	public void printAllProducts() {
+		new PrintAllProducts(view.getAllProductsLabel() ,model.getShop()).execute();
 	}
 	
 	
