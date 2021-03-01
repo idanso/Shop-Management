@@ -62,7 +62,8 @@ public class View extends Application {
 				  profitSummaryHeadLabel,
 				  searchToRemove,
 				  showProductsLabel,
-				  allProductsLabel;
+				  allProductsLabel,
+				  receivedMassagesL ;
 	
 	private VBox vboxSorting, vboxSearch, vboxShowAllProducts ;
 	private HBox hboxAddProduct, hboxSearchProduct;
@@ -175,16 +176,7 @@ public class View extends Application {
 		Stage massageStage = new Stage();
 		VBox receivedMassagesVBox = new VBox(20);
 		receivedMassagesVBox.setPadding(new Insets(10, 10, 10, 10));
-		Label receivedMassagesL = new Label("Received Customers Massages");
-		receivedMassagesL.setFont(new Font("Arial", 22));
-		nHandler = new NotificationHandler();
-		nHandler.setFont(new Font("Arial", 16));
-		massagesTextFlow = new TextFlow();
-		massagesTextFlow.setPrefSize(400, 300);
-		massagesTextFlow.getChildren().add(getnHandler());
-		massagesScrollPane = new ScrollPane(massagesTextFlow);
-		bCloseShowMassagesWindows = new Button();
-		bCloseShowMassagesWindows.setText("Close");
+		setTheWindow();
 		bCloseShowMassagesWindows.setOnAction(e -> massageStage.close());
 		receivedMassagesVBox.getChildren().addAll(receivedMassagesL, massagesScrollPane, bCloseShowMassagesWindows); // need to add backB
 		massageStage.setScene(new Scene(receivedMassagesVBox));
@@ -299,6 +291,19 @@ public class View extends Application {
 
 	public String getDeleteProductNumber() {
 		return deleteProduct.getText();
+	}
+	
+	public void setTheWindow() {
+		receivedMassagesL = new Label("Received Customers Massages");
+		receivedMassagesL.setFont(new Font("Arial", 22));
+		nHandler = new NotificationHandler();
+		nHandler.setFont(new Font("Arial", 16));
+		massagesTextFlow = new TextFlow();
+		massagesTextFlow.setPrefSize(400, 300);
+		massagesTextFlow.getChildren().add(getnHandler());
+		massagesScrollPane = new ScrollPane(massagesTextFlow);
+		bCloseShowMassagesWindows = new Button();
+		bCloseShowMassagesWindows.setText("Close");
 	}
 
 
