@@ -1,7 +1,5 @@
 package controller;
 
-import java.awt.event.ActionListener;
-
 import command.AddProductCommand;
 import command.CreateProductMapCommand;
 import command.DeleteAllProductsCommand;
@@ -60,9 +58,9 @@ public class Controller {
 		view.getnHandler().setCustomers(model.getShop().getAllCustomersWithNotification());
 		new ShowMassagesFromCustomersCommand(view.getnHandler()).execute();
 	}
+
 	public boolean checkIfProductExist(String productNumber) {
 		return model.getShop().checkIfProductExist(productNumber);
 	}
 	
-
 }

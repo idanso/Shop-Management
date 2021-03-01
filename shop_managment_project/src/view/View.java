@@ -154,7 +154,7 @@ public class View extends Application {
 		
 		bRemoveAllProducts.setOnAction(e -> controller.deleteAllProducts()); // TODO need to add pop up massage
 		
-		//bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
+		bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
 		
 		undoFunctionMainScene.setOnAction(e -> controller.undoProduct());
 		
@@ -173,7 +173,7 @@ public class View extends Application {
 								  searchForRemoveMainScene, 
 								  bRemoveAllProducts, 
 								  sendNotificationsMainScene, 
-								 // bShowProfitSummaryScene, 
+								  bShowProfitSummaryScene, 
 								  undoFunctionMainScene, 
 								  exit);
 		vbox.setAlignment(Pos.CENTER);
@@ -387,6 +387,7 @@ public class View extends Application {
 		showAllProductsMainScene = new Button("Show all the products");
 		searchForRemoveMainScene = new Button("remove product");
 		bRemoveAllProducts = new Button("remove all products");
+		bShowProfitSummaryScene = new Button("show profit summary");
 		sendNotificationsMainScene = new Button("show customers with notification");
 		undoFunctionMainScene = new Button("Undo");
 	}
@@ -541,6 +542,22 @@ public class View extends Application {
 			}
 			else
 				controller.deleteProduct();
+	}
+	
+	public void popupWindowMassage(EMassageFromShop massage) {
+		
+		if(massage.equals(EMassageFromShop.SUCCEES)) {
+			alert.setAlertType(AlertType.CONFIRMATION);
+			alert.setContentText("success");
+		}
+		else if (massage.equals(EMassageFromShop.DOESNT_EXIST)){
+			alert.setAlertType(AlertType.WARNING);
+			alert.setContentText("Not exist in system");
+		}
+		else if (massage.equals(EMassageFromShop.FAILE)){
+			alert.setAlertType(AlertType.ERROR);
+			alert.setContentText("Error accured, no action was taken");
+		}
 	}
 
 }
