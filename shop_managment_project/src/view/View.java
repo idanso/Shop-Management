@@ -420,14 +420,7 @@ public class View extends Application {
 		vboxSorting.setPadding(new Insets(20, 80, 20, 80));
 		vboxSorting.setSpacing(10);
 	}
-	
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-	
->>>>>>> Stashed changes
+
 	private void setTextForAddProduct() {
 		headAddProduct = new Label("Add product:");
 		headAddProduct.setFont(new Font("Arial", 22));
