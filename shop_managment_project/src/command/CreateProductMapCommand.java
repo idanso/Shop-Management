@@ -1,8 +1,8 @@
 package command;
 
-import shop_managment_project.EMassageFromShop;
-import shop_managment_project.EProductSortType;
-import shop_managment_project.Shop;
+import model.EMassageFromShop;
+import model.EProductSortType;
+import model.Shop;
 
 public class CreateProductMapCommand implements Command {
 

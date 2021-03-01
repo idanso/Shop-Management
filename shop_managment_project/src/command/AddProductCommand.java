@@ -1,8 +1,8 @@
 package command;
 
 
-import shop_managment_project.EMassageFromShop;
-import shop_managment_project.Shop;
+import model.EMassageFromShop;
+import model.Shop;
 import view.View;
 public class AddProductCommand implements Command{
 	

@@ -1,8 +1,8 @@
 package command;
 
 import javafx.scene.control.Label;
-import shop_managment_project.EMassageFromShop;
-import shop_managment_project.Shop;
+import model.EMassageFromShop;
+import model.Shop;
 
 public class GetProfitSummaryCommand implements Command {
 	

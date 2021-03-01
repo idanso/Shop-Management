@@ -8,8 +8,8 @@ import command.DeleteProductCommand;
 import command.GetProfitSummaryCommand;
 import command.PrintAllProducts;
 import command.SendNotificationCommand;
+import model.EMassageFromShop;
 import model.Model;
-import shop_managment_project.EMassageFromShop;
 import view.View;
 
 public class Controller {

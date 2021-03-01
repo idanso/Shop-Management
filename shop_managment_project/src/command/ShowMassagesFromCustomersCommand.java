@@ -1,7 +1,7 @@
 package command;
 
-import shop_managment_project.EMassageFromShop;
-import shop_managment_project.NotificationHandler;
+import model.EMassageFromShop;
+import model.NotificationHandler;
 
 public class ShowMassagesFromCustomersCommand implements Command {
 	

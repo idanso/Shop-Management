@@ -1,7 +1,7 @@
 package command;
 
-import shop_managment_project.EMassageFromShop;
-import shop_managment_project.Shop;
+import model.EMassageFromShop;
+import model.Shop;
 
 public class DeleteAllProductsCommand implements Command {
 	

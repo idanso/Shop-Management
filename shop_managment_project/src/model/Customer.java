@@ -1,4 +1,4 @@
-package shop_managment_project;
+package model;
 
 import observer.ObserverCostumers;
 

@@ -2,8 +2,6 @@ package model;
 
 import java.io.File;
 
-import shop_managment_project.Shop;
-
 
 public class Model {
 	

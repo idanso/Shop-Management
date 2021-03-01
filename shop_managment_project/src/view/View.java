@@ -20,8 +20,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import model.EMassageFromShop;
+import model.EProductSortType;
 import model.Model;
-import shop_managment_project.*;
+import model.NotificationHandler;
 
 public class View extends Application {
 

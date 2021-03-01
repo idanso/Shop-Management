@@ -1,6 +1,6 @@
 package command;
 
-import shop_managment_project.EMassageFromShop;
+import model.EMassageFromShop;
 
 public interface Command {
 
