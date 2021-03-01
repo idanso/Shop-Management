@@ -421,6 +421,10 @@ public class View extends Application {
 		vboxSorting.setSpacing(10);
 	}
 	
+<<<<<<< Updated upstream
+=======
+	
+>>>>>>> Stashed changes
 	private void setTextForAddProduct() {
 		headAddProduct = new Label("Add product:");
 		headAddProduct.setFont(new Font("Arial", 22));
