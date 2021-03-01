@@ -299,6 +299,10 @@ public class Shop implements ObservableShop {
 	public void addCostumerNameRecivedMassage (String name) {
 		this.costumersListNames.add(name);
 	}
+	
+	public Map<String,Product> getallProducts(){
+		return allProducts;
+	}
 
 	
 

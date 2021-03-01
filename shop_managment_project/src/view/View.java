@@ -3,12 +3,15 @@ package view;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Map;
 
 import com.sun.javafx.tk.PrintPipeline;
 
 import controller.Controller;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -43,15 +47,6 @@ import shop_managment_project.*;
 public class View extends Application {
 
 	private Stage window;
-	
-	private TableView<Product> table;
-
-	private TableColumn<Object, Object> nameProductTable, 
-						priceForShopTable, 
-						priceForCostumerTable, 
-						nameCostumerTable,
-						phoneNumberTable, 
-						notificationTable;
 	
 	private Button backB, 
 				   submitAddProductB, 
@@ -93,6 +88,8 @@ public class View extends Application {
 	
 	private GridPane gridAddProduct;
 	
+	private ObservableList<Map<String, Product>> items;
+	
 	private Alert alert;
 	private TextFlow massagesTextFlow;
 	private NotificationHandler nHandler;
@@ -111,13 +108,11 @@ public class View extends Application {
 	public void start(Stage mainWindow) throws Exception {
 		Model model = new Model(FILE_NAME);
 		controller = new Controller(this, model);
-		table = new TableView();
 
 		this.createButtons();
 		this.createRadioButtons();
 		this.createTextFields();
-		this.createTablesColumn();
-
+		
 		this.setActions();
 		
 		alert = new Alert(AlertType.NONE);
@@ -223,18 +218,10 @@ public class View extends Application {
 	}
 
 	public void showProductsScene() {
-		table.getColumns().addAll(nameProductTable, 
-								  priceForShopTable, 
-								  priceForCostumerTable, 
-								  nameCostumerTable, 
-								  phoneNumberTable,
-								  notificationTable);
-		setWidthToColumns();
-		
 		Label label = new Label("All the products:");
 		label.setFont(new Font("Arial", 22));
 		VBox vboxTable = new VBox(20);
-		vboxTable.getChildren().addAll(label, table, backB);
+		vboxTable.getChildren().addAll(label, backB);
 		window.setScene(new Scene(vboxTable, 950, 500));
 	}
 
@@ -245,7 +232,7 @@ public class View extends Application {
 	    setVboxSearchToRemove();
 	    setHboxForButtons();
 	    
-		vboxSearch.getChildren().addAll(searchToRemove, deleteProduct, hboxSearchProduct, table);
+		vboxSearch.getChildren().addAll(searchToRemove, deleteProduct, hboxSearchProduct);
 		submitSearchB.setOnAction(e -> searchToRemoveFunction());
 		window.setScene(new Scene(vboxSearch, 950, 300));
 	}
@@ -398,14 +385,6 @@ public class View extends Application {
 		phoneNumber = new TextField();
 	}
 	
-	private void createTablesColumn() {
-		nameProductTable = new TableColumn<>("Name of product");
-		priceForShopTable = new TableColumn<>("Price for the shop");
-		priceForCostumerTable = new TableColumn<>("Price at the shop");
-		nameCostumerTable = new TableColumn<>("Costumer name");
-		phoneNumberTable = new TableColumn<>("Phone number");
-		notificationTable = new TableColumn<>("Want to get news?");
-	}
 
 	private void createRadioButtons() {
 		sortUp = new RadioButton();
@@ -472,15 +451,6 @@ public class View extends Application {
 //
 //        // create Background 
 //        Background background = new Background(backgroundimage); 
-	}
-	
-	private void setWidthToColumns() {
-		nameProductTable.setMinWidth(150);
-		priceForShopTable.setMinWidth(150);
-		priceForCostumerTable.setMinWidth(150);
-		nameCostumerTable.setMinWidth(150);
-		phoneNumberTable.setMinWidth(200);
-		notificationTable.setMinWidth(150);
 	}
 	
 	private void setTextForAddProduct() {

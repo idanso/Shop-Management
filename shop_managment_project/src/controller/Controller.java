@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Map;
+
 import command.AddProductCommand;
 import command.CreateProductMapCommand;
 import command.DeleteAllProductsCommand;
@@ -10,6 +12,7 @@ import command.SendNotificationCommand;
 import command.ShowMassagesFromCustomersCommand;
 import model.Model;
 import shop_managment_project.EMassageFromShop;
+import shop_managment_project.Product;
 import view.View;
 
 public class Controller {
@@ -59,6 +62,10 @@ public class Controller {
 	
 	public void printAllProducts() { // to delete for testing
 		model.getShop().printAllProducts();
+	}
+	
+	public Map<String,Product> getProductMap(){
+		return model.getShop().getallProducts();
 	}
 	
 }
