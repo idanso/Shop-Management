@@ -120,6 +120,7 @@ public class View extends Application {
 
 		this.setActions();
 		
+		alert = new Alert(AlertType.NONE);
 		window = mainWindow;
 		window.setTitle("Main window");
 		mainScene();
@@ -131,7 +132,6 @@ public class View extends Application {
 		
 		setSortingOptionsLabelText();
 		
-		alert = new Alert(AlertType.NONE);
 		
 		setVbox();
 		createBackground();
@@ -187,8 +187,6 @@ public class View extends Application {
 		Button clearB = new Button("Clear");
 		hboxAddProduct = new HBox(8);
 		hboxAddProduct.getChildren().addAll(submitAddProductB, clearB);
-		
-		alert = new Alert(AlertType.NONE);
 
 		setTextForAddProduct();
 		setGridAddProduct();
@@ -242,7 +240,6 @@ public class View extends Application {
 
 	public void searchProductToRemove() {
 		// search product to remove
-		alert = new Alert(AlertType.NONE);
 		vboxSearch = new VBox(10);
 		
 	    setVboxSearchToRemove();
@@ -541,7 +538,7 @@ public class View extends Application {
 	public void popupWindowMassage(EMassageFromShop massage) {
 		if(massage.equals(EMassageFromShop.SUCCEES)) {
 			alert.setAlertType(AlertType.CONFIRMATION);
-			alert.setContentText("success");
+			alert.setContentText("operation success");
 		}
 		else if (massage.equals(EMassageFromShop.DOESNT_EXIST)){
 			alert.setAlertType(AlertType.WARNING);
@@ -550,6 +547,10 @@ public class View extends Application {
 		else if (massage.equals(EMassageFromShop.FAILE)){
 			alert.setAlertType(AlertType.ERROR);
 			alert.setContentText("Error accured, no action was taken");
+		}
+		else if (massage.equals(EMassageFromShop.EMPTY)){
+			alert.setAlertType(AlertType.WARNING);
+			alert.setContentText("Fields are empty, please fill all text boxes");
 		}
 	}
 
