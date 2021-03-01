@@ -128,7 +128,7 @@ public class View extends Application {
 		
 		bShowProfitSummaryScene.setOnAction(e -> showProfitSummaryScene());
 		
-		undoFunctionMainScene.setOnAction(e -> controller.undoProduct());
+		undoFunctionMainScene.setOnAction(e -> popupWindowMassage(controller.undoProduct()));
 		
 		Button exit = new Button("EXIT");
 		exit.setOnAction(e -> {
@@ -255,20 +255,22 @@ public class View extends Application {
 	}
 
 	public int getPriceForShop() {
-		int price = 0;
+		int price = -1;
 		try {
 			price = Integer.parseInt(priceForShop.getText());
 		} catch (Exception e) {
+			price=-1;
 			popupWindowMassage(Emassage.FAILE);
 		}
 		return price;
 	}
 
 	public int getPriceForCostumer() {
-		int price = 0;
+		int price = -1;
 		try {
 			price = Integer.parseInt(priceForCostumer.getText());
 		} catch (Exception e) {
+			price =-1;
 			popupWindowMassage(Emassage.FAILE);
 		}
 		return price;
@@ -304,26 +306,22 @@ public class View extends Application {
 		if (productName.getText().isEmpty() || productNumber.getText().isEmpty() || priceForShop.getText().isEmpty()
 				|| priceForCostumer.getText().isEmpty() || costumerName.getText().isEmpty()
 				|| phoneNumber.getText().isEmpty()) {
-			alert.setAlertType(AlertType.ERROR);
-			alert.setContentText("Fill all up before the dreadful idan will kill you!");
-			alert.show();
+			popupWindowMassage(Emassage.FAILE);
 		} else {
 			
 			if(controller.addProduct() == Emassage.FAILE) {
 				popupWindowMassage(Emassage.FAILE);
 			}
-			alert.setAlertType(AlertType.CONFIRMATION);
-			alert.setContentText("The product was successfully added");
-			alert.show();
-			clear();
+			else {
+				popupWindowMassage(Emassage.SUCCEES);
+				clear();
+			}
 		}
 	}
 
 	public void choosSorting() {
 		if (sortUp.isSelected() == false && sortDown.isSelected() == false && sortOrder.isSelected() == false) {
-			alert.setAlertType(AlertType.ERROR);
-			alert.setContentText("Choose one of the option");
-			alert.show();
+			popupWindowMassage(Emassage.FAILE);
 		} else {
 			controller.createProductsMap();
 			mainWindow();
@@ -418,6 +416,10 @@ public class View extends Application {
 		vboxSorting.setSpacing(10);
 	}
 	
+<<<<<<< Updated upstream
+=======
+	
+>>>>>>> Stashed changes
 	private void setTextForAddProduct() {
 		headAddProduct = new Label("Add product:");
 		headAddProduct.setFont(new Font("Arial", 22));
@@ -461,9 +463,7 @@ public class View extends Application {
 	
 	public void searchToRemoveFunction() {
 		if (deleteProduct.getText().isEmpty()) {
-			alert.setAlertType(AlertType.ERROR);
-			alert.setContentText("The text field for the product number is empty");
-			alert.show();
+			popupWindowMassage(Emassage.FAILE);
 				
 		}
 		else
@@ -487,6 +487,7 @@ public class View extends Application {
 			alert.setAlertType(AlertType.WARNING);
 			alert.setContentText("Fields are empty, please fill all text boxes");
 		}
+		alert.show();
 	}
 
 }

@@ -105,6 +105,9 @@ public class Shop implements ObservableShop {
 									   boolean bNotification) {
 		
 		Product productTemp; //to check if product exist in system	
+		if(valuePrice <0 || costumerPrice <0 || valuePrice > costumerPrice) {
+			return Emassage.FAILE;
+		}
 		productTemp = allProducts.put(productNumber, new Product(productName, valuePrice, costumerPrice,
 						new Customer(customerName, customerNumber, bNotification)));
 				
