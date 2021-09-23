@@ -1,5 +1,5 @@
 # tihun_final_project
-Shop management program with JavaFX gui
+Shop management program with JavaFX GUI
 
 
 Design Patterns:
