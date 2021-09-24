@@ -1,4 +1,4 @@
-# tihun_final_project
+# Shop-Management
 Shop management program with JavaFX GUI
 
 
